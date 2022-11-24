@@ -13,6 +13,7 @@ const App = () => {
 	});
 	return (
 		<Provider theme={theme}>
+			{/* hello */}
 			<StatusBar
 				animated={true}
 				backgroundColor={"black"}
