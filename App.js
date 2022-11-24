@@ -1,20 +1,31 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { Provider } from "react-native-paper";
+import { NavigationContainer } from "@react-navigation/native";
+import AppStack from "./core/AppStack.js";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+import { theme } from "./core/theme";
+import { useFonts } from "expo-font";
+import { StatusBar } from "react-native";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const App = () => {
+	const [fontsLoaded] = useFonts({
+		Roboto: require("./assets/fonts/Roboto/Roboto-Regular.ttf"),
+	});
+	return (
+		<Provider theme={theme}>
+			<StatusBar
+				animated={true}
+				backgroundColor={"black"}
+				barStyle={"light-content"}
+				showHideTransition={"fade"}
+				translucent={false}
+				// hidden={true}
+			/>
+			<NavigationContainer>
+				<AppStack />
+			</NavigationContainer>
+		</Provider>
+	);
+};
+
+export default App;
