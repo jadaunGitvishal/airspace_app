@@ -65,19 +65,6 @@ const BookingScreen = ({ navigation }) => {
 							>
 								<Text className="font-semibold text-white">All</Text>
 							</TouchableOpacity>
-
-							<TouchableOpacity
-								activeOpacity={0.8}
-								style={{
-									backgroundColor: allSpaces
-										? theme.colors.accent
-										: theme.colors.accent1,
-								}}
-								onPress={() => setAllSpaces(false)}
-								className="flex-row items-center justify-between rounded-md py-2 px-4 mr-auto"
-							>
-								<Text className="font-semibold text-white">Registered</Text>
-							</TouchableOpacity>
 						</View>
 					</View>
 				</LinearGradient>
