@@ -1,5 +1,5 @@
 import React from "react";
-import MenuButton from "../Button/MenuButton";
+import MenuButton from "../Button/ProfileButton";
 import { Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 

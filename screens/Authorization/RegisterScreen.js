@@ -17,7 +17,7 @@ const RegisterScreen = ({ navigation }) => {
 	const [email, setEmail] = useState({ value: "", error: "" });
 	const [password, setPassword] = useState({ value: "", error: "" });
 
-	const onSignUpPressed = () => {
+	const handleSignUp = () => {
 		const nameError = nameValidator(name.value);
 		const emailError = emailValidator(email.value);
 		const passwordError = passwordValidator(password.value);
@@ -71,7 +71,7 @@ const RegisterScreen = ({ navigation }) => {
 				/>
 				<Button
 					mode="contained"
-					onPress={onSignUpPressed}
+					onPress={handleSignUp}
 					style={{ marginTop: 24 }}
 				>
 					Sign Up

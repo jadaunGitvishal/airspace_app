@@ -3,11 +3,25 @@ import { View, StyleSheet, Text } from "react-native";
 import { TextInput as PaperInput } from "react-native-paper";
 import { theme } from "../../core/theme";
 
-export default function TextInput({ errorText, description, ...props }) {
+export default function TextInput({
+	containerStyle,
+	inputStyle,
+	errorText,
+	description,
+	...props
+}) {
 	return (
-		<View style={styles.container}>
+		<View
+			style={[
+				containerStyle ? containerStyle : styles.container,
+				{ width: "100%" },
+			]}
+		>
 			<PaperInput
-				style={styles.input}
+				style={[
+					inputStyle && inputStyle,
+					{ backgroundColor: theme.colors.surface },
+				]}
 				selectionColor={theme.colors.primary}
 				underlineColor="transparent"
 				mode="outlined"
@@ -29,11 +43,7 @@ export default function TextInput({ errorText, description, ...props }) {
 
 const styles = StyleSheet.create({
 	container: {
-		width: "100%",
 		marginVertical: 12,
-	},
-	input: {
-		backgroundColor: theme.colors.surface,
 	},
 	description: {
 		fontSize: 13,

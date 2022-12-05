@@ -16,7 +16,7 @@ import { theme } from "../../core/theme";
 import MenuButton from "../../components/Button/MenuButton";
 import { TextInput as PaperInput } from "react-native-paper";
 
-const ParkingSpaces = ({ navigation }) => {
+const BookingScreen = ({ navigation }) => {
 	const [allSpaces, setAllSpaces] = useState(true);
 
 	return (
@@ -31,7 +31,7 @@ const ParkingSpaces = ({ navigation }) => {
 						borderBottomRightRadius: 30,
 						borderBottomLeftRadius: 30,
 					}}
-					className="w-full h-16 p-4 pb-6 flex-col items-center justify-between"
+					className="w-full h-16 p-4 pb-6 flex-col items-center"
 					colors={["rgba(46, 199, 255,1)", "rgba(197, 81, 204,0.9)"]}
 					start={{ x: 0, y: 0 }}
 					end={{ x: 0.75, y: 1.5 }}
@@ -45,34 +45,13 @@ const ParkingSpaces = ({ navigation }) => {
 					{/* Center Row */}
 					<Text
 						style={{ letterSpacing: 1 }}
-						className="text-white text-2xl mr-auto font-semibold"
+						className="text-white text-2xl mr-auto font-semibold uppercase"
 					>
-						PARKING SPACES
+						RESERVATION
 					</Text>
 
 					{/* Bottom Row */}
 					<View className="w-full">
-						<PaperInput
-							style={{
-								backgroundColor: theme.colors.accent,
-							}}
-							className={"h-10 rounded-md text-white"}
-							selectionColor={theme.colors.surface}
-							underlineColorAndroid="transparent"
-							mode="outlined"
-							outlineColor={"transparent"}
-							placeholder="Search"
-							placeholderTextColor={theme.colors.surface}
-							onChangeText={(text) => {}}
-							theme={{
-								colors: {
-									primary: "transparent",
-									underlineColor: "transparent",
-									text: theme.colors.primary,
-								},
-							}}
-						/>
-
 						<View className="flex-row mt-3">
 							<TouchableOpacity
 								activeOpacity={0.8}
@@ -98,19 +77,6 @@ const ParkingSpaces = ({ navigation }) => {
 								className="flex-row items-center justify-between rounded-md py-2 px-4 mr-auto"
 							>
 								<Text className="font-semibold text-white">Registered</Text>
-							</TouchableOpacity>
-
-							<TouchableOpacity
-								activeOpacity={0.8}
-								style={{ backgroundColor: theme.colors.accent }}
-								className="flex-row items-center justify-between rounded-md py-2 px-4"
-							>
-								<Text className="font-semibold mr-4 text-white">Filters</Text>
-								<Ionicons
-									name="md-filter-outline"
-									size={20}
-									color={theme.colors.surface}
-								/>
 							</TouchableOpacity>
 						</View>
 					</View>
@@ -218,4 +184,4 @@ const ParkingSpaces = ({ navigation }) => {
 	);
 };
 
-export default ParkingSpaces;
+export default BookingScreen;

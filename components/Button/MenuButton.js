@@ -1,23 +1,23 @@
 import React from "react";
 import { TouchableOpacity, Image, StyleSheet } from "react-native";
 
-export default function MenuButton({ size }) {
+export default function MenuButton() {
 	return (
-		<TouchableOpacity
-			className="bg-primary rounded-full overflow-hidden"
-			style={{ height: 0 + size, width: 0 + size }}
-		>
-			{/* <Image style={styles.image} source={require("../../assets/menu.png")} /> */}
-			<Image style={styles.image} source={require("../../assets/user.jpeg")} />
+		<TouchableOpacity onPress={() => {}} style={styles.container}>
+			<Image style={styles.image} source={require("../../assets/menu.png")} />
 		</TouchableOpacity>
 	);
 }
 
 const styles = StyleSheet.create({
+	container: {
+		width: 35,
+		height: 35,
+	},
 	image: {
 		flex: 1,
 		width: null,
 		height: null,
-		resizeMode: "cover",
+		resizeMode: "contain",
 	},
 });

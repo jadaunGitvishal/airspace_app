@@ -1,7 +1,8 @@
 import React from "react";
 import { Provider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
-import AppStack from "./core/AppStack.js";
+import AppStack from "./core/navigation/AppStack.js";
+import AuthStack from "./core/navigation/AuthStack.js";
 
 import { theme } from "./core/theme";
 import { useFonts } from "expo-font";
@@ -11,19 +12,22 @@ const App = () => {
 	const [fontsLoaded] = useFonts({
 		Roboto: require("./assets/fonts/Roboto/Roboto-Regular.ttf"),
 	});
+
+	const loggedIn = true;
+	// const loggedIn = false;
+
 	return (
 		<Provider theme={theme}>
-			{/* hello */}
 			<StatusBar
 				animated={true}
-				backgroundColor={"black"}
+				backgroundColor={"transparent"}
 				barStyle={"light-content"}
 				showHideTransition={"fade"}
-				translucent={false}
-				// hidden={true}
+				translucent={true}
 			/>
+
 			<NavigationContainer>
-				<AppStack />
+				{loggedIn === true ? <AppStack /> : <AuthStack />}
 			</NavigationContainer>
 		</Provider>
 	);
