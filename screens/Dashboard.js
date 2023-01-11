@@ -11,15 +11,15 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import Background from "../components/Background";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { theme } from "../core/theme";
 import ProfileButton from "../components/Button/ProfileButton";
 import * as Progress from "react-native-progress";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import { useTheme } from "react-native-paper";
 
 const Dashboard = ({ navigation }) => {
 	const Tab = createBottomTabNavigator();
-
+	const theme = useTheme();
 	return (
 		<Background>
 			<View className="h-full w-full items-center flex-1 relative">
@@ -32,7 +32,8 @@ const Dashboard = ({ navigation }) => {
 						// borderBottomLeftRadius: 500,
 					}}
 					className="w-full h-16 p-4 pb-6 flex-col items-center justify-between"
-					colors={["rgba(46, 199, 255,1)", "rgba(197, 81, 204,0.9)"]}
+					// colors={["rgba(46, 199, 255,1)", "rgba(197, 81, 204,0.9)"]}
+					colors={[theme.colors.bg0, theme.colors.bg1]}
 					start={{ x: 0, y: 0 }}
 					end={{ x: 0.5, y: 1 }}
 				>
@@ -74,18 +75,19 @@ const Dashboard = ({ navigation }) => {
 						height: "75%",
 						width: "90%",
 						borderWidth: 2,
+						backgroundColor: theme.colors.surface,
 						borderColor: theme.colors.bg0,
 						borderRadius: 30,
 						position: "absolute",
 						top: "17%",
 
-						shadowColor: "rgba(0,0,0, 0.7)",
+						shadowColor: theme.colors.shadow,
 						shadowOffset: { height: 1, width: 1 },
 						shadowOpacity: 1,
 						shadowRadius: 1,
 						elevation: 10,
 					}}
-					className="flex-col px-4 py-10 items-center justify-between bg-white"
+					className="flex-col px-4 py-10 items-center justify-between"
 				>
 					{/* circle */}
 					<View>

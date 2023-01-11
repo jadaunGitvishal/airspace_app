@@ -8,5 +8,4 @@ const AppStack = () => {
 export default AppStack;
 
 // VEHILCLE SCREEN {add,remove}
-// BOOKING SCREEN
 // PAYMENTS SCREEN

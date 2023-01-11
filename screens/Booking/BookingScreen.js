@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	Image,
 	Pressable,
@@ -7,21 +7,202 @@ import {
 	Text,
 	TouchableOpacity,
 	View,
+	Modal,
+	StyleSheet,
+	ActivityIndicator,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Background from "../../components/Background";
-import BackButtonSimple from "../../components/Button/BackButtonSimple";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { Ionicons, EvilIcons } from "@expo/vector-icons";
 import { theme } from "../../core/theme";
 import MenuButton from "../../components/Button/MenuButton";
 import { TextInput as PaperInput } from "react-native-paper";
+import Slot from "../../components/Slot/Slot";
+import Button from "../../components/Button/Button";
+import * as api from "../../api/parkingSpacesReuests";
 
 const BookingScreen = ({ navigation }) => {
-	const [allSpaces, setAllSpaces] = useState(true);
+	const [slot, setSlot] = useState(null);
+	const [space, setSpace] = useState(null);
+	const [modalVisible, setModalVisible] = useState(false);
+	const [spacesList, setSpacesList] = useState([]);
+	const [slotsList, setSlotsList] = useState([
+		{
+			reserved: true,
+			name: "27B",
+		},
+		{
+			reserved: false,
+			name: "17B",
+		},
+		{
+			reserved: false,
+			name: "22C",
+		},
+		{
+			reserved: true,
+			name: "28B",
+		},
+		{
+			reserved: false,
+			name: "37C",
+		},
+		{
+			reserved: true,
+			name: "29B",
+		},
+		{
+			reserved: false,
+			name: "77C",
+		},
+		{
+			reserved: true,
+			name: "23B",
+		},
+		{
+			reserved: false,
+			name: "17B",
+		},
+		{
+			reserved: false,
+			name: "21C",
+		},
+		{
+			reserved: true,
+			name: "22B",
+		},
+		{
+			reserved: false,
+			name: "37A",
+		},
+		{
+			reserved: true,
+			name: "27A",
+		},
+		{
+			reserved: false,
+			name: "77A",
+		},
+	]);
+
+	useEffect(() => {
+		const getData = async () => {
+			const { data } = await api.fetchAllParkings();
+			setSpacesList(data.allParkings);
+		};
+		getData();
+	}, []);
+
+	const handleContinue = () => {
+		if (space === null || slot === null) {
+			alert("Select a slot first");
+			return;
+		}
+		// alert(slot + "\n" + space);
+		navigation.navigate("BookingNext", {
+			space: space,
+			slot: slot,
+		});
+	};
 
 	return (
 		<Background>
 			<View className="h-full p-0 items-center bg-white">
+				{/* modal */}
+				<Modal
+					animationType="fade"
+					transparent={true}
+					visible={modalVisible}
+					statusBarTranslucent={true}
+					onRequestClose={() => {
+						setModalVisible(!modalVisible);
+					}}
+				>
+					<View
+						style={{
+							flex: 1,
+							justifyContent: "center",
+							alignItems: "center",
+							backgroundColor: theme.colors.accent1,
+						}}
+					>
+						<View
+							style={{
+								backgroundColor: "white",
+								borderRadius: 20,
+								alignItems: "center",
+								shadowColor: "#000",
+								shadowOffset: {
+									width: 0,
+									height: 2,
+								},
+								shadowOpacity: 0.25,
+								shadowRadius: 4,
+								elevation: 5,
+								width: "95%",
+							}}
+							className="h-3/4 px-7 py-5"
+						>
+							<View
+								style={{
+									height: "10%",
+								}}
+								className="w-full flex-row justify-between items-center border-b border-gray-300"
+							>
+								<Text className="text-base font-semibold">
+									SELECT A PARKING SPACE
+								</Text>
+								<TouchableOpacity
+									activeOpacity={0.7}
+									onPress={() => setModalVisible(false)}
+								>
+									<Ionicons name="close-circle-outline" size={30} color="red" />
+								</TouchableOpacity>
+							</View>
+
+							<ScrollView
+								style={{
+									height: "90%",
+								}}
+								contentContainerStyle={{
+									flexGrow: 1,
+									justifyContent: "center",
+								}}
+								className="w-full pt-4"
+							>
+								<TouchableOpacity activeOpacity={1} className="h-full">
+									{spacesList.length > 0 ? (
+										spacesList.map(({ name, _id }) => (
+											<TouchableOpacity
+												key={_id}
+												activeOpacity={0.7}
+												onPress={() => {
+													setSpace(name);
+													setModalVisible(!modalVisible);
+												}}
+											>
+												<Text
+													style={{
+														backgroundColor: theme.colors.secondary,
+														color: theme.colors.primary,
+													}}
+													className="text-base font-medium p-4 rounded-md shadow-sm shadow-black my-3"
+												>
+													{name}
+												</Text>
+											</TouchableOpacity>
+										))
+									) : (
+										<View className="h-full flex-col justify-center">
+											<ActivityIndicator size={45} color={theme.colors.bg0} />
+										</View>
+									)}
+								</TouchableOpacity>
+							</ScrollView>
+						</View>
+					</View>
+				</Modal>
+
 				{/* HEADER */}
 				<LinearGradient
 					style={{
@@ -45,127 +226,84 @@ const BookingScreen = ({ navigation }) => {
 					{/* Center Row */}
 					<Text
 						style={{ letterSpacing: 1 }}
-						className="text-white text-2xl mr-auto font-semibold uppercase"
+						className="text-white text-2xl mr-auto pt-4 font-semibold uppercase"
 					>
 						RESERVATION
 					</Text>
 
 					{/* Bottom Row */}
-					<View className="w-full">
+					<View className="w-full my-auto">
 						<View className="flex-row mt-3">
 							<TouchableOpacity
 								activeOpacity={0.8}
 								style={{
-									backgroundColor: allSpaces
-										? theme.colors.accent1
-										: theme.colors.accent,
+									backgroundColor: theme.colors.accent,
 								}}
-								onPress={() => setAllSpaces(true)}
-								className="flex-row items-center justify-between rounded-md py-2 px-4 mr-5"
+								onPress={() => setModalVisible(true)}
+								className="w-5/6 mx-auto my-auto flex-row items-center justify-between rounded-md p-4"
 							>
-								<Text className="font-semibold text-white">All</Text>
+								<Text className="font-semibold text-white text-base">
+									{space === null ? "Select Parking Space" : space}
+								</Text>
+								{space === null && (
+									<EvilIcons name="chevron-down" size={24} color="white" />
+								)}
 							</TouchableOpacity>
 						</View>
 					</View>
 				</LinearGradient>
 
-				{/* SCROLL VIEW */}
-				<ScrollView
-					style={{ height: "70%" }}
-					className="w-full flex-1 bg-transparent"
-				>
-					<TouchableOpacity activeOpacity={1}>
-						<View className="h-full w-full p-4 pt-6 items-center">
-							{/* Cards */}
-							{[1, 2, 3, 4, 5, 6, 7, 8].map((x, index) => (
-								<TouchableOpacity
-									key={x}
-									activeOpacity={0.9}
-									className="h-40 mb-5 w-full "
-									onPress={() => navigation.navigate("ParkingSpaceDetails")}
-								>
-									<View
-										style={{
-											backgroundColor: "white",
-											borderColor: "rgba(46, 199, 255,0.5)",
-											borderWidth: 0.5,
-											shadowColor: "rgba(0,0,0, .4)",
-											shadowOffset: { height: 1, width: 1 },
-											shadowOpacity: 1,
-											shadowRadius: 1, //IOS
-											elevation: 6,
-										}}
-										className="h-full  w-full flex-row items-center rounded-md overflow-hidden"
-									>
-										{/* left */}
-										<LinearGradient
-											colors={[
-												"rgba(46, 199, 255,1)",
-												"rgba(197, 81, 204,0.9)",
-											]}
-											start={{ x: 0, y: 0 }}
-											end={{ x: 0.75, y: 1.5 }}
-											style={{
-												width: "2%",
-												// opacity: 0.5,
+				{space !== null && (
+					<>
+						{/* SCROLL VIEW */}
+						<ScrollView
+							style={{ height: "60%" }}
+							className="w-full flex-1 px-8"
+						>
+							<TouchableOpacity activeOpacity={1}>
+								<Text className="text-base font-semibold mt-4 mb-4 text-gray-500 border-b border-gray-300">
+									SELECT A SLOT
+								</Text>
+								<View className="w-full flex-row flex-wrap items-center p-2">
+									{/* Cards */}
+									{slotsList.map(({ reserved, name }, index) => (
+										<TouchableOpacity
+											key={index}
+											activeOpacity={0.9}
+											className="m-2"
+											onPress={() => {
+												if (reserved === false) {
+													setSlot(name);
+												}
 											}}
-											className="h-full items-center justify-center"
 										>
-											<Text className="text-2xl text-white"></Text>
-										</LinearGradient>
+											<Slot
+												reserved={reserved}
+												name={name}
+												active={slot === name}
+											/>
+										</TouchableOpacity>
+									))}
+								</View>
+							</TouchableOpacity>
+						</ScrollView>
 
-										{/* right */}
-										<View
-											style={{
-												width: "98%",
-											}}
-											className="py-2 px-6"
-										>
-											<View className="flex-row w-full items-center">
-												<View className="h-10 w-10">
-													<Image
-														className="h-full w-full object-cover"
-														source={require("../../assets/CUI_logo.jpg")}
-													/>
-												</View>
-
-												<Text className="ml-2 text-base">
-													Comsats University Islamabad
-												</Text>
-											</View>
-
-											<View className="flex-row items-center w-full mt-2">
-												<View className="flex items-center justify-center h-6 w-10 rounded-md">
-													<Ionicons
-														name="business-outline"
-														size={20}
-														color={theme.colors.primary}
-													/>
-												</View>
-												<Text className="ml-2 pr-10 break-words">
-													Islamabad
-												</Text>
-											</View>
-
-											<View className="flex-row items-center w-full">
-												<View className="flex items-center justify-center h-6 w-10 rounded-md ">
-													<Ionicons
-														name="location-outline"
-														size={20}
-														color={theme.colors.primary}
-													/>
-												</View>
-												<Text className="ml-2 pr-10 break-words">
-													Chattha Bakhtawar, Chak Shehzad, Islamabad
-												</Text>
-											</View>
-										</View>
-									</View>
-								</TouchableOpacity>
-							))}
+						<View
+							style={{
+								height: "10%",
+							}}
+							className="w-2/3"
+						>
+							<Button
+								mode="contained"
+								disabled={slot === null}
+								onPress={() => handleContinue()}
+							>
+								Continue
+							</Button>
 						</View>
-					</TouchableOpacity>
-				</ScrollView>
+					</>
+				)}
 			</View>
 		</Background>
 	);

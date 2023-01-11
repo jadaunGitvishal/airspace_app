@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import AppStack from "./core/navigation/AppStack.js";
 import AuthStack from "./core/navigation/AuthStack.js";
 
-import { theme } from "./core/theme";
+import { theme, darkTheme } from "./core/theme";
 import { useFonts } from "expo-font";
 import { StatusBar } from "react-native";
 
@@ -17,7 +17,8 @@ const App = () => {
 	// const loggedIn = false;
 
 	return (
-		<Provider theme={theme}>
+		<Provider theme={darkTheme}>
+			{/* <Provider theme={theme}> */}
 			<StatusBar
 				animated={true}
 				backgroundColor={"transparent"}

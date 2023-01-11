@@ -1,7 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
-import { theme } from "../theme";
 
 import ParkingStack from "./ParkingStack";
 import BookingStack from "./BookingStack";
@@ -14,18 +13,19 @@ import {
 	SimpleLineIcons,
 	Octicons,
 } from "@expo/vector-icons";
+import { useTheme } from "react-native-paper";
 
 export default function TabNavigator() {
 	const Tab = createBottomTabNavigator();
-
+	const theme = useTheme();
 	return (
 		<Tab.Navigator
 			initialRouteName="Dashboard"
 			screenOptions={{
 				headerShown: false,
 				tabBarShowLabel: false,
-				tabBarActiveTintColor: theme.colors.surface,
-				tabBarInactiveTintColor: theme.colors.bg1,
+				tabBarActiveTintColor: theme.colors.text,
+				tabBarInactiveTintColor: theme.colors.primary,
 				tabBarItemStyle: {},
 			}}
 		>
@@ -35,6 +35,7 @@ export default function TabNavigator() {
 				options={({ route }) => ({
 					tabBarStyle: {
 						...tabBarStyles,
+						backgroundColor: theme.colors.bg0,
 						display:
 							getFocusedRouteNameFromRoute(route) === "Sidebar" ||
 							getFocusedRouteNameFromRoute(route) === "Notifications" ||
@@ -61,9 +62,10 @@ export default function TabNavigator() {
 				options={({ route }) => ({
 					tabBarStyle: {
 						...tabBarStyles,
+						backgroundColor: theme.colors.bg0,
+
 						display:
-							getFocusedRouteNameFromRoute(route) === "ParkingSpaceDetails" ||
-							getFocusedRouteNameFromRoute(route) === "RegisterParkingSpace"
+							getFocusedRouteNameFromRoute(route) === "BookingNext"
 								? "none"
 								: "flex",
 					},
@@ -79,6 +81,7 @@ export default function TabNavigator() {
 				options={({ route }) => ({
 					tabBarStyle: {
 						...tabBarStyles,
+						backgroundColor: theme.colors.bg0,
 						display:
 							getFocusedRouteNameFromRoute(route) === "ParkingSpaceDetails" ||
 							getFocusedRouteNameFromRoute(route) === "RegisterParkingSpace"
@@ -99,7 +102,6 @@ export default function TabNavigator() {
 }
 
 const tabBarStyles = {
-	backgroundColor: theme.colors.bg0,
 	borderTopLeftRadius: 40,
 	borderTopRightRadius: 40,
 	height: 60,

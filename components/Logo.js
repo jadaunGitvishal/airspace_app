@@ -1,11 +1,16 @@
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
+import { theme } from "../core/theme";
 
 export default function Logo({ size }) {
 	return (
 		<View
-			className="bg-primary p-3 rounded-full"
-			style={{ height: 0 + size, width: 0 + size }}
+			className="p-3 rounded-full"
+			style={{
+				backgroundColor: theme.colors.primary,
+				height: 0 + size,
+				width: 0 + size,
+			}}
 		>
 			<Image source={require("../assets/logo1.png")} style={styles.image} />
 		</View>
