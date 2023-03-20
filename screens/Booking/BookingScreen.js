@@ -20,78 +20,107 @@ import { TextInput as PaperInput } from "react-native-paper";
 import Slot from "../../components/Slot/Slot";
 import Button from "../../components/Button/Button";
 import * as api from "../../api/parkingSpacesReuests";
+import ParkingSpaces from "../ParkingSpaces/ParkingSpaces";
 
 const BookingScreen = ({ navigation }) => {
 	const [slot, setSlot] = useState(null);
 	const [space, setSpace] = useState(null);
 	const [modalVisible, setModalVisible] = useState(false);
-	const [spacesList, setSpacesList] = useState([]);
-	const [slotsList, setSlotsList] = useState([
+	const [parkingSpaces, setParkingSpaces] = useState([
 		{
-			reserved: true,
-			name: "27B",
+			_id: 123,
+			name: "Comsats University Islamabad",
+			city: "Islamabad",
+			location: "Park Road, Chak Shehzad, Islamabad",
 		},
 		{
-			reserved: false,
-			name: "17B",
+			_id: 3,
+			name: "Hamdard University Islamabad",
+			city: "Islamabad",
+			location: "Park Road, Chak Shehzad, Islamabad",
 		},
 		{
-			reserved: false,
-			name: "22C",
+			_id: 2,
+			name: "Abasym University Islamabad",
+			city: "Islamabad",
+			location: "Park Road, Chak Shehzad, Islamabad",
 		},
 		{
-			reserved: true,
-			name: "28B",
+			_id: 0,
+			name: "Quaid-e-Azam University Islamabad",
+			city: "Islamabad",
+			location: "Murree Road, Islamabad",
 		},
 		{
-			reserved: false,
-			name: "37C",
-		},
-		{
-			reserved: true,
-			name: "29B",
-		},
-		{
-			reserved: false,
-			name: "77C",
-		},
-		{
-			reserved: true,
-			name: "23B",
-		},
-		{
-			reserved: false,
-			name: "17B",
-		},
-		{
-			reserved: false,
-			name: "21C",
-		},
-		{
-			reserved: true,
-			name: "22B",
-		},
-		{
-			reserved: false,
-			name: "37A",
-		},
-		{
-			reserved: true,
-			name: "27A",
-		},
-		{
-			reserved: false,
-			name: "77A",
+			_id: 9,
+			name: "NUST University Islamabad",
+			city: "Islamabad",
+			location: "Sector H11, Islamabad",
 		},
 	]);
 
-	useEffect(() => {
-		const getData = async () => {
-			const { data } = await api.fetchAllParkings();
-			setSpacesList(data.allParkings);
-		};
-		getData();
-	}, []);
+	const [slotsList, setSlotsList] = useState([
+		{
+			reserved: true,
+			name: "1",
+		},
+		{
+			reserved: false,
+			name: "2",
+		},
+		{
+			reserved: false,
+			name: "3",
+		},
+		{
+			reserved: true,
+			name: "4",
+		},
+		{
+			reserved: false,
+			name: "5",
+		},
+		{
+			reserved: true,
+			name: "6",
+		},
+		{
+			reserved: true,
+			name: "7",
+		},
+		{
+			reserved: false,
+			name: "8",
+		},
+		{
+			reserved: false,
+			name: "8",
+		},
+		{
+			reserved: true,
+			name: "10",
+		},
+		{
+			reserved: false,
+			name: "11",
+		},
+		{
+			reserved: true,
+			name: "12",
+		},
+		{
+			reserved: false,
+			name: "13",
+		},
+	]);
+
+	// useEffect(() => {
+	// 	const getData = async () => {
+	// 		const { data } = await api.fetchAllParkings();
+	// 		setSpacesList(data.allParkings);
+	// 	};
+	// 	getData();
+	// }, []);
 
 	const handleContinue = () => {
 		if (space === null || slot === null) {
@@ -171,8 +200,8 @@ const BookingScreen = ({ navigation }) => {
 								className="w-full pt-4"
 							>
 								<TouchableOpacity activeOpacity={1} className="h-full">
-									{spacesList.length > 0 ? (
-										spacesList.map(({ name, _id }) => (
+									{parkingSpaces.length > 0 ? (
+										parkingSpaces.map(({ name, _id }) => (
 											<TouchableOpacity
 												key={_id}
 												activeOpacity={0.7}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
 	Image,
 	Pressable,
@@ -20,6 +20,29 @@ import { useTheme } from "react-native-paper";
 const Dashboard = ({ navigation }) => {
 	const Tab = createBottomTabNavigator();
 	const theme = useTheme();
+
+	var countDownDate = new Date("Mar 22, 2023 17:30:30").getTime();
+	const [time, setTime] = useState("");
+	var x = setInterval(function () {
+		var now = new Date().getTime();
+		var distance = countDownDate - now;
+
+		var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+		var hours = Math.floor(
+			(distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+		);
+		var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+		var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+		setTime(days + "d " + hours + "h " + minutes + "m " + seconds + "s ");
+
+		if (distance < 0) {
+			clearInterval(x);
+			// document.getElementById("demo").innerHTML = "EXPIRED";
+			setTime("Ended");
+		}
+	}, 1000);
+
 	return (
 		<Background>
 			<View className="h-full w-full items-center flex-1 relative">
@@ -133,9 +156,9 @@ const Dashboard = ({ navigation }) => {
 						</Text>
 						<Text
 							style={{ color: theme.colors.gray500 }}
-							className="text-6xl font-medium text-center mt-3"
+							className="text-xl font-medium text-center mt-3"
 						>
-							00:57:49
+							{time}
 						</Text>
 					</View>
 
@@ -166,7 +189,7 @@ const Dashboard = ({ navigation }) => {
 								style={{ color: theme.colors.gray500 }}
 								className="text-3xl font-medium text-center mt-2"
 							>
-								62A
+								6
 							</Text>
 						</View>
 					</View>

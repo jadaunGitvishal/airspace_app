@@ -17,7 +17,7 @@ const App = () => {
 	// const loggedIn = false;
 
 	return (
-		<Provider theme={darkTheme}>
+		<Provider theme={theme}>
 			{/* <Provider theme={theme}> */}
 			<StatusBar
 				animated={true}

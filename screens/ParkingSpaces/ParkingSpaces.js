@@ -20,15 +20,46 @@ import * as api from "../../api/parkingSpacesReuests";
 
 const ParkingSpaces = ({ navigation }) => {
 	const [allSpaces, setAllSpaces] = useState(true);
-	const [parkingSpaces, setParkingSpaces] = useState([]);
+	const [parkingSpaces, setParkingSpaces] = useState([
+		{
+			_id: 123,
+			name: "Comsats University Islamabad",
+			city: "Islamabad",
+			location: "Park Road, Chak Shehzad, Islamabad",
+		},
+		{
+			_id: 3,
+			name: "Hamdard University Islamabad",
+			city: "Islamabad",
+			location: "Park Road, Chak Shehzad, Islamabad",
+		},
+		{
+			_id: 2,
+			name: "Abasym University Islamabad",
+			city: "Islamabad",
+			location: "Park Road, Chak Shehzad, Islamabad",
+		},
+		{
+			_id: 0,
+			name: "Quaid-e-Azam University Islamabad",
+			city: "Islamabad",
+			location: "Murree Road, Islamabad",
+		},
+		{
+			_id: 9,
+			name: "NUST University Islamabad",
+			city: "Islamabad",
+			location: "Sector H11, Islamabad",
+		},
+	]);
 
-	useEffect(() => {
-		const getData = async () => {
-			const { data } = await api.fetchAllParkings();
-			setParkingSpaces(data.allParkings);
-		};
-		getData();
-	}, [allSpaces]);
+	// useEffect(() => {
+	// 	const getData = async () => {
+	// 		const { data } = await api.fetchAllParkings();
+	// 		setParkingSpaces(data.allParkings);
+	// 	};
+	// 	getData();
+	// }, [allSpaces]);
 
 	return (
 		<Background>
