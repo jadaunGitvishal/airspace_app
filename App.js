@@ -5,14 +5,9 @@ import AppStack from "./core/navigation/AppStack.js";
 import AuthStack from "./core/navigation/AuthStack.js";
 
 import { theme, darkTheme } from "./core/theme";
-import { useFonts } from "expo-font";
 import { StatusBar } from "react-native";
 
 const App = () => {
-	const [fontsLoaded] = useFonts({
-		Roboto: require("./assets/fonts/Roboto/Roboto-Regular.ttf"),
-	});
-
 	const loggedIn = true;
 	// const loggedIn = false;
 
@@ -21,10 +16,11 @@ const App = () => {
 			{/* <Provider theme={theme}> */}
 			<StatusBar
 				animated={true}
-				backgroundColor={"transparent"}
+				backgroundColor={"#1364FC"}
 				barStyle={"light-content"}
 				showHideTransition={"fade"}
-				translucent={true}
+				// translucent={true}
+				// hidden={true}
 			/>
 
 			<NavigationContainer>

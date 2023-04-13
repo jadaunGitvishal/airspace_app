@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
 	ImageBackground,
 	StyleSheet,
@@ -7,8 +7,20 @@ import {
 	Keyboard,
 } from "react-native";
 import { theme } from "../core/theme";
+import * as Font from "expo-font";
 
 export default function Background({ children }) {
+	useEffect(() => {
+		const loadFonts = async () => {
+			await Font.loadAsync({
+				Roboto: require("../assets/fonts/Roboto/Roboto-Regular.ttf"),
+				Poppins: require("../assets/fonts/Poppins/Poppins-Regular.ttf"),
+			});
+		};
+
+		loadFonts();
+	}, []);
+
 	return (
 		// <ImageBackground
 		// 	source={require("../assets/background_dot.png")}
@@ -28,16 +40,17 @@ const styles = StyleSheet.create({
 	background: {
 		flex: 1,
 		width: "100%",
-		backgroundColor: theme.colors.surface,
+		// backgroundColor: theme.colors.surface,
+		// backgroundColor: "#F8F9FD",
+		backgroundColor: "#fff",
 	},
 	container: {
 		flex: 1,
 		padding: 0,
 		width: "100%",
 		alignSelf: "center",
-		// alignItems: 'center',
-		// justifyContent: 'center',
-		backgroundColor: theme.colors.surface,
-		fontFamily: "Roboto",
+		// backgroundColor: theme.colors.surface,
+		backgroundColor: "#F8F9FD",
+		fontFamily: "Poppins",
 	},
 });

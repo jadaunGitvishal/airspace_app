@@ -27,32 +27,34 @@ const Sidebar = ({ navigation }) => {
 				className="h-full w-full"
 			>
 				{/* HEADER */}
-				<LinearGradient
+				<View
 					style={{
-						paddingTop: StatusBar.currentHeight + 10,
 						height: "25%",
+						backgroundColor: theme.colors.main,
 					}}
-					className="w-full h-16 p-4 pb-0 flex-col items-center"
-					colors={["rgba(46, 199, 255,1)", "rgba(197, 81, 204,0.9)"]}
-					start={{ x: 0, y: 0 }}
-					end={{ x: 10, y: 0 }}
+					className="w-full h-16 p-4 pb-0 flex-col items-center relative"
 				>
 					{/* Top Row */}
 					<View className="w-full flex-row items-center">
 						<BackButtonSimple goBack={navigation.goBack} />
-						{/* <MenuButton /> */}
 					</View>
 
 					{/* Middle Row */}
 					<View
 						style={{ letterSpacing: 1 }}
-						className="w-full px-4 flex-row items-center justify-between"
+						className="w-full px-4 flex-row items-center justify-between mt-2"
 					>
 						<View>
-							<Text className="text-white text-2xl font-semibold">
+							<Text
+								style={{ color: theme.colors.surface }}
+								className="text-2xl font-semibold"
+							>
 								My Account
 							</Text>
-							<Text className="text-white font-medium">
+							<Text
+								style={{ color: theme.colors.surface }}
+								className="font-medium"
+							>
 								PROFILE, SETTINGS & MORE
 							</Text>
 						</View>
@@ -60,34 +62,40 @@ const Sidebar = ({ navigation }) => {
 					</View>
 
 					{/* Bottom Card */}
-					<View className="h-32 w-full px-4 flex-row items-center justify-between mt-auto translate-y-16 z-50">
+					<View
+						className="h-32 w-full 
+						px-4 
+						flex-row items-center justify-between 
+						absolute 
+						bottom-0 translate-y-16"
+					>
 						<TouchableOpacity
 							activeOpacity={1}
 							style={{
-								borderRadius: 20,
+								elevation: 5,
+								shadowColor: theme.colors.shadow,
+								borderRadius: 15,
+								backgroundColor: theme.colors.surface,
 							}}
-							className="h-full w-full bg-white shadow-2xl shadow-black flex-row items-center px-4"
+							className="h-full w-full flex-row items-center px-4"
 						>
 							<View
 								onPress={() => {}}
-								className="h-24 w-24 rounded-full overflow-hidden"
+								className="h-20 w-20 rounded-full overflow-hidden"
 								style={{
-									borderColor: theme.colors.bg0,
-									borderColor: theme.colors.primary,
-									// borderColor: "black",
-									borderWidth: 2,
+									backgroundColor: theme.colors.bg1,
+									borderColor: theme.colors.main,
+									borderWidth: 0,
+									elevation: 5,
 								}}
 							>
 								<Image
-									style={
-										{
-											// 	flex: 1,
-											// 	width: null,
-											// 	height: null,
-											// 	resizeMode: "contain",
-											// borderRadius: "100%",
-										}
-									}
+									// style={{
+									// 	flex: 1,
+									// 	width: null,
+									// 	height: null,
+									// 	resizeMode: "contain",
+									// }}
 									className="w-full flex-1 object-contain"
 									source={require("../assets/user.jpeg")}
 								/>
@@ -96,7 +104,7 @@ const Sidebar = ({ navigation }) => {
 							<View className=" pl-4">
 								<Text
 									style={{
-										color: theme.colors.primary,
+										color: theme.colors.darkest,
 									}}
 									className="text-black text-base uppercase font-semibold"
 								>
@@ -104,7 +112,7 @@ const Sidebar = ({ navigation }) => {
 								</Text>
 								<Text
 									style={{
-										color: theme.colors.primary,
+										color: theme.colors.darkest,
 									}}
 									className="text-black text-sm uppercase font-semibold"
 								>
@@ -112,7 +120,7 @@ const Sidebar = ({ navigation }) => {
 								</Text>
 								<Text
 									style={{
-										color: theme.colors.primary,
+										color: theme.colors.darkest,
 									}}
 									className="text-black text-xs font-semibold"
 								>
@@ -121,16 +129,14 @@ const Sidebar = ({ navigation }) => {
 							</View>
 						</TouchableOpacity>
 					</View>
-				</LinearGradient>
+				</View>
 
 				<TouchableOpacity
 					activeOpacity={1}
 					style={{
 						height: "75%",
-						// borderTopRightRadius: 30,
-						// borderTopLeftRadius: 30,
 					}}
-					className="w-full p-6 pt-20 items-center flex-1 flex-col bg-white"
+					className="w-full p-6 pt-20 items-center flex-1 flex-col"
 				>
 					{/* settings */}
 					<TouchableOpacity
@@ -139,20 +145,23 @@ const Sidebar = ({ navigation }) => {
 						onPress={() => navigation.navigate("Settings")}
 					>
 						<View
-							style={{ backgroundColor: "#F6F6F6" }}
+							style={{ backgroundColor: theme.colors.bg1 }}
 							className="rounded-full p-2"
 						>
 							<Ionicons
 								name="settings-outline"
 								size={25}
-								color={theme.colors.bg0}
+								color={theme.colors.main}
 							/>
 						</View>
-						<Text className="text-left text-gray-500 font-bold text-base ml-3 uppercase">
+						<Text
+							style={{ color: theme.colors.dark }}
+							className="text-left font-bold text-base ml-3 uppercase"
+						>
 							SETTINGS
 						</Text>
 						<View className="ml-auto">
-							<AntDesign name="right" size={20} color={"#BDBDBD"} />
+							<AntDesign name="right" size={20} color={theme.colors.dark} />
 						</View>
 					</TouchableOpacity>
 
@@ -163,20 +172,23 @@ const Sidebar = ({ navigation }) => {
 						onPress={() => navigation.navigate("AccountSettings")}
 					>
 						<View
-							style={{ backgroundColor: "#F6F6F6" }}
+							style={{ backgroundColor: theme.colors.bg1 }}
 							className="rounded-full p-2"
 						>
 							<MaterialIcons
 								name="person-outline"
 								size={25}
-								color={theme.colors.bg0}
+								color={theme.colors.main}
 							/>
 						</View>
-						<Text className="text-left text-gray-500 font-bold text-base ml-3 uppercase">
+						<Text
+							style={{ color: theme.colors.dark }}
+							className="text-left font-bold text-base ml-3 uppercase"
+						>
 							ACCOUNT
 						</Text>
 						<View className="ml-auto">
-							<AntDesign name="right" size={20} color={"#BDBDBD"} />
+							<AntDesign name="right" size={20} color={theme.colors.dark} />
 						</View>
 					</TouchableOpacity>
 
@@ -187,44 +199,50 @@ const Sidebar = ({ navigation }) => {
 						onPress={() => navigation.navigate("UpdatePassword")}
 					>
 						<View
-							style={{ backgroundColor: "#F6F6F6" }}
+							style={{ backgroundColor: theme.colors.bg1 }}
 							className="rounded-full p-2"
 						>
 							<MaterialCommunityIcons
 								name="form-textbox-password"
 								size={25}
-								color={theme.colors.bg0}
+								color={theme.colors.main}
 							/>
 						</View>
-						<Text className="text-left text-gray-500 font-bold text-base ml-3 uppercase">
+						<Text
+							style={{ color: theme.colors.dark }}
+							className="text-left font-bold text-base ml-3 uppercase"
+						>
 							PASSWORD
 						</Text>
 						<View className="ml-auto">
-							<AntDesign name="right" size={20} color={"#BDBDBD"} />
+							<AntDesign name="right" size={20} color={theme.colors.dark} />
 						</View>
 					</TouchableOpacity>
 
-					{/* password */}
+					{/* history */}
 					<TouchableOpacity
 						activeOpacity={0.9}
 						className="w-full flex-row items-center my-3"
 						onPress={() => navigation.navigate("History")}
 					>
 						<View
-							style={{ backgroundColor: "#F6F6F6" }}
+							style={{ backgroundColor: theme.colors.bg1 }}
 							className="rounded-full p-2"
 						>
 							<MaterialCommunityIcons
 								name="history"
 								size={25}
-								color={theme.colors.bg0}
+								color={theme.colors.main}
 							/>
 						</View>
-						<Text className="text-left text-gray-500 font-bold text-base ml-3 uppercase">
+						<Text
+							style={{ color: theme.colors.dark }}
+							className="text-left font-bold text-base ml-3 uppercase"
+						>
 							HISTORY
 						</Text>
 						<View className="ml-auto">
-							<AntDesign name="right" size={20} color={"#BDBDBD"} />
+							<AntDesign name="right" size={20} color={theme.colors.dark} />
 						</View>
 					</TouchableOpacity>
 
@@ -235,12 +253,15 @@ const Sidebar = ({ navigation }) => {
 						onPress={() => {}}
 					>
 						<View
-							style={{ backgroundColor: "#F6F6F6" }}
+							style={{ backgroundColor: theme.colors.bg1 }}
 							className="rounded-full p-2"
 						>
-							<AntDesign name="logout" size={25} color={theme.colors.bg0} />
+							<AntDesign name="logout" size={25} color={theme.colors.main} />
 						</View>
-						<Text className="text-left text-gray-500 font-bold text-base ml-3 uppercase">
+						<Text
+							style={{ color: theme.colors.dark }}
+							className="text-left font-bold text-base ml-3 uppercase"
+						>
 							LOGOUT
 						</Text>
 					</TouchableOpacity>

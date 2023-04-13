@@ -12,7 +12,10 @@ export default function Logo({ size }) {
 				width: 0 + size,
 			}}
 		>
-			<Image source={require("../assets/logo1.png")} style={styles.image} />
+			<Image
+				source={require("../assets/airspaceLogo.png")}
+				style={styles.image}
+			/>
 		</View>
 	);
 }

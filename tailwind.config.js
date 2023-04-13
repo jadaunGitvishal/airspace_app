@@ -7,7 +7,15 @@ module.exports = {
 		"./helpers/**/*.{js,jsx,ts,tsx}",
 	],
 	theme: {
-		extend: {},
+		extend: {
+			colors: {
+				main: "#1364FC",
+				dark: "#707070a8",
+				darker: "#6A6A6A",
+				bg: "#F1F4FF",
+				bg1: "#dfe6ff",
+			},
+		},
 	},
 	plugins: [],
 };

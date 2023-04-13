@@ -16,17 +16,22 @@ import {
 import { useTheme } from "react-native-paper";
 
 export default function TabNavigator() {
-	const Tab = createBottomTabNavigator();
 	const theme = useTheme();
+	const Tab = createBottomTabNavigator();
 	return (
 		<Tab.Navigator
 			initialRouteName="Dashboard"
 			screenOptions={{
 				headerShown: false,
 				tabBarShowLabel: false,
-				tabBarActiveTintColor: theme.colors.text,
-				tabBarInactiveTintColor: theme.colors.primary,
-				tabBarItemStyle: {},
+				tabBarActiveTintColor: theme.colors.main,
+				tabBarInactiveTintColor: theme.colors.dark,
+				// tabBarActiveBackgroundColor: theme.colors.surface,
+				tabBarItemStyle: {
+					// borderRadius: 50,
+					// margin: 4,
+				},
+				tabBarStyle: {},
 			}}
 		>
 			<Tab.Screen
@@ -34,8 +39,7 @@ export default function TabNavigator() {
 				component={DashboardStack}
 				options={({ route }) => ({
 					tabBarStyle: {
-						...tabBarStyles,
-						backgroundColor: theme.colors.bg0,
+						...tabBarStyles(theme),
 						display:
 							getFocusedRouteNameFromRoute(route) === "Sidebar" ||
 							getFocusedRouteNameFromRoute(route) === "Notifications" ||
@@ -61,9 +65,7 @@ export default function TabNavigator() {
 				component={BookingStack}
 				options={({ route }) => ({
 					tabBarStyle: {
-						...tabBarStyles,
-						backgroundColor: theme.colors.bg0,
-
+						...tabBarStyles(theme),
 						display:
 							getFocusedRouteNameFromRoute(route) === "BookingNext"
 								? "none"
@@ -80,8 +82,7 @@ export default function TabNavigator() {
 				component={ParkingStack}
 				options={({ route }) => ({
 					tabBarStyle: {
-						...tabBarStyles,
-						backgroundColor: theme.colors.bg0,
+						...tabBarStyles(theme),
 						display:
 							getFocusedRouteNameFromRoute(route) === "ParkingSpaceDetails" ||
 							getFocusedRouteNameFromRoute(route) === "RegisterParkingSpace"
@@ -101,8 +102,20 @@ export default function TabNavigator() {
 	);
 }
 
-const tabBarStyles = {
-	borderTopLeftRadius: 40,
-	borderTopRightRadius: 40,
-	height: 60,
+const tabBarStyles = (theme) => {
+	return {
+		height: 55,
+
+		// height: 50,
+		// width: "90%",
+
+		// marginLeft: "5%",
+		// marginBottom: 15,
+
+		// borderRadius: 50,
+		// backgroundColor: theme.colors.main,
+
+		// position: "absolute",
+		// bottom: 0,
+	};
 };

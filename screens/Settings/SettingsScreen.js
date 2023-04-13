@@ -27,15 +27,12 @@ const SettingsScreen = ({ navigation }) => {
 				className="h-full w-full"
 			>
 				{/* HEADER */}
-				<LinearGradient
+				<View
 					style={{
-						paddingTop: StatusBar.currentHeight + 10,
 						height: "15%",
+						backgroundColor: theme.colors.main,
 					}}
 					className="w-full h-16 p-4 pb-6 flex-col items-center"
-					colors={["rgba(46, 199, 255,1)", "rgba(197, 81, 204,0.9)"]}
-					start={{ x: 0, y: 0 }}
-					end={{ x: 10, y: 0 }}
 				>
 					{/* Top Row */}
 					<View className="w-full flex-row items-center justify-betwee">
@@ -55,7 +52,7 @@ const SettingsScreen = ({ navigation }) => {
 							color={theme.colors.surface}
 						/>
 					</View>
-				</LinearGradient>
+				</View>
 
 				{/* PAGE */}
 				<ScrollView

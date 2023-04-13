@@ -6,6 +6,3 @@ const AppStack = () => {
 };
 
 export default AppStack;
-
-// VEHILCLE SCREEN {add,remove}
-// PAYMENTS SCREEN
