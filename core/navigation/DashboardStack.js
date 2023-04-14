@@ -7,6 +7,9 @@ import Settings from "../../screens/Settings/SettingsScreen";
 import UpdatePasswordScreen from "../../screens/Settings/UpdatePasswordScreen";
 import AccountSettingsScreen from "../../screens/Settings/AccountSettingsScreen";
 import HistoryScreen from "../../screens/HistoryScreen";
+import VehiclesScreen from "../../screens/Vehicles/VehiclesScreen";
+import NearbyScreen from "../../screens/NearbyScreen";
+import PaymentsScreen from "../../screens/PaymentsScreen";
 
 export default function DashboardStack() {
 	const Stack = createStackNavigator();
@@ -18,6 +21,7 @@ export default function DashboardStack() {
 			}}
 		>
 			<Stack.Screen name="Dashboard" component={Dashboard} />
+
 			<Stack.Screen
 				name="Sidebar"
 				component={Sidebar}
@@ -38,6 +42,7 @@ export default function DashboardStack() {
 					},
 				}}
 			/>
+
 			<Stack.Screen
 				name="Notifications"
 				component={NotificationsScreen}
@@ -58,6 +63,7 @@ export default function DashboardStack() {
 					},
 				}}
 			/>
+
 			<Stack.Screen
 				name="Settings"
 				component={Settings}
@@ -122,8 +128,92 @@ export default function DashboardStack() {
 			/>
 
 			<Stack.Screen
+				name="Vehicles"
+				component={VehiclesScreen}
+				options={{
+					cardStyleInterpolator: ({ current, layouts }) => {
+						return {
+							cardStyle: {
+								transform: [
+									{
+										translateX: current.progress.interpolate({
+											inputRange: [0, 1],
+											outputRange: [layouts.screen.width, 0],
+										}),
+									},
+								],
+							},
+						};
+					},
+				}}
+			/>
+
+			<Stack.Screen
+				name="AddVehicle"
+				component={VehiclesScreen}
+				options={{
+					cardStyleInterpolator: ({ current, layouts }) => {
+						return {
+							cardStyle: {
+								transform: [
+									{
+										translateX: current.progress.interpolate({
+											inputRange: [0, 1],
+											outputRange: [layouts.screen.width, 0],
+										}),
+									},
+								],
+							},
+						};
+					},
+				}}
+			/>
+
+			<Stack.Screen
 				name="History"
 				component={HistoryScreen}
+				options={{
+					cardStyleInterpolator: ({ current, layouts }) => {
+						return {
+							cardStyle: {
+								transform: [
+									{
+										translateX: current.progress.interpolate({
+											inputRange: [0, 1],
+											outputRange: [layouts.screen.width, 0],
+										}),
+									},
+								],
+							},
+						};
+					},
+				}}
+			/>
+
+			<Stack.Screen
+				name="Nearby"
+				component={NearbyScreen}
+				options={{
+					cardStyleInterpolator: ({ current, layouts }) => {
+						return {
+							cardStyle: {
+								transform: [
+									{
+										translateX: current.progress.interpolate({
+											inputRange: [0, 1],
+											outputRange: [layouts.screen.width, 0],
+										}),
+									},
+								],
+							},
+						};
+					},
+				}}
+			/>
+
+			<Stack.Screen
+				name="Payments"
+				component={PaymentsScreen}
 				options={{
 					cardStyleInterpolator: ({ current, layouts }) => {
 						return {

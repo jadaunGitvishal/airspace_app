@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "abhApp",
-    "slug": "abhApp",
+    "name": "AirSpace",
+    "slug": "AirSpace",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/airspaceLogo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "image": "./assets/airspaceLogo.png",
+      "resizeMode":"contain",
       "backgroundColor": "#ffffff"
     },
     "updates": {

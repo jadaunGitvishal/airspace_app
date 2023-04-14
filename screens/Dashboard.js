@@ -19,11 +19,11 @@ import {
 	Ionicons,
 	MaterialIcons,
 	MaterialCommunityIcons,
+	FontAwesome,
 } from "@expo/vector-icons";
 
 const Dashboard = ({ navigation }) => {
 	const theme = useTheme();
-	// const Tab = createBottomTabNavigator();
 	const [dashboardData, setDashboardData] = useState({});
 	const [userData, setUserData] = useState({});
 
@@ -50,15 +50,19 @@ const Dashboard = ({ navigation }) => {
 			const user = {
 				name: "Abdul Haseeb",
 				email: "abdulhaseeb2115@gmail.com",
+				phone: "03006785546",
+				city: "Lahore",
+				cnic: "34498-8765456-9",
 				bookings: 20,
+				hasBooking: false,
 			};
 
 			setDashboardData(data);
 			setUserData(user);
 		}
-
 		fetchData();
 
+		// calculate time
 		function calculateTime() {
 			// get time
 			function getTime(str) {
@@ -75,6 +79,7 @@ const Dashboard = ({ navigation }) => {
 
 				return time;
 			}
+
 			const startTime = "07:30";
 			const endTime = "17:30";
 			const start = getTime(startTime);
@@ -82,11 +87,12 @@ const Dashboard = ({ navigation }) => {
 
 			const timeInterval = setInterval(() => {
 				var now = new Date();
-				if (now > target) {
+				if (now > target || now < start) {
 					target.setDate(target.getDate() + 1);
 					setProgress(1);
 					setTime("Finished");
 					clearInterval(timeInterval);
+					return;
 				}
 				var diff = target - now;
 
@@ -103,7 +109,6 @@ const Dashboard = ({ navigation }) => {
 				);
 			}, 1000);
 		}
-
 		calculateTime();
 	}, []);
 
@@ -209,242 +214,265 @@ const Dashboard = ({ navigation }) => {
 					showsVerticalScrollIndicator={false}
 					className="flex-1 w-full"
 				>
-					{/* Booking Data */}
-					<TouchableOpacity
-						activeOpacity={1}
-						className="flex-col items-center w-full p-4"
-					>
-						{/* circle & time */}
-						<View
-							style={
-								{
-									// elevation: 2,
-									// borderRadius: 10,
-									// backgroundColor: theme.colors.surface,
+					{userData.hasBooking === true ? (
+						// Booking Data
+						<TouchableOpacity
+							activeOpacity={1}
+							className="flex-col items-center w-full p-4"
+						>
+							{/* circle & time */}
+							<View
+								style={
+									{
+										// elevation: 2,
+										// borderRadius: 10,
+										// backgroundColor: theme.colors.surface,
+									}
 								}
-							}
-							className="flex-col items-center w-full mt-6"
-						>
-							{/* circle */}
-							<Progress.Circle
-								size={260}
-								// indeterminate={true}
-								progress={progress}
-								animated={true}
-								borderWidth={1}
-								thickness={8}
-								// strokeCap={"round"}
-								color={theme.colors.main}
-								unfilledColor={theme.colors.bg1}
-								className="flex-row justify-center items-center relative rotate-180 mt-5"
+								className="flex-col items-center w-full mt-6"
 							>
-								<View className="h-2/3 w-1/3 absolute rotate-180">
-									<Image
-										source={require("../assets/car.png")}
-										style={{
-											flex: 1,
-											width: null,
-											height: null,
-											resizeMode: "contain",
-										}}
-									/>
+								{/* circle */}
+								<Progress.Circle
+									size={260}
+									// indeterminate={true}
+									progress={progress}
+									animated={true}
+									borderWidth={1}
+									thickness={8}
+									// strokeCap={"round"}
+									color={theme.colors.main}
+									unfilledColor={theme.colors.bg1}
+									className="flex-row justify-center items-center relative rotate-180 mt-5"
+								>
+									<View className="h-2/3 w-1/3 absolute rotate-180">
+										<Image
+											source={require("../assets/car.png")}
+											style={{
+												flex: 1,
+												width: null,
+												height: null,
+												resizeMode: "contain",
+											}}
+										/>
+									</View>
+								</Progress.Circle>
+
+								{/* time */}
+								<View className="mt-5">
+									<Text
+										style={{ color: theme.colors.darkest }}
+										className="text-lg break-words text-center"
+									>
+										Time Left
+									</Text>
+									<Text
+										style={{ color: theme.colors.darkest }}
+										className="text-5xl font-bold text-center"
+									>
+										{time}
+									</Text>
 								</View>
-							</Progress.Circle>
-
-							{/* time */}
-							<View className="mt-5">
-								<Text
-									style={{ color: theme.colors.darkest }}
-									className="text-lg break-words text-center"
-								>
-									Time Left
-								</Text>
-								<Text
-									style={{ color: theme.colors.darkest }}
-									className="text-5xl font-bold text-center"
-								>
-									{time}
-								</Text>
 							</View>
-						</View>
 
-						{/* parking details */}
-						<View
-							style={{
-								elevation: 5,
-								shadowColor: theme.colors.shadow,
-								borderRadius: 15,
-								backgroundColor: theme.colors.surface,
-							}}
-							className="flex-col w-full mt-16 p-6"
-						>
-							{/* heading */}
-							<Text
-								style={{ color: theme.colors.darker }}
-								className="text-base font-medium uppercase"
+							{/* parking details */}
+							<View
+								style={{
+									elevation: 5,
+									shadowColor: theme.colors.shadow,
+									borderRadius: 15,
+									backgroundColor: theme.colors.surface,
+								}}
+								className="flex-col w-full mt-16 p-6"
 							>
-								Parking Space
-							</Text>
-
-							{/* ps */}
-							<View className="flex-row mt-6 items-center">
-								<View
-									style={{ backgroundColor: theme.colors.bg1 }}
-									className="h-7 aspect-square rounded-md flex-row items-center justify-center"
-								>
-									<MaterialCommunityIcons
-										name="office-building-marker"
-										color={theme.colors.main}
-										size={20}
-									/>
-								</View>
-
+								{/* heading */}
 								<Text
-									style={{ color: theme.colors.dark }}
-									className="text-lg ml-2 capitalize"
+									style={{ color: theme.colors.darker }}
+									className="text-base font-medium uppercase"
 								>
-									Comsats University Islamabad
+									Parking Space
 								</Text>
-							</View>
 
-							{/* vehicle */}
-							<View className="flex-row mt-1 items-center">
-								<View
-									style={{ backgroundColor: theme.colors.bg1 }}
-									className="h-7 aspect-square rounded-md flex-row items-center justify-center"
-								>
-									<Ionicons
-										name="car-outline"
-										size={24}
-										color={theme.colors.main}
-									/>
-								</View>
-
-								<Text
-									style={{ color: theme.colors.dark }}
-									className="text-lg ml-2 capitalize"
-								>
-									White Toyota Corolla
-								</Text>
-							</View>
-
-							{/* number & slot */}
-							<View className="flex-row items-center mt-1">
-								{/* number */}
-								<View className="flex-row">
+								{/* ps */}
+								<View className="flex-row mt-6 items-center">
 									<View
 										style={{ backgroundColor: theme.colors.bg1 }}
 										className="h-7 aspect-square rounded-md flex-row items-center justify-center"
 									>
-										<Text
-											style={{ color: theme.colors.main }}
-											className="text-xl font-bold"
+										<MaterialCommunityIcons
+											name="office-building-marker"
+											color={theme.colors.main}
+											size={20}
+										/>
+									</View>
+
+									<Text
+										style={{ color: theme.colors.dark }}
+										className="text-lg ml-2 capitalize"
+									>
+										Comsats University Islamabad
+									</Text>
+								</View>
+
+								{/* vehicle */}
+								<View className="flex-row mt-1 items-center">
+									<View
+										style={{ backgroundColor: theme.colors.bg1 }}
+										className="h-7 aspect-square rounded-md flex-row items-center justify-center"
+									>
+										<Ionicons
+											name="car-outline"
+											size={24}
+											color={theme.colors.main}
+										/>
+									</View>
+
+									<Text
+										style={{ color: theme.colors.dark }}
+										className="text-lg ml-2 capitalize"
+									>
+										White Toyota Corolla
+									</Text>
+								</View>
+
+								{/* number & slot */}
+								<View className="flex-row items-center mt-1">
+									{/* number */}
+									<View className="flex-row">
+										<View
+											style={{ backgroundColor: theme.colors.bg1 }}
+											className="h-7 aspect-square rounded-md flex-row items-center justify-center"
 										>
-											#
+											<Text
+												style={{ color: theme.colors.main }}
+												className="text-xl font-bold"
+											>
+												#
+											</Text>
+										</View>
+
+										<Text
+											style={{ color: theme.colors.dark }}
+											className="text-lg ml-2 uppercase"
+										>
+											RIR 6798
 										</Text>
 									</View>
 
-									<Text
-										style={{ color: theme.colors.dark }}
-										className="text-lg ml-2 uppercase"
-									>
-										RIR 6798
-									</Text>
-								</View>
+									{/* slot */}
+									<View className="flex-row ml-8">
+										<View
+											style={{ backgroundColor: theme.colors.bg1 }}
+											className="h-7 aspect-square rounded-md flex-row items-center justify-center"
+										>
+											<MaterialCommunityIcons
+												name="parking"
+												size={18}
+												color={theme.colors.main}
+											/>
+										</View>
 
-								{/* slot */}
-								<View className="flex-row ml-8">
-									<View
-										style={{ backgroundColor: theme.colors.bg1 }}
-										className="h-7 aspect-square rounded-md flex-row items-center justify-center"
-									>
-										<MaterialCommunityIcons
-											name="parking"
-											size={18}
-											color={theme.colors.main}
-										/>
+										<Text
+											style={{ color: theme.colors.dark }}
+											className="text-lg ml-2 uppercase"
+										>
+											6
+										</Text>
 									</View>
-
-									<Text
-										style={{ color: theme.colors.dark }}
-										className="text-lg ml-2 uppercase"
-									>
-										6
-									</Text>
 								</View>
 							</View>
-						</View>
 
-						{/* package details */}
-						<View
-							style={{
-								elevation: 5,
-								shadowColor: theme.colors.shadow,
-								borderRadius: 15,
-								backgroundColor: theme.colors.surface,
-							}}
-							className="flex-col w-full mt-4 p-6"
-						>
-							{/* heading */}
-							<Text
-								style={{ color: theme.colors.darker }}
-								className="text-base font-medium uppercase"
+							{/* package details */}
+							<View
+								style={{
+									elevation: 5,
+									shadowColor: theme.colors.shadow,
+									borderRadius: 15,
+									backgroundColor: theme.colors.surface,
+								}}
+								className="flex-col w-full mt-4 p-6"
 							>
-								Package
-							</Text>
-
-							{/* name */}
-							<View className="flex-row mt-6 items-center">
-								<View
-									style={{ backgroundColor: theme.colors.bg1 }}
-									className="h-7 aspect-square rounded-md flex-row items-center justify-center"
-								>
-									<Ionicons
-										name="pricetags-outline"
-										color={theme.colors.main}
-										size={20}
-									/>
-								</View>
-
+								{/* heading */}
 								<Text
-									style={{ color: theme.colors.dark }}
-									className="text-lg ml-2 capitalize"
+									style={{ color: theme.colors.darker }}
+									className="text-base font-medium uppercase"
 								>
-									{dashboardData.package}
+									Package
 								</Text>
-							</View>
 
-							{/* Booking */}
-							<View className="flex-row items-center">
-								{/* booking date */}
+								{/* name */}
+								<View className="flex-row mt-6 items-center">
+									<View
+										style={{ backgroundColor: theme.colors.bg1 }}
+										className="h-7 aspect-square rounded-md flex-row items-center justify-center"
+									>
+										<Ionicons
+											name="pricetags-outline"
+											color={theme.colors.main}
+											size={20}
+										/>
+									</View>
+
+									<Text
+										style={{ color: theme.colors.dark }}
+										className="text-lg ml-2 capitalize"
+									>
+										{dashboardData.package}
+									</Text>
+								</View>
+
+								{/* Booking */}
 								<View className="flex-row items-center">
-									<View
-										style={{ backgroundColor: theme.colors.bg1 }}
-										className="h-7 aspect-square rounded-md flex-row items-center justify-center"
-									>
-										<MaterialCommunityIcons
-											name="calendar-arrow-right"
-											size={22}
-											color={theme.colors.main}
-										/>
+									{/* booking date */}
+									<View className="flex-row items-center">
+										<View
+											style={{ backgroundColor: theme.colors.bg1 }}
+											className="h-7 aspect-square rounded-md flex-row items-center justify-center"
+										>
+											<MaterialCommunityIcons
+												name="calendar-arrow-right"
+												size={22}
+												color={theme.colors.main}
+											/>
+										</View>
+
+										<Text
+											style={{ color: theme.colors.dark }}
+											className="text-lg ml-2 capitalize"
+										>
+											{dashboardData.bookingFrom}
+										</Text>
 									</View>
 
-									<Text
-										style={{ color: theme.colors.dark }}
-										className="text-lg ml-2 capitalize"
-									>
-										{dashboardData.bookingFrom}
-									</Text>
+									{/* booking ending date */}
+									<View className="flex-row items-center ml-10 mt-1">
+										<View
+											style={{ backgroundColor: theme.colors.bg1 }}
+											className="h-7 aspect-square rounded-md flex-row items-center justify-center"
+										>
+											<MaterialCommunityIcons
+												name="calendar-remove"
+												size={22}
+												color={theme.colors.main}
+											/>
+										</View>
+
+										<Text
+											style={{ color: theme.colors.dark }}
+											className="text-lg ml-2 capitalize"
+										>
+											{dashboardData.bookingTo}
+										</Text>
+									</View>
 								</View>
 
-								{/* booking ending date */}
-								<View className="flex-row items-center ml-10 mt-1">
+								{/* time left */}
+								<View className="flex-row items-center mt-1">
 									<View
 										style={{ backgroundColor: theme.colors.bg1 }}
 										className="h-7 aspect-square rounded-md flex-row items-center justify-center"
 									>
-										<MaterialCommunityIcons
-											name="calendar-remove"
+										<MaterialIcons
+											name="history"
 											size={22}
 											color={theme.colors.main}
 										/>
@@ -452,35 +480,278 @@ const Dashboard = ({ navigation }) => {
 
 									<Text
 										style={{ color: theme.colors.dark }}
-										className="text-lg ml-2 capitalize"
+										className="text-lg ml-2"
 									>
-										{dashboardData.bookingTo}
+										{dashboardData.timeLeft} days left
 									</Text>
 								</View>
 							</View>
+						</TouchableOpacity>
+					) : (
+						// Non Booking Data
+						<TouchableOpacity
+							activeOpacity={1}
+							className="flex-col items-center w-full p-4"
+						>
+							{/* banner */}
+							<TouchableOpacity
+								activeOpacity={0.8}
+								style={{
+									elevation: 5,
+									shadowColor: theme.colors.shadow,
+									borderRadius: 15,
+									backgroundColor: theme.colors.surface,
+								}}
+								className="w-[100%] overflow-hidden"
+							>
+								<LinearGradient
+									className="w-[100%] px-6 py-10 flex-row items-center justify-between"
+									colors={[theme.colors.greenBg, theme.colors.bg1]}
+									start={{ x: 0, y: 0 }}
+									end={{ x: 1, y: 1 }}
+								>
+									<View className="flex-col">
+										<Text
+											style={{ color: theme.colors.green }}
+											className="text-xl font-semibold uppercase tracking-wide"
+										>
+											Reserve a parking
+										</Text>
 
-							{/* time left */}
-							<View className="flex-row items-center mt-1">
-								<View
-									style={{ backgroundColor: theme.colors.bg1 }}
-									className="h-7 aspect-square rounded-md flex-row items-center justify-center"
+										<Text
+											style={{ color: theme.colors.green }}
+											className="text-sm font-semibold uppercase"
+										>
+											Get a package
+										</Text>
+									</View>
+
+									<Image
+										source={require("../assets/parking.png")}
+										className="h-16 w-16"
+									/>
+								</LinearGradient>
+							</TouchableOpacity>
+
+							{/* links1 */}
+							<View className="w-full flex-row items-center justify-between flex-wrap mt-8">
+								{/* nearby */}
+								<TouchableOpacity
+									activeOpacity={0.7}
+									onPress={() => navigation.navigate("Nearby")}
+									className="border rounded-md h-32 w-[30%] flex-col items-center justify-center"
+									style={{
+										shadowColor: theme.colors.shadow,
+										borderColor: theme.colors.green,
+									}}
+								>
+									<MaterialCommunityIcons
+										name="near-me"
+										size={25}
+										color={theme.colors.green}
+									/>
+									<Text
+										style={{ color: theme.colors.green }}
+										className="font-semibold mt-2"
+									>
+										Nearby
+									</Text>
+								</TouchableOpacity>
+
+								{/* account */}
+								<TouchableOpacity
+									activeOpacity={0.7}
+									onPress={() => navigation.navigate("AccountSettings")}
+									className="border rounded-md h-32 w-[30%] flex-col items-center justify-center mx-4"
+									style={{
+										shadowColor: theme.colors.shadow,
+										borderColor: theme.colors.green,
+									}}
 								>
 									<MaterialIcons
-										name="history"
-										size={22}
-										color={theme.colors.main}
+										name="person"
+										size={25}
+										color={theme.colors.green}
 									/>
+									<Text
+										style={{ color: theme.colors.green }}
+										className="font-semibold mt-2"
+									>
+										Account
+									</Text>
+								</TouchableOpacity>
+
+								{/* vehicles */}
+								<TouchableOpacity
+									activeOpacity={0.7}
+									onPress={() => navigation.navigate("Vehicles")}
+									className="border rounded-md h-32 w-[30%] flex-col items-center justify-center"
+									style={{
+										shadowColor: theme.colors.shadow,
+										borderColor: theme.colors.green,
+									}}
+								>
+									<Ionicons
+										name="car-sport"
+										size={25}
+										color={theme.colors.green}
+									/>
+									<Text
+										style={{ color: theme.colors.green }}
+										className="font-semibold mt-2"
+									>
+										Vehicles
+									</Text>
+								</TouchableOpacity>
+							</View>
+
+							{/* links2 */}
+							<View className="w-full flex-row items-center justify-between flex-wrap mt-4">
+								{/* history */}
+								<TouchableOpacity
+									activeOpacity={0.7}
+									onPress={() => navigation.navigate("History")}
+									className="border rounded-md h-32 w-[30%] flex-col items-center justify-center"
+									style={{
+										shadowColor: theme.colors.shadow,
+										borderColor: theme.colors.green,
+									}}
+								>
+									<FontAwesome
+										name="history"
+										size={25}
+										color={theme.colors.green}
+									/>
+									<Text
+										style={{ color: theme.colors.green }}
+										className="font-semibold mt-2"
+									>
+										History
+									</Text>
+								</TouchableOpacity>
+
+								{/* payments */}
+								<TouchableOpacity
+									activeOpacity={0.7}
+									onPress={() => navigation.navigate("Payments")}
+									className="border rounded-md h-32 w-[30%] flex-col items-center justify-center mx-4"
+									style={{
+										shadowColor: theme.colors.shadow,
+										borderColor: theme.colors.green,
+									}}
+								>
+									<Ionicons
+										name="md-card"
+										size={25}
+										color={theme.colors.green}
+									/>
+									<Text
+										style={{ color: theme.colors.green }}
+										className="font-semibold mt-2"
+									>
+										Payments
+									</Text>
+								</TouchableOpacity>
+
+								{/* settings */}
+								<TouchableOpacity
+									activeOpacity={0.7}
+									onPress={() => navigation.navigate("Settings")}
+									className="border rounded-md h-32 w-[30%] flex-col items-center justify-center"
+									style={{
+										shadowColor: theme.colors.shadow,
+										borderColor: theme.colors.green,
+									}}
+								>
+									<Ionicons
+										name="settings"
+										size={25}
+										color={theme.colors.green}
+									/>
+									<Text
+										style={{ color: theme.colors.green }}
+										className="font-semibold mt-2"
+									>
+										Settings
+									</Text>
+								</TouchableOpacity>
+							</View>
+
+							{/* user info */}
+							<View
+								style={{
+									elevation: 5,
+									borderColor: theme.colors.bg1,
+									shadowColor: theme.colors.shadow,
+									borderRadius: 15,
+									backgroundColor: theme.colors.bg,
+								}}
+								className="flex-col w-full mt-8 p-6 border"
+							>
+								{/* heading */}
+								<Text
+									style={{ color: theme.colors.main }}
+									className="text-base font-medium uppercase"
+								>
+									User Info
+								</Text>
+
+								{/* name */}
+								<View className="flex-row mt-6 items-center">
+									<View className="h-7 aspect-square rounded-md flex-row items-center justify-center">
+										<Ionicons
+											name="phone-portrait-outline"
+											color={theme.colors.green}
+											size={20}
+										/>
+									</View>
+
+									<Text
+										style={{ color: theme.colors.darker }}
+										className="text-lg ml-2 capitalize"
+									>
+										{userData.phone}
+									</Text>
 								</View>
 
-								<Text
-									style={{ color: theme.colors.dark }}
-									className="text-lg ml-2"
-								>
-									{dashboardData.timeLeft} days left
-								</Text>
+								{/* cnic */}
+								<View className="flex-row items-center mt-1">
+									<View className="h-7 aspect-square rounded-md flex-row items-center justify-center">
+										<MaterialCommunityIcons
+											name="form-textbox-password"
+											size={22}
+											color={theme.colors.green}
+										/>
+									</View>
+
+									<Text
+										style={{ color: theme.colors.darker }}
+										className="text-lg ml-2"
+									>
+										{userData.cnic}
+									</Text>
+								</View>
+
+								{/* city */}
+								<View className="flex-row items-center mt-1">
+									<View className="h-7 aspect-square rounded-md flex-row items-center justify-center">
+										<MaterialCommunityIcons
+											name="city-variant-outline"
+											size={22}
+											color={theme.colors.green}
+										/>
+									</View>
+
+									<Text
+										style={{ color: theme.colors.darker }}
+										className="text-lg ml-2"
+									>
+										{userData.city}
+									</Text>
+								</View>
 							</View>
-						</View>
-					</TouchableOpacity>
+						</TouchableOpacity>
+					)}
 				</ScrollView>
 			</View>
 		</Background>
