@@ -86,7 +86,10 @@ export default function UpdatePasswordScreen({ navigation }) {
 						style={{ letterSpacing: 1 }}
 						className="w-full px-4 mt-2 flex-row items-center justify-between"
 					>
-						<Text className="text-white text-lg font-semibold">
+						<Text
+							style={{ color: theme.colors.surface }}
+							className="text-lg font-semibold"
+						>
 							UPDATE PASSWORD
 						</Text>
 						<Ionicons
@@ -102,8 +105,9 @@ export default function UpdatePasswordScreen({ navigation }) {
 						height: "85%",
 						borderTopRightRadius: 30,
 						borderTopLeftRadius: 30,
+						backgroundColor: theme.colors.surface,
 					}}
-					className="w-full bg-white"
+					className="w-full "
 				>
 					<TouchableOpacity
 						activeOpacity={1}

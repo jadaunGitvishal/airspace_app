@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 		width: "100%",
 		alignSelf: "center",
 		// backgroundColor: theme.colors.surface,
-		backgroundColor: "#F8F9FD",
+		backgroundColor: theme.colors.background,
 		fontFamily: "Poppins",
 	},
 });

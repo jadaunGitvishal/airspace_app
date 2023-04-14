@@ -38,6 +38,7 @@ const Dashboard = ({ navigation }) => {
 				ps: "Comsats University Islamabad",
 				vehicle: "White Toyota Corolla",
 				number: "RIR 6798",
+				block: "B",
 				slot: 17,
 				package: "One Day Package",
 				days: 1,
@@ -55,6 +56,7 @@ const Dashboard = ({ navigation }) => {
 				cnic: "34498-8765456-9",
 				bookings: 20,
 				hasBooking: false,
+				// hasBooking: true,
 			};
 
 			setDashboardData(data);
@@ -309,7 +311,7 @@ const Dashboard = ({ navigation }) => {
 										style={{ color: theme.colors.dark }}
 										className="text-lg ml-2 capitalize"
 									>
-										Comsats University Islamabad
+										{dashboardData.ps}
 									</Text>
 								</View>
 
@@ -330,54 +332,51 @@ const Dashboard = ({ navigation }) => {
 										style={{ color: theme.colors.dark }}
 										className="text-lg ml-2 capitalize"
 									>
-										White Toyota Corolla
+										{dashboardData.vehicle}
 									</Text>
 								</View>
 
-								{/* number & slot */}
-								<View className="flex-row items-center mt-1">
-									{/* number */}
-									<View className="flex-row">
-										<View
-											style={{ backgroundColor: theme.colors.bg1 }}
-											className="h-7 aspect-square rounded-md flex-row items-center justify-center"
-										>
-											<Text
-												style={{ color: theme.colors.main }}
-												className="text-xl font-bold"
-											>
-												#
-											</Text>
-										</View>
-
+								{/* number */}
+								<View className="flex-row mt-1">
+									<View
+										style={{ backgroundColor: theme.colors.bg1 }}
+										className="h-7 aspect-square rounded-md flex-row items-center justify-center"
+									>
 										<Text
-											style={{ color: theme.colors.dark }}
-											className="text-lg ml-2 uppercase"
+											style={{ color: theme.colors.main }}
+											className="text-xl font-bold"
 										>
-											RIR 6798
+											#
 										</Text>
 									</View>
 
-									{/* slot */}
-									<View className="flex-row ml-8">
-										<View
-											style={{ backgroundColor: theme.colors.bg1 }}
-											className="h-7 aspect-square rounded-md flex-row items-center justify-center"
-										>
-											<MaterialCommunityIcons
-												name="parking"
-												size={18}
-												color={theme.colors.main}
-											/>
-										</View>
+									<Text
+										style={{ color: theme.colors.dark }}
+										className="text-lg ml-2 uppercase"
+									>
+										{dashboardData.number}
+									</Text>
+								</View>
 
-										<Text
-											style={{ color: theme.colors.dark }}
-											className="text-lg ml-2 uppercase"
-										>
-											6
-										</Text>
+								{/* slot */}
+								<View className="flex-row mt-1">
+									<View
+										style={{ backgroundColor: theme.colors.bg1 }}
+										className="h-7 aspect-square rounded-md flex-row items-center justify-center"
+									>
+										<MaterialCommunityIcons
+											name="parking"
+											size={18}
+											color={theme.colors.main}
+										/>
 									</View>
+
+									<Text
+										style={{ color: theme.colors.dark }}
+										className="text-lg ml-2 uppercase"
+									>
+										{dashboardData.block} - {dashboardData.slot}
+									</Text>
 								</View>
 							</View>
 

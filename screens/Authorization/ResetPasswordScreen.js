@@ -7,6 +7,7 @@ import TextInput from "../../components/Input/TextInput";
 import Button from "../../components/Button/Button";
 import { emailValidator } from "../../helpers/emailValidator";
 import { View } from "react-native";
+import { theme } from "../../core/theme";
 
 const ResetPasswordScreen = ({ navigation }) => {
 	const [email, setEmail] = useState({ value: "", error: "" });
@@ -43,7 +44,7 @@ const ResetPasswordScreen = ({ navigation }) => {
 				<Button
 					mode="contained"
 					onPress={sendResetPasswordEmail}
-					style={{ marginTop: 16 }}
+					style={{ marginTop: 16, backgroundColor: theme.colors.main }}
 				>
 					Send Instructions
 				</Button>

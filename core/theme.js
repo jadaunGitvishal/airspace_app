@@ -16,6 +16,8 @@ export const theme = {
 		greenBg: "#DBF6ED",
 		pink: "#FA9499",
 		pinkBg: "#fedddd",
+		background: "#F8F9FD",
+		shadow: "#b6b8c2",
 		// accent: "rgba(255, 255, 255, 0.2)",
 		// accent1: "rgba(255, 255, 255, 0.5)",
 		// gray500: "rgba(107,114,128,1)",
@@ -24,7 +26,6 @@ export const theme = {
 		// placeholder: "",
 		// backdrop: "",
 		// notification: "",
-		shadow: "#b6b8c2",
 	},
 };
 

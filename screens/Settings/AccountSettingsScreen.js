@@ -21,7 +21,7 @@ export default function AccountSettingsScreen({ navigation }) {
 	return (
 		<Background>
 			<View
-				style={{ backgroundColor: theme.colors.bg0 }}
+				style={{ backgroundColor: theme.colors.main }}
 				className="h-full w-full"
 			>
 				{/* HEADER */}
@@ -43,7 +43,12 @@ export default function AccountSettingsScreen({ navigation }) {
 						style={{ letterSpacing: 1 }}
 						className="w-full px-4 mt-2 flex-row items-center justify-between"
 					>
-						<Text className="text-white text-lg font-semibold">ACCOUNT</Text>
+						<Text
+							style={{ color: theme.colors.surface }}
+							className="text-lg font-semibold"
+						>
+							ACCOUNT
+						</Text>
 						<Ionicons
 							name="person-outline"
 							size={20}
@@ -58,8 +63,9 @@ export default function AccountSettingsScreen({ navigation }) {
 						height: "85%",
 						borderTopRightRadius: 30,
 						borderTopLeftRadius: 30,
+						backgroundColor: theme.colors.surface,
 					}}
-					className="w-full bg-white"
+					className="w-full"
 				>
 					<TouchableOpacity
 						activeOpacity={1}
@@ -75,20 +81,20 @@ export default function AccountSettingsScreen({ navigation }) {
 							className="w-full flex-row items-center my-3"
 						>
 							<View
-								style={{ backgroundColor: "#F6F6F6" }}
+								style={{ backgroundColor: theme.colors.bg1 }}
 								className="rounded-full p-2"
 							>
 								<Ionicons
 									name="person-outline"
 									size={25}
-									color={theme.colors.bg0}
+									color={theme.colors.main}
 								/>
 							</View>
 							<Text className="text-left text-gray-500 font-bold text-base ml-3 uppercase">
 								USERNAME
 							</Text>
 							<View className="ml-auto">
-								<AntDesign name="right" size={20} color={"#BDBDBD"} />
+								<AntDesign name="right" size={20} color={theme.colors.dark} />
 							</View>
 						</TouchableOpacity>
 
@@ -98,20 +104,20 @@ export default function AccountSettingsScreen({ navigation }) {
 							className="w-full flex-row items-center my-3"
 						>
 							<View
-								style={{ backgroundColor: "#F6F6F6" }}
+								style={{ backgroundColor: theme.colors.bg1 }}
 								className="rounded-full p-2"
 							>
 								<MaterialIcons
 									name="alternate-email"
 									size={25}
-									color={theme.colors.bg0}
+									color={theme.colors.main}
 								/>
 							</View>
 							<Text className="text-left text-gray-500 font-bold text-base ml-3 uppercase">
 								EMAIL
 							</Text>
 							<View className="ml-auto">
-								<AntDesign name="right" size={20} color={"#BDBDBD"} />
+								<AntDesign name="right" size={20} color={theme.colors.dark} />
 							</View>
 						</TouchableOpacity>
 
@@ -121,20 +127,20 @@ export default function AccountSettingsScreen({ navigation }) {
 							className="w-full flex-row items-center my-3"
 						>
 							<View
-								style={{ backgroundColor: "#F6F6F6" }}
+								style={{ backgroundColor: theme.colors.bg1 }}
 								className="rounded-full p-2"
 							>
 								<MaterialIcons
 									name="phone"
 									size={25}
-									color={theme.colors.bg0}
+									color={theme.colors.main}
 								/>
 							</View>
 							<Text className="text-left text-gray-500 font-bold text-base ml-3 uppercase">
 								PHONE NO.
 							</Text>
 							<View className="ml-auto">
-								<AntDesign name="right" size={20} color={"#BDBDBD"} />
+								<AntDesign name="right" size={20} color={theme.colors.dark} />
 							</View>
 						</TouchableOpacity>
 
@@ -144,20 +150,20 @@ export default function AccountSettingsScreen({ navigation }) {
 							className="w-full flex-row items-center my-3"
 						>
 							<View
-								style={{ backgroundColor: "#F6F6F6" }}
+								style={{ backgroundColor: theme.colors.bg1 }}
 								className="rounded-full p-2"
 							>
 								<MaterialCommunityIcons
 									name="form-textbox-password"
 									size={25}
-									color={theme.colors.bg0}
+									color={theme.colors.main}
 								/>
 							</View>
 							<Text className="text-left text-gray-500 font-bold text-base ml-3 uppercase">
 								PASSWORD
 							</Text>
 							<View className="ml-auto">
-								<AntDesign name="right" size={20} color={"#BDBDBD"} />
+								<AntDesign name="right" size={20} color={theme.colors.dark} />
 							</View>
 						</TouchableOpacity>
 
@@ -167,20 +173,20 @@ export default function AccountSettingsScreen({ navigation }) {
 							className="w-full flex-row items-center my-3"
 						>
 							<View
-								style={{ backgroundColor: "#F6F6F6" }}
+								style={{ backgroundColor: theme.colors.bg1 }}
 								className="rounded-full p-2"
 							>
 								<MaterialCommunityIcons
 									name="fingerprint"
 									size={25}
-									color={theme.colors.bg0}
+									color={theme.colors.main}
 								/>
 							</View>
 							<Text className="text-left text-gray-500 font-bold text-base ml-3 uppercase">
 								BIOMETRIC LOGIN
 							</Text>
 							<View className="ml-auto">
-								<AntDesign name="right" size={20} color={"#BDBDBD"} />
+								<AntDesign name="right" size={20} color={theme.colors.dark} />
 							</View>
 						</TouchableOpacity>
 					</TouchableOpacity>

@@ -23,7 +23,9 @@ const SettingsScreen = ({ navigation }) => {
 	return (
 		<Background>
 			<View
-				style={{ backgroundColor: theme.colors.bg0 }}
+				style={{
+					backgroundColor: theme.colors.main,
+				}}
 				className="h-full w-full"
 			>
 				{/* HEADER */}
@@ -45,7 +47,14 @@ const SettingsScreen = ({ navigation }) => {
 						style={{ letterSpacing: 1 }}
 						className="w-full px-4 mt-2 flex-row items-center justify-between"
 					>
-						<Text className="text-white text-lg font-semibold">SETTINGS</Text>
+						<Text
+							style={{
+								color: theme.colors.surface,
+							}}
+							className="text-lg font-semibold"
+						>
+							SETTINGS
+						</Text>
 						<Ionicons
 							name="settings-outline"
 							size={20}
@@ -60,8 +69,9 @@ const SettingsScreen = ({ navigation }) => {
 						height: "85%",
 						borderTopRightRadius: 30,
 						borderTopLeftRadius: 30,
+						backgroundColor: theme.colors.surface,
 					}}
-					className="w-full bg-white"
+					className="w-full"
 				>
 					<TouchableOpacity
 						activeOpacity={1}
@@ -77,7 +87,11 @@ const SettingsScreen = ({ navigation }) => {
 								style={{ backgroundColor: "#7C15FF" }}
 								className="rounded-full p-2"
 							>
-								<Ionicons name="moon-sharp" size={20} color={"white"} />
+								<Ionicons
+									name="moon-sharp"
+									size={20}
+									color={theme.colors.surface}
+								/>
 							</View>
 							<Text className="text-left text-gray-500 font-bold text-base ml-2">
 								Dark Mode
@@ -98,7 +112,11 @@ const SettingsScreen = ({ navigation }) => {
 								style={{ backgroundColor: "#FC6766" }}
 								className="rounded-full p-2 "
 							>
-								<Ionicons name="notifications" size={20} color={"white"} />
+								<Ionicons
+									name="notifications"
+									size={20}
+									color={theme.colors.surface}
+								/>
 							</View>
 							<Text className="text-left text-gray-500 font-bold text-base ml-2">
 								Notifications

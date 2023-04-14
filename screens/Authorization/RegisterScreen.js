@@ -72,7 +72,7 @@ const RegisterScreen = ({ navigation }) => {
 				<Button
 					mode="contained"
 					onPress={handleSignUp}
-					style={{ marginTop: 24 }}
+					style={{ marginTop: 24, backgroundColor: theme.colors.main }}
 				>
 					Sign Up
 				</Button>
@@ -96,6 +96,6 @@ const styles = StyleSheet.create({
 	},
 	link: {
 		fontWeight: "bold",
-		color: theme.colors.primary,
+		color: theme.colors.main,
 	},
 });
