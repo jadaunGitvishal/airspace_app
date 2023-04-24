@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import Background from "../../components/Background";
-import MenuButton from "../../components/Button/MenuButton";
 import BackButtonSimple from "../../components/Button/BackButtonSimple";
-import Button from "../../components/Button/Button";
-import TextInput from "../../components/Input/TextInput";
 import {
 	ScrollView,
 	StatusBar,
@@ -13,7 +10,14 @@ import {
 } from "react-native";
 import { theme } from "../../core/theme";
 import { LinearGradient } from "expo-linear-gradient";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import {
+	AntDesign,
+	MaterialIcons,
+	Ionicons,
+	MaterialCommunityIcons,
+} from "@expo/vector-icons";
+import Button from "../../components/Button/Button";
+import TextInput from "../../components/Input/TextInput";
 
 export default function UpdatePasswordScreen({ navigation }) {
 	const [oldPassword, setOldPassword] = useState({ value: "", error: "" });
@@ -61,19 +65,16 @@ export default function UpdatePasswordScreen({ navigation }) {
 	return (
 		<Background>
 			<View
-				style={{ backgroundColor: theme.colors.bg0 }}
+				style={{ backgroundColor: theme.colors.main }}
 				className="h-full w-full"
 			>
 				{/* HEADER */}
-				<LinearGradient
+				<View
 					style={{
-						paddingTop: StatusBar.currentHeight + 10,
 						height: "15%",
+						backgroundColor: theme.colors.main,
 					}}
 					className="w-full h-16 p-4 pb-6 flex-col items-center"
-					colors={["rgba(46, 199, 255,1)", "rgba(197, 81, 204,0.9)"]}
-					start={{ x: 0, y: 0 }}
-					end={{ x: 10, y: 0 }}
 				>
 					{/* Top Row */}
 					<View className="w-full flex-row items-center justify-betwee">
@@ -88,9 +89,9 @@ export default function UpdatePasswordScreen({ navigation }) {
 					>
 						<Text
 							style={{ color: theme.colors.surface }}
-							className="text-lg font-semibold"
+							className=" text-lg font-semibold"
 						>
-							UPDATE PASSWORD
+							ADD VEHICLES
 						</Text>
 						<Ionicons
 							name="finger-print-outline"
@@ -98,8 +99,9 @@ export default function UpdatePasswordScreen({ navigation }) {
 							color={theme.colors.surface}
 						/>
 					</View>
-				</LinearGradient>
+				</View>
 
+				{/* SETTINGS AREA */}
 				<ScrollView
 					style={{
 						height: "85%",
@@ -107,14 +109,14 @@ export default function UpdatePasswordScreen({ navigation }) {
 						borderTopLeftRadius: 30,
 						backgroundColor: theme.colors.surface,
 					}}
-					className="w-full "
+					className="w-full"
 				>
 					<TouchableOpacity
 						activeOpacity={1}
 						className="h-full w-full p-6 pt-10 items-center"
 					>
 						<Text className="text-base font-semibold w-full text-left border-b pb-2 pl-2 mb-5 border-gray-300 uppercase">
-							PASSWORDS
+							ADD VEHICLES
 						</Text>
 
 						<TextInput

@@ -8,6 +8,7 @@ import UpdatePasswordScreen from "../../screens/Settings/UpdatePasswordScreen";
 import AccountSettingsScreen from "../../screens/Settings/AccountSettingsScreen";
 import HistoryScreen from "../../screens/HistoryScreen";
 import VehiclesScreen from "../../screens/Vehicles/VehiclesScreen";
+import AddVehicleScreen from "../../screens/Vehicles/AddVehicleScreen";
 import NearbyScreen from "../../screens/NearbyScreen";
 import PaymentsScreen from "../../screens/PaymentsScreen";
 
@@ -150,7 +151,7 @@ export default function DashboardStack() {
 
 			<Stack.Screen
 				name="AddVehicle"
-				component={VehiclesScreen}
+				component={AddVehicleScreen}
 				options={{
 					cardStyleInterpolator: ({ current, layouts }) => {
 						return {

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Alert } from "react-native";
 import Background from "../../components/Background";
 import BackButtonSimple from "../../components/Button/BackButtonSimple";
 import {
@@ -18,11 +19,72 @@ import {
 } from "@expo/vector-icons";
 
 export default function VehiclesScreen({ navigation }) {
+	const [vehiclesData, setVehiclesData] = useState([]);
+
+	useEffect(() => {
+		function fetchData() {
+			setVehiclesData([
+				{
+					_id: "6416e56933774718df4a2e08",
+					name: "Toyota Corolla",
+					number: "ABC-123",
+					model: "2019",
+					color: "Blue",
+					owner: "641645dd6c626af96c680258",
+					createdAt: "2023-03-19T10:35:21.740Z",
+					updatedAt: "2023-03-19T10:35:21.740Z",
+				},
+				{
+					_id: "6416e56933774718df4a2e08",
+					name: "Vitz",
+					number: "XYZ-123",
+					model: "2019",
+					color: "Blue",
+					owner: "641645dd6c626af96c680258",
+					createdAt: "2023-03-19T10:35:21.740Z",
+					updatedAt: "2023-03-19T10:35:21.740Z",
+				},
+				{
+					_id: "6416e56933774718df4a2e08",
+					name: "Aqua",
+					number: "EFG-123",
+					model: "2019",
+					color: "Blue",
+					owner: "641645dd6c626af96c680258",
+					createdAt: "2023-03-19T10:35:21.740Z",
+					updatedAt: "2023-03-19T10:35:21.740Z",
+				},
+			]);
+		}
+
+		fetchData();
+	}, []);
+
+	// handle delete
+	function handleDelete(id, number) {
+		Alert.alert(
+			"Remove Vehicle",
+			"Are you sure to remove " + number,
+			[
+				{
+					text: "Cancel",
+					onPress: () => console.log("Cancel Pressed"),
+					style: "cancel",
+				},
+				{
+					text: "Remove",
+					onPress: () => console.log("OK Pressed"),
+				},
+			],
+			{ cancelable: false }
+		);
+	}
+
 	return (
 		<Background>
 			<View
 				style={{ backgroundColor: theme.colors.main }}
-				className="h-full w-full"
+				className="h-full w-full relative"
 			>
 				{/* HEADER */}
 				<View
@@ -58,8 +120,9 @@ export default function VehiclesScreen({ navigation }) {
 						height: "85%",
 						borderTopRightRadius: 30,
 						borderTopLeftRadius: 30,
+						backgroundColor: theme.colors.surface,
 					}}
-					className="w-full bg-white"
+					className="w-full"
 				>
 					<TouchableOpacity
 						activeOpacity={1}
@@ -68,8 +131,107 @@ export default function VehiclesScreen({ navigation }) {
 						<Text className="text-base font-semibold w-full text-left border-b pb-2 pl-2 mb-5 border-gray-300 uppercase">
 							YOUR VEHICLES
 						</Text>
+
+						{vehiclesData?.map((v, i) => (
+							<View
+								key={i}
+								className="h-32 w-full border border-gray-100 shadow-md rounded-xl mb-4 py-4 px-5 flex-row items-center"
+								style={{
+									shadowColor: theme.colors.shadow,
+									backgroundColor: theme.colors.surface,
+								}}
+							>
+								<View className="flex-1 h-full flex-col">
+									<View className="flex-row items-center">
+										<Text
+											style={{ color: theme.colors.dark }}
+											className="text-sm font-medium"
+										>
+											Name:
+										</Text>
+										<Text
+											style={{ color: theme.colors.dark }}
+											className="text-sm pl-2"
+										>
+											{v.name}
+										</Text>
+									</View>
+
+									<View className="flex-row items-center">
+										<Text
+											style={{ color: theme.colors.dark }}
+											className="text-sm font-medium"
+										>
+											Color:
+										</Text>
+										<Text
+											style={{ color: theme.colors.dark }}
+											className="text-sm pl-2"
+										>
+											{v.color}
+										</Text>
+									</View>
+
+									<View className="flex-row items-center">
+										<Text
+											style={{ color: theme.colors.dark }}
+											className="text-sm font-medium"
+										>
+											Model:
+										</Text>
+										<Text
+											style={{ color: theme.colors.dark }}
+											className="text-sm pl-2"
+										>
+											{v.model}
+										</Text>
+									</View>
+
+									<Text
+										style={{ color: theme.colors.darker }}
+										className="text-xl mt-auto"
+									>
+										{v.number}
+									</Text>
+								</View>
+
+								<TouchableOpacity
+									activeOpacity={0.7}
+									onPress={() => handleDelete(v._id, v.number)}
+									className="bg-red-400 rounded-md p-2"
+								>
+									<MaterialIcons
+										name="delete-outline"
+										size={23}
+										color={theme.colors.surface}
+									/>
+								</TouchableOpacity>
+							</View>
+						))}
 					</TouchableOpacity>
 				</ScrollView>
+
+				{/* Add new */}
+				<TouchableOpacity
+					activeOpacity={0.7}
+					onPress={() => navigation.navigate("AddVehicle")}
+					className="absolute bottom-0 right-0 m-4 bg-main rounded-full py-2 px-4 z-50 flex-row items-center"
+				>
+					<Ionicons
+						name="car-sport-outline"
+						size={24}
+						color={theme.colors.surface}
+					/>
+
+					<Text
+						style={{
+							color: theme.colors.surface,
+						}}
+						className="text-base font-medium ml-2"
+					>
+						REGISTER NEW
+					</Text>
+				</TouchableOpacity>
 			</View>
 		</Background>
 	);
