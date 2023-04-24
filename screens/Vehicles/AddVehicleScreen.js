@@ -19,44 +19,31 @@ import {
 import Button from "../../components/Button/Button";
 import TextInput from "../../components/Input/TextInput";
 
-export default function AddVehiclesScreen({ navigation }) {
-	const [oldPassword, setOldPassword] = useState({ value: "", error: "" });
-	const [newPassword, setNewPassword] = useState({ value: "", error: "" });
-	const [confirmPassword, setConfirmPassword] = useState({
-		value: "",
-		error: "",
-	});
+export default function AddVehicleScreen({ navigation }) {
+	const [name, setName] = useState({ value: "", error: "" });
+	const [model, setModel] = useState({ value: "", error: "" });
+	const [color, setColor] = useState({ value: "", error: "" });
+	const [number, setNumber] = useState({ value: "", error: "" });
 
-	const handleUpdate = () => {
-		const oldError = checkErrors(oldPassword);
-		const newError = checkErrors(newPassword);
-		const confirmError = checkErrors(confirmPassword);
-		if (oldError || newError || confirmError) {
-			setOldPassword({ ...oldPassword, error: oldError });
-			setNewPassword({ ...newPassword, error: newError });
-			setConfirmPassword({ ...confirmPassword, error: confirmError });
+	const handleRegister = () => {
+		const nameError = checkErrors(name);
+		const modelError = checkErrors(model);
+		const colorError = checkErrors(color);
+		const numberError = checkErrors(number);
+		if (nameError || modelError || colorError || numberError) {
+			setName({ ...name, error: nameError });
+			setModel({ ...model, error: modelError });
+			setColor({ ...color, error: colorError });
+			setNumber({ ...color, error: numberError });
 			return;
 		}
 
-		if (newPassword !== confirmPassword) {
-			setNewPassword({ ...newPassword, error: "* passwords don't match" });
-			setConfirmPassword({
-				...confirmPassword,
-				error: "* passwords don't match",
-			});
-			return;
-		}
-
-		alert("Submitted");
+		alert("Registered");
 	};
 
 	const checkErrors = (inp) => {
 		if (inp.value === "") {
 			return "*this field cannot be empty";
-		}
-
-		if (inp.value.length < 8) {
-			return "*password length must be 8 characters";
 		}
 
 		return "";
@@ -116,56 +103,62 @@ export default function AddVehiclesScreen({ navigation }) {
 						className="h-full w-full p-6 pt-10 items-center"
 					>
 						<Text className="text-base font-semibold w-full text-left border-b pb-2 pl-2 mb-5 border-gray-300 uppercase">
-							ADD VEHICLES
+							ADD VEHICLE
 						</Text>
 
 						<TextInput
-							label="Old Password"
+							label="Number"
 							returnKeyType="done"
-							value={oldPassword.value}
-							onChangeText={(text) =>
-								setOldPassword({ value: text, error: "" })
-							}
-							error={oldPassword.error}
-							errorText={oldPassword.error}
+							value={number.value}
+							onChangeText={(text) => setNumber({ value: text, error: null })}
+							error={number.error}
+							errorText={number.error}
 							containerStyle={{ marginVertical: 5 }}
 							inputStyle={{ height: 50 }}
-							secureTextEntry
 						/>
+
 						<TextInput
-							label="New Password"
+							label="Name"
 							returnKeyType="done"
-							value={newPassword.value}
-							onChangeText={(text) =>
-								setNewPassword({ value: text, error: "" })
-							}
-							error={newPassword.error}
-							errorText={newPassword.error}
+							value={name.value}
+							onChangeText={(text) => setName({ value: text, error: "" })}
+							error={name.error}
+							errorText={name.error}
 							containerStyle={{ marginVertical: 5 }}
 							inputStyle={{ height: 50 }}
-							secureTextEntry
 						/>
+
 						<TextInput
-							label="Confirm Password"
+							label="Model"
 							returnKeyType="done"
-							value={confirmPassword.value}
-							onChangeText={(text) =>
-								setConfirmPassword({ value: text, error: null })
-							}
-							error={confirmPassword.error}
-							errorText={confirmPassword.error}
+							value={model.value}
+							onChangeText={(text) => setModel({ value: text, error: "" })}
+							error={model.error}
+							errorText={model.error}
 							containerStyle={{ marginVertical: 5 }}
 							inputStyle={{ height: 50 }}
-							secureTextEntry
+							keyboardType="number-pad"
 						/>
+
+						<TextInput
+							label="Color"
+							returnKeyType="done"
+							value={color.value}
+							onChangeText={(text) => setColor({ value: text, error: null })}
+							error={color.error}
+							errorText={color.error}
+							containerStyle={{ marginVertical: 5 }}
+							inputStyle={{ height: 50 }}
+						/>
+
 						<View className="w-2/4 ml-auto mt-5">
 							<Button
 								mode="contained"
 								onPress={() => {
-									handleUpdate();
+									handleRegister();
 								}}
 							>
-								Update
+								Register
 							</Button>
 						</View>
 					</TouchableOpacity>

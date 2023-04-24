@@ -22,7 +22,9 @@ export default function TextInput({
 					inputStyle && inputStyle,
 					{ backgroundColor: theme.colors.surface },
 				]}
-				selectionColor={theme.colors.primary}
+				selectionColor={theme.colors.main}
+				outlineColor={theme.colors.dark}
+				activeOutlineColor={theme.colors.main}
 				underlineColor="transparent"
 				mode="outlined"
 				{...props}

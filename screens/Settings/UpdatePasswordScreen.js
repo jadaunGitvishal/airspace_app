@@ -116,7 +116,7 @@ export default function UpdatePasswordScreen({ navigation }) {
 						className="h-full w-full p-6 pt-10 items-center"
 					>
 						<Text className="text-base font-semibold w-full text-left border-b pb-2 pl-2 mb-5 border-gray-300 uppercase">
-							ADD VEHICLES
+							PASSWORDS
 						</Text>
 
 						<TextInput

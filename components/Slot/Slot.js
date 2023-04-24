@@ -1,10 +1,14 @@
 import React from "react";
 import { Image, Text, View } from "react-native";
+import { theme } from "../../core/theme";
 
 export default function Slot({ reserved, name, active, ...props }) {
 	return (
 		<View>
-			<View className="h-16 w-16 border-dashed border-r-2 border-l-2 border-black bg-slate-100">
+			<View
+				style={{ borderColor: theme.colors.darkest }}
+				className="h-16 w-16 border-dashed border-r-2 border-l-2 bg-slate-100"
+			>
 				{reserved ? (
 					<Image
 						source={require("../../assets/car.png")}

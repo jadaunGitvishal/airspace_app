@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
 	Image,
-	Pressable,
 	ScrollView,
-	StatusBar,
 	Text,
 	TouchableOpacity,
 	View,
@@ -11,14 +9,13 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Background from "../../components/Background";
-import BackButtonSimple from "../../components/Button/BackButtonSimple";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { theme } from "../../core/theme";
-import MenuButton from "../../components/Button/MenuButton";
-import { TextInput as PaperInput } from "react-native-paper";
+import TextInput from "../../components/Input/TextInput";
 import * as api from "../../api/parkingSpacesReuests";
 
 const ParkingSpaces = ({ navigation }) => {
+	const [search, setSearch] = useState("");
 	const [allSpaces, setAllSpaces] = useState(true);
 	const [parkingSpaces, setParkingSpaces] = useState([
 		{
@@ -63,100 +60,39 @@ const ParkingSpaces = ({ navigation }) => {
 
 	return (
 		<Background>
-			<View className="h-full p-0 items-center bg-white">
+			<View className="h-full p-0 items-center">
 				{/* HEADER */}
-				<LinearGradient
+				<View
 					style={{
-						paddingTop: StatusBar.currentHeight + 10,
-						height: "30%",
-						minHeight: 200,
+						height: "25%",
+						backgroundColor: theme.colors.main,
 						borderBottomRightRadius: 30,
 						borderBottomLeftRadius: 30,
 					}}
 					className="w-full h-16 p-4 pb-6 flex-col items-center justify-between"
-					colors={["rgba(46, 199, 255,1)", "rgba(197, 81, 204,0.9)"]}
-					start={{ x: 0, y: 0 }}
-					end={{ x: 0.75, y: 1.5 }}
 				>
-					{/* Top Row */}
-					<View className="w-full flex-row items-center justify-between">
-						{/* <BackButtonSimple goBack={navigation.goBack} /> */}
-						{/* <MenuButton /> */}
-					</View>
-
 					{/* Center Row */}
 					<Text
-						style={{ letterSpacing: 1 }}
-						className="text-white text-2xl mr-auto font-semibold"
+						style={{ letterSpacing: 1, color: theme.colors.surface }}
+						className="text-2xl mr-auto font-semibold mt-5"
 					>
 						PARKING SPACES
 					</Text>
 
 					{/* Bottom Row */}
 					<View className="w-full">
-						<PaperInput
-							style={{
-								backgroundColor: theme.colors.accent,
-							}}
-							className={"h-10 rounded-md text-white"}
-							selectionColor={theme.colors.surface}
-							underlineColorAndroid="transparent"
-							mode="outlined"
-							outlineColor={"transparent"}
-							placeholder="Search"
-							placeholderTextColor={theme.colors.surface}
-							onChangeText={(text) => {}}
-							theme={{
-								colors: {
-									primary: "transparent",
-									underlineColor: "transparent",
-									text: theme.colors.primary,
-								},
-							}}
+						<TextInput
+							label="Search"
+							returnKeyType="done"
+							value={search}
+							onChangeText={(text) => setSearch(text)}
+							error={null}
+							errorText={""}
+							containerStyle={{ marginBottom: 5 }}
+							inputStyle={{ height: 45 }}
 						/>
-
-						<View className="flex-row mt-3">
-							<TouchableOpacity
-								activeOpacity={0.8}
-								style={{
-									backgroundColor: allSpaces
-										? theme.colors.accent1
-										: theme.colors.accent,
-								}}
-								onPress={() => setAllSpaces(true)}
-								className="flex-row items-center justify-between rounded-md py-2 px-4 mr-5"
-							>
-								<Text className="font-semibold text-white">All</Text>
-							</TouchableOpacity>
-
-							<TouchableOpacity
-								activeOpacity={0.8}
-								style={{
-									backgroundColor: allSpaces
-										? theme.colors.accent
-										: theme.colors.accent1,
-								}}
-								onPress={() => setAllSpaces(false)}
-								className="flex-row items-center justify-between rounded-md py-2 px-4 mr-auto"
-							>
-								<Text className="font-semibold text-white">Registered</Text>
-							</TouchableOpacity>
-
-							<TouchableOpacity
-								activeOpacity={0.8}
-								style={{ backgroundColor: theme.colors.accent }}
-								className="flex-row items-center justify-between rounded-md py-2 px-4"
-							>
-								<Text className="font-semibold mr-4 text-white">Filters</Text>
-								<Ionicons
-									name="md-filter-outline"
-									size={20}
-									color={theme.colors.surface}
-								/>
-							</TouchableOpacity>
-						</View>
 					</View>
-				</LinearGradient>
+				</View>
 
 				{/* SCROLL VIEW */}
 				<ScrollView
@@ -166,6 +102,7 @@ const ParkingSpaces = ({ navigation }) => {
 						flexGrow: 1,
 						justifyContent: "center",
 						flexDirection: "column",
+						backgroundColor: theme.colors.surface,
 					}}
 				>
 					<TouchableOpacity activeOpacity={1}>
@@ -185,13 +122,10 @@ const ParkingSpaces = ({ navigation }) => {
 									>
 										<View
 											style={{
-												backgroundColor: "white",
+												backgroundColor: theme.colors.surface,
 												borderColor: "rgba(46, 199, 255,0.5)",
 												borderWidth: 0.5,
-												shadowColor: "rgba(0,0,0, .4)",
-												shadowOffset: { height: 1, width: 1 },
-												shadowOpacity: 1,
-												shadowRadius: 1, //IOS
+												shadowColor: theme.colors.shadow,
 												elevation: 6,
 											}}
 											className="h-full  w-full flex-row items-center rounded-md overflow-hidden"
@@ -201,6 +135,8 @@ const ParkingSpaces = ({ navigation }) => {
 												colors={[
 													"rgba(46, 199, 255,1)",
 													"rgba(197, 81, 204,0.9)",
+													// theme.colors.greenBg,
+													// theme.colors.pinkBg,
 												]}
 												start={{ x: 0, y: 0 }}
 												end={{ x: 0.75, y: 1.5 }}

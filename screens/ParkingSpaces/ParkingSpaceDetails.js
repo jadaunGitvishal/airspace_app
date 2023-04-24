@@ -20,13 +20,13 @@ export default function ParkingSpaceDetails({ route, navigation }) {
 	const { spaceId } = route.params;
 	const [parkingSpace, setParkingSpace] = useState(null);
 
-	useEffect(() => {
-		const getData = async () => {
-			const { data } = await api.fetchParkingDetails(spaceId);
-			setParkingSpace(data.parkingDetails);
-		};
-		getData();
-	}, []);
+	// useEffect(() => {
+	// 	const getData = async () => {
+	// 		const { data } = await api.fetchParkingDetails(spaceId);
+	// 		setParkingSpace(data.parkingDetails);
+	// 	};
+	// 	getData();
+	// }, []);
 
 	return (
 		<Background>

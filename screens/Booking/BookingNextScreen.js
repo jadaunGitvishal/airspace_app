@@ -54,21 +54,16 @@ export default function BookingNextScreen({ route, navigation }) {
 
 	return (
 		<Background>
-			<View
-				style={{ backgroundColor: theme.colors.secondary }}
-				className="h-full p-0 items-center"
-			>
+			<View className="h-full p-0 items-center">
 				{/* HEADER */}
-				<LinearGradient
+				<View
 					style={{
-						position: "relative",
-						paddingTop: StatusBar.currentHeight + 10,
-						height: "30%",
+						height: "18%",
+						backgroundColor: theme.colors.main,
+						borderBottomRightRadius: 30,
+						borderBottomLeftRadius: 30,
 					}}
 					className="w-full h-16 p-4 pb-6 flex-col items-center"
-					colors={["rgba(46, 199, 255,1)", "rgba(197, 81, 204,0.9)"]}
-					start={{ x: 0, y: 0 }}
-					end={{ x: 10, y: 0 }}
 				>
 					{/* Top Row */}
 					<View className="w-full flex-row items-center justify-betwee">
@@ -76,73 +71,78 @@ export default function BookingNextScreen({ route, navigation }) {
 						{/* <MenuButton /> */}
 					</View>
 
-					{/* Bottom Row */}
-					<Text
+					{/* Middle Row */}
+					<View
 						style={{ letterSpacing: 1 }}
-						className="w-full text-start px-4 text-white text-base font-semibold mt-4 uppercase"
+						className="w-full px-4 mt-2 flex-row items-center justify-between"
 					>
-						CONTINUE RESERVATION
-					</Text>
+						<Text
+							style={{ color: theme.colors.surface }}
+							className=" text-lg font-semibold"
+						>
+							CONTINUE RESERVATION
+						</Text>
+					</View>
+				</View>
 
+				{/* LOWER SECTION */}
+				<TouchableOpacity
+					activeOpacity={1}
+					style={{
+						height: "82%",
+						backgroundColor: theme.colors.surface,
+					}}
+					className="h-full w-full"
+				>
 					{/* info Card */}
 					<View
 						style={{
-							position: "absolute",
 							borderRadius: 30,
 							backgroundColor: theme.colors.surface,
+							shadowColor: theme.colors.shadow,
+							elevation: 5,
+							borderColor: theme.colors.bg1,
 						}}
-						className="h-40 w-full z-20 bottom-0 translate-y-12 shadow-sm shadow-black py-4 px-6 flex-col justify-evenly"
+						className="h-40 py-4 px-6 m-4 mt-8 border flex-col justify-evenly"
 					>
 						<Text
 							style={{
-								color: theme.colors.primary,
+								color: theme.colors.main,
 							}}
-							className="font-semibold uppercase text-lg text-center"
+							className="font-semibold uppercase text-base text-center"
 						>
 							{space}
 						</Text>
 
 						<Text
 							style={{
-								color: theme.colors.primary,
+								color: theme.colors.main,
 							}}
-							className="font-medium uppercase text-4xl text-center"
+							className="font-medium text-2xl text-center"
 						>
 							{slot}
 						</Text>
 					</View>
-				</LinearGradient>
 
-				{/* LOWER SECTION */}
-				<TouchableOpacity
-					activeOpacity={1}
-					style={{
-						height: "70%",
-					}}
-					className="h-full w-full items-center pt-14 bg-white"
-				>
 					{/* Info Card */}
 					<View className="px-4 w-full">
 						<View
 							style={{
-								backgroundColor: "white",
-								borderColor: "rgba(46, 199, 255,0.5)",
-								borderWidth: 0.5,
 								borderRadius: 30,
-								shadowColor: "rgba(0,0,0, .4)",
-								shadowOffset: { height: 1, width: 1 },
-								shadowOpacity: 1,
-								shadowRadius: 1,
-								elevation: 6,
+								backgroundColor: theme.colors.surface,
+								shadowColor: theme.colors.shadow,
+								elevation: 5,
+								borderColor: theme.colors.bg1,
 							}}
-							className="w-full mx-auto my-2 p-6"
+							className="w-full mx-auto my-2 p-6 border"
 						>
 							<Text
-								style={{ color: theme.colors.primary }}
+								style={{ color: theme.colors.main }}
 								className="font-semibold text-base mb-5 uppercase text-center"
 							>
 								SELECT DATE AND TIME
 							</Text>
+
 							<View className="flex-row items-center justify-between">
 								<Button
 									onPress={showDatePicker}
@@ -206,13 +206,11 @@ export default function BookingNextScreen({ route, navigation }) {
 					</View>
 
 					{/* Register Button */}
-					<LinearGradient
+					<View
 						className="mt-auto w-full px-4 h-28 items-center justify-center"
-						colors={["rgba(46, 199, 255,1)", "rgba(197, 81, 204,0.9)"]}
-						start={{ x: 0, y: 0 }}
-						end={{ x: 10, y: 0 }}
 						style={{
 							borderTopLeftRadius: 60,
+							// backgroundColor: theme.colors.main,
 						}}
 					>
 						<Text className="text-white text-base">Confirm Reservation.</Text>
@@ -231,7 +229,7 @@ export default function BookingNextScreen({ route, navigation }) {
 								RESERVE
 							</Button>
 						</View>
-					</LinearGradient>
+					</View>
 				</TouchableOpacity>
 			</View>
 		</Background>

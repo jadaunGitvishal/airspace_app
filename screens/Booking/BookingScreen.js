@@ -136,7 +136,10 @@ const BookingScreen = ({ navigation }) => {
 
 	return (
 		<Background>
-			<View className="h-full p-0 items-center bg-white">
+			<View
+				style={{ backgroundColor: theme.colors.surface }}
+				className="h-full p-0 items-center"
+			>
 				{/* modal */}
 				<Modal
 					animationType="fade"
@@ -152,31 +155,28 @@ const BookingScreen = ({ navigation }) => {
 							flex: 1,
 							justifyContent: "center",
 							alignItems: "center",
-							backgroundColor: theme.colors.accent1,
 						}}
 					>
 						<View
 							style={{
-								backgroundColor: "white",
-								borderRadius: 20,
-								alignItems: "center",
-								shadowColor: "#000",
+								backgroundColor: theme.colors.surface,
+								borderRadius: 30,
 								shadowOffset: {
 									width: 0,
 									height: 2,
 								},
-								shadowOpacity: 0.25,
+								shadowColor: theme.colors.shadow,
 								shadowRadius: 4,
 								elevation: 5,
-								width: "95%",
+								width: "90%",
 							}}
-							className="h-3/4 px-7 py-5"
+							className="h-3/4 py-3"
 						>
 							<View
 								style={{
 									height: "10%",
 								}}
-								className="w-full flex-row justify-between items-center border-b border-gray-300"
+								className="flex-row justify-between items-center border-b border-gray-300 mx-7"
 							>
 								<Text className="text-base font-semibold">
 									SELECT A PARKING SPACE
@@ -212,10 +212,13 @@ const BookingScreen = ({ navigation }) => {
 											>
 												<Text
 													style={{
-														backgroundColor: theme.colors.secondary,
-														color: theme.colors.primary,
+														backgroundColor: theme.colors.surface,
+														color: theme.colors.main,
+														shadowColor: theme.colors.shadow,
+														elevation: 5,
+														borderColor: theme.colors.bg,
 													}}
-													className="text-base font-medium p-4 rounded-md shadow-sm shadow-black my-3"
+													className="text-base font-medium p-4 rounded-md mb-3 mx-5 border"
 												>
 													{name}
 												</Text>
@@ -233,29 +236,19 @@ const BookingScreen = ({ navigation }) => {
 				</Modal>
 
 				{/* HEADER */}
-				<LinearGradient
+				<View
 					style={{
-						paddingTop: StatusBar.currentHeight + 10,
-						height: "30%",
-						minHeight: 200,
-						borderBottomRightRadius: 30,
-						borderBottomLeftRadius: 30,
+						height: "25%",
+						borderBottomRightRadius: 40,
+						borderBottomLeftRadius: 40,
+						backgroundColor: theme.colors.main,
 					}}
-					className="w-full h-16 p-4 pb-6 flex-col items-center"
-					colors={["rgba(46, 199, 255,1)", "rgba(197, 81, 204,0.9)"]}
-					start={{ x: 0, y: 0 }}
-					end={{ x: 0.75, y: 1.5 }}
+					className="w-full h-16 px-5 py-4 flex-col items-center"
 				>
-					{/* Top Row */}
-					<View className="w-full flex-row items-center justify-between">
-						{/* <BackButtonSimple goBack={navigation.goBack} /> */}
-						{/* <MenuButton /> */}
-					</View>
-
 					{/* Center Row */}
 					<Text
-						style={{ letterSpacing: 1 }}
-						className="text-white text-2xl mr-auto pt-4 font-semibold uppercase"
+						style={{ letterSpacing: 1, color: theme.colors.surface }}
+						className="text-xl mr-auto font-semibold uppercase mt-5"
 					>
 						RESERVATION
 					</Text>
@@ -266,23 +259,30 @@ const BookingScreen = ({ navigation }) => {
 							<TouchableOpacity
 								activeOpacity={0.8}
 								style={{
-									backgroundColor: theme.colors.accent,
+									backgroundColor: theme.colors.surface,
 								}}
 								onPress={() => setModalVisible(true)}
-								className="w-5/6 mx-auto my-auto flex-row items-center justify-between rounded-md p-4"
+								className="w-full mx-auto my-auto flex-row items-center justify-between rounded-full px-6 py-3"
 							>
-								<Text className="font-semibold text-white text-base">
+								<Text
+									style={{ color: theme.colors.darker }}
+									className="font-semibold text-base"
+								>
 									{space === null ? "Select Parking Space" : space}
 								</Text>
 								{space === null && (
-									<EvilIcons name="chevron-down" size={24} color="white" />
+									<EvilIcons
+										name="chevron-down"
+										size={24}
+										color={theme.colors.darkest}
+									/>
 								)}
 							</TouchableOpacity>
 						</View>
 					</View>
-				</LinearGradient>
+				</View>
 
-				{space !== null && (
+				{space !== null ? (
 					<>
 						{/* SCROLL VIEW */}
 						<ScrollView
@@ -332,6 +332,10 @@ const BookingScreen = ({ navigation }) => {
 							</Button>
 						</View>
 					</>
+				) : (
+					<Text className="my-auto font-medium text-dark text-xl">
+						Select a parking space
+					</Text>
 				)}
 			</View>
 		</Background>
