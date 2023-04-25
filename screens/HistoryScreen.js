@@ -69,24 +69,51 @@ export default function HistoryScreen({ navigation }) {
 							<TouchableOpacity
 								activeOpacity={0.8}
 								style={{
-									backgroundColor: theme.colors.secondary,
+									backgroundColor: theme.colors.surface,
+									shadowColor: theme.colors.shadow,
+									elevation: 6,
+									borderRadius: 15,
 								}}
-								className="w-full px-7 py-3 shadow-md shadow-black rounded-lg my-3"
+								className="w-full px-4 py-6 flex-col my-3"
 							>
 								<View className="flex-row justify-between items-center">
-									<Text className="text-gray-500 font-medium">25-11-2022</Text>
-									<Text className="text-gray-500 font-medium">Mon</Text>
+									<Text
+										style={{ color: theme.colors.darker }}
+										className="font-medium"
+									>
+										25-11-2022
+									</Text>
+									<Text
+										style={{ color: theme.colors.darker }}
+										className="font-medium"
+									>
+										Mon
+									</Text>
 								</View>
 
-								<Text className="text-base text-gray-500 font-medium uppercase">
+								<Text
+									style={{ color: theme.colors.darker }}
+									className="text-base font-medium uppercase"
+								>
 									COMSATS UNIVERSITY ISLAMABAD
 								</Text>
 
-								<Text className="text-base text-gray-500 mt-2 uppercase">
+								<Text
+									style={{ color: theme.colors.darker }}
+									className="text-base mt-2 uppercase"
+								>
 									- RIR 6798
 								</Text>
-								<Text className="text-base text-gray-500 uppercase">- 64A</Text>
-								<Text className="text-base text-gray-500 uppercase">
+								<Text
+									style={{ color: theme.colors.darker }}
+									className="text-base uppercase"
+								>
+									- 64A
+								</Text>
+								<Text
+									style={{ color: theme.colors.darker }}
+									className="text-base uppercase"
+								>
 									- 08:40AM - 02:30PM
 								</Text>
 							</TouchableOpacity>

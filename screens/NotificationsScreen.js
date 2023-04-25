@@ -47,7 +47,7 @@ export default function NotificationsScreen({ navigation }) {
 							style={{ color: theme.colors.surface }}
 							className="text-lg font-semibold"
 						>
-							NOTIFICAIONS
+							NOTIFICATIONS
 						</Text>
 						<Octicons name="bell" size={20} color={theme.colors.surface} />
 					</View>
@@ -61,31 +61,43 @@ export default function NotificationsScreen({ navigation }) {
 						borderTopLeftRadius: 30,
 						backgroundColor: theme.colors.surface,
 					}}
+					showsVerticalScrollIndicator={false}
 					className="w-full "
 				>
 					<TouchableOpacity
 						activeOpacity={1}
 						className="h-full w-full p-6 pt-10 items-center"
 					>
-						{[1, 2, 3, 4, 5, 6].map((x) => (
+						{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((x) => (
 							<TouchableOpacity
 								key={x}
 								activeOpacity={0.8}
 								style={{
-									backgroundColor: theme.colors.secondary,
+									backgroundColor: theme.colors.surface,
+									shadowColor: theme.colors.shadow,
+									elevation: 6,
+									borderRadius: 15,
 								}}
-								className="w-full p-4 shadow-md shadow-black rounded-lg flex-row items-center my-3"
+								className="w-full px-4 py-6 flex-row items-center my-3"
 							>
 								<Octicons
 									name="dot-fill"
-									color={theme.colors.gray500}
+									color={theme.colors.darker}
 									size={20}
 								/>
-								<Text className="text-base text-gray-500 ml-3 w-2/3">
+								<Text
+									style={{ color: theme.colors.dark }}
+									className="text-base ml-3 w-2/3"
+								>
 									Your free trial is expired.
 								</Text>
 
-								<Text className="text-gray-500 ml-auto">10:21AM</Text>
+								<Text
+									style={{ color: theme.colors.darker }}
+									className="ml-auto"
+								>
+									10:21AM
+								</Text>
 							</TouchableOpacity>
 						))}
 					</TouchableOpacity>
