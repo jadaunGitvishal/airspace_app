@@ -6,18 +6,18 @@ import {
 	TouchableOpacity,
 	View,
 	ActivityIndicator,
+	TextInput,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Background from "../../components/Background";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { theme } from "../../core/theme";
-import TextInput from "../../components/Input/TextInput";
 import * as api from "../../api/parkingSpacesReuests";
 
 const ParkingSpaces = ({ navigation }) => {
-	const [search, setSearch] = useState("");
+	const [loading, setLoading] = useState(true); //loading
 	const [allSpaces, setAllSpaces] = useState(true);
-	const [parkingSpaces, setParkingSpaces] = useState([
+	const [allParkingSpaces, setAllParkingSpaces] = useState([
 		{
 			_id: 123,
 			name: "Comsats University Islamabad",
@@ -50,13 +50,30 @@ const ParkingSpaces = ({ navigation }) => {
 		},
 	]);
 
-	// useEffect(() => {
-	// 	const getData = async () => {
-	// 		const { data } = await api.fetchAllParkings();
-	// 		setParkingSpaces(data.allParkings);
-	// 	};
-	// 	getData();
-	// }, [allSpaces]);
+	// Search
+	const [search, setSearch] = useState("");
+	const [parkingSpaces, setParkingSpaces] = useState(allParkingSpaces);
+	useEffect(() => {
+		function updateList() {
+			var tempList = allParkingSpaces.filter(
+				(ps) => ps.name.indexOf(search) > -1
+			);
+
+			setParkingSpaces(tempList);
+		}
+
+		updateList();
+	}, [search]);
+
+	// Get Data
+	useEffect(() => {
+		const getData = async () => {
+			// const { data } = await api.fetchAllParkings();
+			// setParkingSpaces(data.allParkings);
+			setLoading(false);
+		};
+		getData();
+	}, [allSpaces]);
 
 	return (
 		<Background>
@@ -82,14 +99,14 @@ const ParkingSpaces = ({ navigation }) => {
 					{/* Bottom Row */}
 					<View className="w-full">
 						<TextInput
-							label="Search"
-							returnKeyType="done"
+							returnKeyType="search"
+							placeholder="Search..."
 							value={search}
 							onChangeText={(text) => setSearch(text)}
-							error={null}
-							errorText={""}
-							containerStyle={{ marginBottom: 5 }}
-							inputStyle={{ height: 45 }}
+							className="h-10 rounded mx-2 mb-4 px-2"
+							style={{
+								backgroundColor: theme.colors.surface,
+							}}
 						/>
 					</View>
 				</View>
@@ -102,98 +119,106 @@ const ParkingSpaces = ({ navigation }) => {
 						flexGrow: 1,
 						justifyContent: "center",
 						flexDirection: "column",
-						backgroundColor: theme.colors.surface,
+						// backgroundColor: theme.colors.surface,
 					}}
 				>
 					<TouchableOpacity activeOpacity={1}>
 						<View className="h-full w-full p-4 pt-6 items-center">
 							{/* Cards */}
-							{parkingSpaces.length > 0 ? (
-								parkingSpaces.map(({ _id, name, city, location }) => (
-									<TouchableOpacity
-										key={_id}
-										activeOpacity={0.9}
-										className="h-40 mb-5 w-full "
-										onPress={() =>
-											navigation.navigate("ParkingSpaceDetails", {
-												spaceId: _id,
-											})
-										}
-									>
-										<View
-											style={{
-												backgroundColor: theme.colors.surface,
-												borderColor: "rgba(46, 199, 255,0.5)",
-												borderWidth: 0.5,
-												shadowColor: theme.colors.shadow,
-												elevation: 6,
-											}}
-											className="h-full  w-full flex-row items-center rounded-md overflow-hidden"
+							{loading === false ? (
+								parkingSpaces.length > 0 ? (
+									parkingSpaces.map(({ _id, name, city, location }) => (
+										<TouchableOpacity
+											key={_id}
+											activeOpacity={0.9}
+											className="h-40 mb-5 w-full "
+											onPress={() =>
+												navigation.navigate("ParkingSpaceDetails", {
+													spaceId: _id,
+												})
+											}
 										>
-											{/* left */}
-											<LinearGradient
-												colors={[
-													"rgba(46, 199, 255,1)",
-													"rgba(197, 81, 204,0.9)",
-													// theme.colors.greenBg,
-													// theme.colors.pinkBg,
-												]}
-												start={{ x: 0, y: 0 }}
-												end={{ x: 0.75, y: 1.5 }}
-												style={{
-													width: "2%",
-													// opacity: 0.5,
-												}}
-												className="h-full items-center justify-center"
-											>
-												<Text className="text-2xl text-white"></Text>
-											</LinearGradient>
-
-											{/* right */}
 											<View
 												style={{
-													width: "98%",
+													backgroundColor: theme.colors.surface,
+													borderColor: "rgba(46, 199, 255,0.5)",
+													borderWidth: 0.5,
+													shadowColor: theme.colors.shadow,
+													elevation: 6,
 												}}
-												className="py-2 px-6"
+												className="h-full  w-full flex-row items-center rounded-md overflow-hidden"
 											>
-												<View className="flex-row w-full items-center">
-													<View className="h-10 w-10">
-														<Image
-															className="h-full w-full object-cover"
-															source={require("../../assets/CUI_logo.jpg")}
-														/>
+												{/* left */}
+												<LinearGradient
+													colors={[
+														"rgba(46, 199, 255,1)",
+														"rgba(197, 81, 204,0.9)",
+														// theme.colors.greenBg,
+														// theme.colors.pinkBg,
+													]}
+													start={{ x: 0, y: 0 }}
+													end={{ x: 0.75, y: 1.5 }}
+													style={{
+														width: "2%",
+														// opacity: 0.5,
+													}}
+													className="h-full items-center justify-center"
+												>
+													<Text className="text-2xl text-white"></Text>
+												</LinearGradient>
+
+												{/* right */}
+												<View
+													style={{
+														width: "98%",
+													}}
+													className="py-2 px-6"
+												>
+													<View className="flex-row w-full items-center">
+														<View className="h-10 w-10">
+															<Image
+																className="h-full w-full object-cover"
+																source={require("../../assets/CUI_logo.jpg")}
+															/>
+														</View>
+
+														<Text className="ml-2 text-base">{name}</Text>
 													</View>
 
-													<Text className="ml-2 text-base">{name}</Text>
-												</View>
-
-												<View className="flex-row items-center w-full mt-2">
-													<View className="flex items-center justify-center h-6 w-10 rounded-md">
-														<Ionicons
-															name="business-outline"
-															size={20}
-															color={theme.colors.primary}
-														/>
+													<View className="flex-row items-center w-full mt-2">
+														<View className="flex items-center justify-center h-6 w-10 rounded-md">
+															<Ionicons
+																name="business-outline"
+																size={20}
+																color={theme.colors.main}
+															/>
+														</View>
+														<Text className="ml-2 pr-10 break-words">
+															{city}
+														</Text>
 													</View>
-													<Text className="ml-2 pr-10 break-words">{city}</Text>
-												</View>
 
-												<View className="flex-row items-center w-full">
-													<View className="flex items-center justify-center h-6 w-10 rounded-md ">
-														<Ionicons
-															name="location-outline"
-															size={20}
-															color={theme.colors.primary}
-														/>
+													<View className="flex-row items-center w-full">
+														<View className="flex items-center justify-center h-6 w-10 rounded-md ">
+															<Ionicons
+																name="location-outline"
+																size={20}
+																color={theme.colors.main}
+															/>
+														</View>
+														<Text className="ml-2 pr-10 break-words">
+															{location}
+														</Text>
 													</View>
-													<Text className="ml-2 pr-10 break-words">
-														{location}
-													</Text>
 												</View>
 											</View>
-										</View>
-									</TouchableOpacity>
-								))
+										</TouchableOpacity>
+									))
+								) : (
+									<View className="h-full flex-col justify-center">
+										<Text>No results ...</Text>
+									</View>
+								)
 							) : (
 								<View className="h-full flex-col justify-center">
 									<ActivityIndicator size={45} color={theme.colors.bg0} />

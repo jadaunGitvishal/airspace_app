@@ -4,11 +4,12 @@ import Background from "../../components/Background";
 import BackButtonSimple from "../../components/Button/BackButtonSimple";
 import Button from "../../components/Button/Button";
 import {
-	StatusBar,
 	Text,
 	TouchableOpacity,
 	View,
 	ActivityIndicator,
+	Image,
+	StyleSheet,
 } from "react-native";
 import { theme } from "../../core/theme";
 import { LinearGradient } from "expo-linear-gradient";
@@ -20,13 +21,66 @@ export default function ParkingSpaceDetails({ route, navigation }) {
 	const { spaceId } = route.params;
 	const [parkingSpace, setParkingSpace] = useState(null);
 
-	// useEffect(() => {
-	// 	const getData = async () => {
-	// 		const { data } = await api.fetchParkingDetails(spaceId);
-	// 		setParkingSpace(data.parkingDetails);
-	// 	};
-	// 	getData();
-	// }, []);
+	useEffect(() => {
+		const getData = async () => {
+			// const { data } = await api.fetchParkingDetails(spaceId);
+			// setParkingSpace(data.parkingDetails);
+			setParkingSpace({
+				_id: "6416efe4e2f589a5f347f76c",
+				name: "Iqra Unievrsity Islamabad",
+				phone: "03000000007",
+				email: "iqra_uni@gmail.com",
+				address: "Park Road, Chattha Bakhtawar, Chak Shehzad, Islamabad",
+				city: "Islamabad",
+				coordinates: {
+					longitude: "73.04536630273354",
+					latitude: "33.6641293",
+				},
+				slots: {
+					total: 50,
+					shaded: 50,
+					reservation: 30,
+				},
+				timings: {
+					to: "10:00",
+					from: "07:00",
+				},
+				availability: {
+					mon: true,
+					tue: true,
+					wed: true,
+					thu: true,
+					fri: false,
+					sat: false,
+					sun: false,
+				},
+				img1: {
+					public_id: "airspace-images/muqe5ug8bvpy4txh9gvx",
+					url: "http://res.cloudinary.com/abhecomsite/image/upload/v1679237906/airspace-images/muqe5ug8bvpy4txh9gvx.jpg",
+				},
+				img2: {
+					public_id: "airspace-images/vn2fnkpjcj70a7iuha8z",
+					url: "http://res.cloudinary.com/abhecomsite/image/upload/v1679237908/airspace-images/vn2fnkpjcj70a7iuha8z.jpg",
+				},
+				img3: {
+					public_id: "airspace-images/qzyli8qdgctbjvitsqbc",
+					url: "http://res.cloudinary.com/abhecomsite/image/upload/v1679236854/airspace-images/qzyli8qdgctbjvitsqbc.jpg",
+				},
+				normalPrice: 400,
+				peakPercentage: 20,
+				fillPercentage: 80,
+				admins: [
+					{
+						admin_id: "6430c15a80cc8a53dba54bae",
+						_id: "6430c15a80cc8a53dba54bb0",
+					},
+				],
+				createdAt: "2023-03-19T11:20:04.407Z",
+				updatedAt: "2023-04-08T01:20:26.997Z",
+			});
+		};
+		getData();
+	}, []);
 
 	return (
 		<Background>
@@ -35,256 +89,291 @@ export default function ParkingSpaceDetails({ route, navigation }) {
 				className="h-full p-0 items-center"
 			>
 				{/* HEADER */}
-				<LinearGradient
+				<View
 					style={{
-						position: "relative",
-						paddingTop: StatusBar.currentHeight + 10,
-						height: "30%",
+						height: "16%",
+						backgroundColor: theme.colors.main,
+						borderBottomRightRadius: 30,
+						borderBottomLeftRadius: 30,
 					}}
 					className="w-full h-16 p-4 pb-6 flex-col items-center"
-					colors={["rgba(46, 199, 255,1)", "rgba(197, 81, 204,0.9)"]}
-					start={{ x: 0, y: 0 }}
-					end={{ x: 10, y: 0 }}
 				>
 					{/* Top Row */}
-					<View className="w-full flex-row items-center justify-betwee">
+					<View className="w-full flex-row items-center">
 						<BackButtonSimple goBack={navigation.goBack} />
-						{/* <MenuButton /> */}
 					</View>
 
-					{/* Bottom Row */}
+					{/* Center Row */}
 					<Text
-						style={{ letterSpacing: 1 }}
-						className="w-full text-start px-4 text-white text-base font-semibold mt-4"
+						style={{ letterSpacing: 1, color: theme.colors.surface }}
+						className="text-xl font-medium mt-5 uppercase"
 					>
-						{parkingSpace === null ? "..." : parkingSpace.name}
+						{parkingSpace?.name}
 					</Text>
-
-					{/* Address Card */}
-					<View
-						style={{
-							position: "absolute",
-							borderRadius: 30,
-							backgroundColor: theme.colors.surface,
-						}}
-						className="h-40 w-full z-20 bottom-0 translate-y-12 shadow-sm shadow-black py-4 px-6"
-					>
-						<Text
-							style={{
-								color: theme.colors.primary,
-							}}
-							className="font-semibold uppercase text-base"
-						>
-							{parkingSpace === null ? "..." : parkingSpace.city}
-						</Text>
-
-						<Text
-							style={{
-								color: theme.colors.primary,
-							}}
-							className="font-semibold uppercase"
-						>
-							{parkingSpace === null ? "..." : parkingSpace.openTime} -{" "}
-							{parkingSpace === null ? "..." : parkingSpace.closeTime}
-						</Text>
-
-						<View
-							style={{
-								backgroundColor: theme.colors.primary,
-							}}
-							className="mt-auto p-2 px-3 rounded-lg"
-						>
-							<Text className="font-semibold  text-white mb-1">Location</Text>
-
-							<Text className="uppercase text-white">
-								{parkingSpace === null ? "..." : parkingSpace.location}
-							</Text>
-						</View>
-					</View>
-				</LinearGradient>
+				</View>
 
 				{/* LOWER SECTION */}
-				<TouchableOpacity
-					activeOpacity={1}
-					style={{
-						height: "70%",
-						backgroundColor: theme.colors.surface,
+				<ScrollView
+					style={{ height: "84%" }}
+					className="w-full flex-1 bg-transparent"
+					contentContainerStyle={{
+						flexGrow: 1,
+						justifyContent: "center",
+						flexDirection: "column",
+						// backgroundColor: theme.colors.surface,
 					}}
-					className="h-full w-full items-center pt-14"
 				>
-					{parkingSpace === null ? (
-						<View className="h-full flex-col justify-center">
-							<ActivityIndicator size={45} color={theme.colors.bg0} />
-						</View>
-					) : (
-						<>
-							{/* Info Card */}
-							<View style={{ maxHeight: "77%" }} className="px-4">
+					<TouchableOpacity
+						activeOpacity={1}
+						className="h-full w-full flex-col"
+					>
+						{parkingSpace === null ? (
+							<View className="h-full flex-col justify-center">
+								<ActivityIndicator size={45} color={theme.colors.bg0} />
+							</View>
+						) : (
+							// Info Card
+							<View className="w-full flex-1 p-4">
+								{/* Images */}
+								<View className="flex-row items-center justify-between mb-5">
+									<Image
+										className="w-[30%] aspect-square rounded bg-gray-200"
+										source={{ uri: parkingSpace.img1.url }}
+									/>
+									<Image
+										className="w-[30%] aspect-square rounded bg-gray-200"
+										source={{ uri: parkingSpace.img2.url }}
+									/>
+									<Image
+										className="w-[30%] aspect-square rounded bg-gray-200"
+										source={{ uri: parkingSpace.img3.url }}
+									/>
+								</View>
+
+								{/* Address */}
 								<View
 									style={{
-										backgroundColor: "white",
-										borderColor: "rgba(46, 199, 255,0.5)",
+										backgroundColor: theme.colors.surface,
+										borderColor: theme.colors.bg,
+										shadowColor: theme.colors.shadow,
+										elevation: 5,
 										borderWidth: 0.5,
-										borderRadius: 30,
-										shadowColor: "rgba(0,0,0, .4)",
-										shadowOffset: { height: 1, width: 1 },
-										shadowOpacity: 1,
-										shadowRadius: 1,
-										elevation: 6,
+										borderRadius: 15,
 									}}
-									className="w-full mx-auto my-2 p-0"
+									className="w-full p-0 mb-5"
 								>
-									<ScrollView className="m-1">
-										<TouchableOpacity activeOpacity={1} className="m-5">
+									<TouchableOpacity activeOpacity={1} className="m-5">
+										<Text
+											style={{ color: theme.colors.main }}
+											className="font-semibold text-base mb-1"
+										>
+											Address
+										</Text>
+
+										<Text
+											style={{ color: theme.colors.dark }}
+											className="text-justify mb-4"
+										>
+											{parkingSpace.address}
+										</Text>
+
+										<Text
+											style={{ color: theme.colors.main }}
+											className="font-semibold text-base mb-1"
+										>
+											Email
+										</Text>
+
+										<Text
+											style={{ color: theme.colors.dark }}
+											className="text-justify mb-4"
+										>
+											{parkingSpace.email}
+										</Text>
+
+										<Text
+											style={{ color: theme.colors.main }}
+											className="font-semibold text-base mb-1"
+										>
+											Phone
+										</Text>
+
+										<Text
+											style={{ color: theme.colors.dark }}
+											className="text-justify mb-4"
+										>
+											{parkingSpace.phone}
+										</Text>
+									</TouchableOpacity>
+								</View>
+
+								{/* Parking Info */}
+								<View
+									style={{
+										backgroundColor: theme.colors.surface,
+										borderColor: theme.colors.bg,
+										shadowColor: theme.colors.shadow,
+										elevation: 5,
+										borderWidth: 0.5,
+										borderRadius: 15,
+									}}
+									className="w-full p-0 mb-5"
+								>
+									<TouchableOpacity activeOpacity={1} className="m-5">
+										<View className="flex-row items-center">
+											<View className="w-8">
+												<Ionicons
+													name="checkmark-done"
+													size={25}
+													color={theme.colors.main}
+												/>
+											</View>
 											<Text
-												style={{ color: theme.colors.primary }}
-												className="font-semibold text-base mb-1"
+												style={{
+													color: theme.colors.main,
+												}}
+												className="font-medium"
 											>
-												DETAILS
+												{parkingSpace.slots.total} Parking Slots
 											</Text>
+										</View>
 
-											<Text className="text-justify mb-4">
-												{parkingSpace.details}
-											</Text>
-
-											<View className="flex-row items-center">
-												<View className="w-8">
-													<Ionicons name="checkmark-done" size={25} />
-												</View>
-												<Text className="font-medium">
-													{parkingSpace.blocks} Parking Blocks
-												</Text>
+										<View className="flex-row items-center pl-2 mt-1">
+											<View className="w-8">
+												<Ionicons
+													name="checkmark-done"
+													size={20}
+													color={theme.colors.dark}
+												/>
 											</View>
-
-											<View className="flex-row items-center">
-												<View className="w-8">
-													<Ionicons name="checkmark-done" size={25} />
-												</View>
-												<Text className="font-medium">
-													{parkingSpace.slots.shaded +
-														parkingSpace.slots.nonShaded}{" "}
-													Parking Slots
-												</Text>
-											</View>
-
-											<View className="flex-row items-center pl-6 mt-1">
-												<View className="w-8">
-													<Ionicons name="checkmark-done" size={20} />
-												</View>
-												<Text className="font-medium">
-													{parkingSpace.slots.shaded} Shaded
-												</Text>
-											</View>
-
-											<View className="flex-row items-center pl-6">
-												<View className="w-8">
-													<Ionicons name="checkmark-done" size={20} />
-												</View>
-												<Text className="font-medium">
-													{parkingSpace.slots.nonShaded} Non Shaded
-												</Text>
-											</View>
-
-											<View className="flex-row items-center pl-6 mt-1">
-												<View className="w-8">
-													<Ionicons name="checkmark-done" size={20} />
-												</View>
-												<Text className="font-medium">
-													{parkingSpace.slots.reserved} Reservation Slots
-												</Text>
-											</View>
-
-											<View className="flex-row items-center pl-6">
-												<View className="w-8">
-													<Ionicons name="checkmark-done" size={20} />
-												</View>
-												<Text className="font-medium">
-													{parkingSpace.slots.free} Free Slots
-												</Text>
-											</View>
-
 											<Text
-												style={{ color: theme.colors.primary }}
-												className="font-semibold text-base mt-4 mb-2"
+												style={{
+													color: theme.colors.dark,
+												}}
+												className="font-medium"
 											>
-												AVAILABILITY
+												{parkingSpace.slots.shaded} Shaded
 											</Text>
+										</View>
 
-											<View className="flex-row items-center justify-center">
-												<View
-													style={{ backgroundColor: theme.colors.bg0 }}
-													className="w-7 h-7 flex-row items-center justify-center rounded-full mx-1"
-												>
-													<Text className="font-medium text-white">M</Text>
-												</View>
-												<View
-													style={{ backgroundColor: theme.colors.bg0 }}
-													className="w-7 h-7 flex-row items-center justify-center rounded-full mx-1"
-												>
-													<Text className="font-medium text-white">T</Text>
-												</View>
-												<View
-													style={{ backgroundColor: theme.colors.bg0 }}
-													className="w-7 h-7 flex-row items-center justify-center rounded-full mx-1"
-												>
-													<Text className="font-medium text-white">W</Text>
-												</View>
-												<View
-													style={{ backgroundColor: theme.colors.bg0 }}
-													className="w-7 h-7 flex-row items-center justify-center rounded-full mx-1"
-												>
-													<Text className="font-medium text-white">T</Text>
-												</View>
-												<View
-													style={{ backgroundColor: theme.colors.bg0 }}
-													className="w-7 h-7 flex-row items-center justify-center rounded-full mx-1"
-												>
-													<Text className="font-medium text-white">F</Text>
-												</View>
-												<View
-													style={{ backgroundColor: theme.colors.bg0 }}
-													className="w-7 h-7 flex-row items-center justify-center rounded-full mx-1"
-												>
-													<Text className="font-medium text-white">S</Text>
-												</View>
-												<View
-													style={{ backgroundColor: theme.colors.bg1 }}
-													className="w-7 h-7 flex-row items-center justify-center rounded-full mx-1"
-												>
-													<Text className="font-medium text-white">S</Text>
-												</View>
+										<View className="flex-row items-center pl-2 mt-1">
+											<View className="w-8">
+												<Ionicons
+													name="checkmark-done"
+													size={20}
+													color={theme.colors.dark}
+												/>
 											</View>
-										</TouchableOpacity>
-									</ScrollView>
+											<Text
+												style={{
+													color: theme.colors.dark,
+												}}
+												className="font-medium"
+											>
+												{parkingSpace.slots.reservation} Reservation Slots
+											</Text>
+										</View>
+									</TouchableOpacity>
+								</View>
+
+								{/* Availability */}
+								<View
+									style={{
+										backgroundColor: theme.colors.surface,
+										borderColor: theme.colors.bg,
+										shadowColor: theme.colors.shadow,
+										elevation: 5,
+										borderWidth: 0.5,
+										borderRadius: 15,
+									}}
+									className="w-full p-0"
+								>
+									<TouchableOpacity activeOpacity={1} className="m-5">
+										<Text
+											style={{ color: theme.colors.main }}
+											className="font-semibold text-base mb-1"
+										>
+											Availability
+										</Text>
+
+										<View className="flex-row items-center justify-center mt-2">
+											<View
+												style={{
+													backgroundColor: parkingSpace.availability.mon
+														? theme.colors.greenBg
+														: theme.colors.dark,
+												}}
+												className="w-7 h-7 flex-row items-center justify-center rounded-full mx-1"
+											>
+												<Text className="font-medium text-white">M</Text>
+											</View>
+											<View
+												style={{
+													backgroundColor: parkingSpace.availability.tue
+														? theme.colors.greenBg
+														: theme.colors.dark,
+												}}
+												className="w-7 h-7 flex-row items-center justify-center rounded-full mx-1"
+											>
+												<Text className="font-medium text-white">T</Text>
+											</View>
+											<View
+												style={{
+													backgroundColor: parkingSpace.availability.wed
+														? theme.colors.greenBg
+														: theme.colors.dark,
+												}}
+												className="w-7 h-7 flex-row items-center justify-center rounded-full mx-1"
+											>
+												<Text className="font-medium text-white">W</Text>
+											</View>
+											<View
+												style={{
+													backgroundColor: parkingSpace.availability.thu
+														? theme.colors.greenBg
+														: theme.colors.dark,
+												}}
+												className="w-7 h-7 flex-row items-center justify-center rounded-full mx-1"
+											>
+												<Text className="font-medium text-white">T</Text>
+											</View>
+											<View
+												style={{
+													backgroundColor: parkingSpace.availability.fri
+														? theme.colors.greenBg
+														: theme.colors.dark,
+												}}
+												className="w-7 h-7 flex-row items-center justify-center rounded-full mx-1"
+											>
+												<Text className="font-medium text-white">F</Text>
+											</View>
+											<View
+												style={{
+													backgroundColor: parkingSpace.availability.sat
+														? theme.colors.greenBg
+														: theme.colors.dark,
+												}}
+												className="w-7 h-7 flex-row items-center justify-center rounded-full mx-1"
+											>
+												<Text className="font-medium text-white">S</Text>
+											</View>
+											<View
+												style={{
+													backgroundColor: parkingSpace.availability.sun
+														? theme.colors.greenBg
+														: theme.colors.dark,
+												}}
+												className="w-7 h-7 flex-row items-center justify-center rounded-full mx-1"
+											>
+												<Text className="font-medium text-white">S</Text>
+											</View>
+										</View>
+									</TouchableOpacity>
 								</View>
 							</View>
-
-							{/* Register Button */}
-							<LinearGradient
-								className="mt-auto w-full px-4 h-28 items-center justify-center"
-								colors={["rgba(46, 199, 255,1)", "rgba(197, 81, 204,0.9)"]}
-								start={{ x: 0, y: 0 }}
-								end={{ x: 10, y: 0 }}
-								style={{
-									borderTopLeftRadius: 60,
-								}}
-							>
-								<Text className="text-white text-base">
-									Register to get our services.
-								</Text>
-
-								<View className="w-2/3">
-									<Button
-										mode="contained"
-										onPress={() => navigation.navigate("RegisterParkingSpace")}
-									>
-										Register
-									</Button>
-								</View>
-							</LinearGradient>
-						</>
-					)}
-				</TouchableOpacity>
+						)}
+					</TouchableOpacity>
+				</ScrollView>
 			</View>
 		</Background>
 	);

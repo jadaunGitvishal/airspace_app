@@ -90,7 +90,7 @@ export default function BookingNextScreen({ route, navigation }) {
 					activeOpacity={1}
 					style={{
 						height: "82%",
-						backgroundColor: theme.colors.surface,
+						// backgroundColor: theme.colors.surface,
 					}}
 					className="h-full w-full"
 				>

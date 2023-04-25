@@ -23,9 +23,12 @@ import * as api from "../../api/parkingSpacesReuests";
 import ParkingSpaces from "../ParkingSpaces/ParkingSpaces";
 
 const BookingScreen = ({ navigation }) => {
+	const [loading, setLoading] = useState(true); //loading
+	const [modalVisible, setModalVisible] = useState(false);
+
+	// slot and ps
 	const [slot, setSlot] = useState(null);
 	const [space, setSpace] = useState(null);
-	const [modalVisible, setModalVisible] = useState(false);
 	const [parkingSpaces, setParkingSpaces] = useState([
 		{
 			_id: 123,
@@ -58,7 +61,6 @@ const BookingScreen = ({ navigation }) => {
 			location: "Sector H11, Islamabad",
 		},
 	]);
-
 	const [slotsList, setSlotsList] = useState([
 		{
 			reserved: true,
@@ -114,14 +116,17 @@ const BookingScreen = ({ navigation }) => {
 		},
 	]);
 
-	// useEffect(() => {
-	// 	const getData = async () => {
-	// 		const { data } = await api.fetchAllParkings();
-	// 		setSpacesList(data.allParkings);
-	// 	};
-	// 	getData();
-	// }, []);
+	// Get Data
+	useEffect(() => {
+		const getData = async () => {
+			// const { data } = await api.fetchAllParkings();
+			// setParkingSpaces(data.allParkings);
+			setLoading(false);
+		};
+		getData();
+	}, []);
 
+	// continue
 	const handleContinue = () => {
 		if (space === null || slot === null) {
 			alert("Select a slot first");
@@ -137,7 +142,11 @@ const BookingScreen = ({ navigation }) => {
 	return (
 		<Background>
 			<View
-				style={{ backgroundColor: theme.colors.surface }}
+				style={
+					{
+						// backgroundColor: theme.colors.surface
+					}
+				}
 				className="h-full p-0 items-center"
 			>
 				{/* modal */}
@@ -200,30 +209,36 @@ const BookingScreen = ({ navigation }) => {
 								className="w-full pt-4"
 							>
 								<TouchableOpacity activeOpacity={1} className="h-full">
-									{parkingSpaces.length > 0 ? (
-										parkingSpaces.map(({ name, _id }) => (
-											<TouchableOpacity
-												key={_id}
-												activeOpacity={0.7}
-												onPress={() => {
-													setSpace(name);
-													setModalVisible(!modalVisible);
-												}}
-											>
-												<Text
-													style={{
-														backgroundColor: theme.colors.surface,
-														color: theme.colors.main,
-														shadowColor: theme.colors.shadow,
-														elevation: 5,
-														borderColor: theme.colors.bg,
+									{loading === false ? (
+										parkingSpaces.length > 0 ? (
+											parkingSpaces.map(({ name, _id }) => (
+												<TouchableOpacity
+													key={_id}
+													activeOpacity={0.7}
+													onPress={() => {
+														setSpace(name);
+														setModalVisible(!modalVisible);
 													}}
-													className="text-base font-medium p-4 rounded-md mb-3 mx-5 border"
 												>
-													{name}
-												</Text>
-											</TouchableOpacity>
-										))
+													<Text
+														style={{
+															backgroundColor: theme.colors.surface,
+															color: theme.colors.main,
+															shadowColor: theme.colors.shadow,
+															elevation: 5,
+															borderColor: theme.colors.bg,
+														}}
+														className="text-base font-medium p-4 rounded-md mb-3 mx-5 border"
+													>
+														{name}
+													</Text>
+												</TouchableOpacity>
+											))
+										) : (
+											<View className="h-full flex-col justify-center">
+												<Text>No result ...</Text>
+											</View>
+										)
 									) : (
 										<View className="h-full flex-col justify-center">
 											<ActivityIndicator size={45} color={theme.colors.bg0} />
