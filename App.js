@@ -8,8 +8,8 @@ import { theme, darkTheme } from "./core/theme";
 import { StatusBar } from "react-native";
 
 const App = () => {
-	const loggedIn = true;
-	// const loggedIn = false;
+	// const loggedIn = true;
+	const loggedIn = false;
 
 	return (
 		<Provider theme={theme}>

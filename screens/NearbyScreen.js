@@ -34,14 +34,16 @@ export default function NearbyScreen({ navigation }) {
 	// get current location
 	useEffect(() => {
 		(async () => {
-			let { status } = await Location.requestForegroundPermissionsAsync();
-			if (status !== "granted") {
-				setErrorMsg("Permission to access location was denied");
-				return;
-			}
+			setTimeout(async () => {
+				let { status } = await Location.requestForegroundPermissionsAsync();
+				if (status !== "granted") {
+					setErrorMsg("Permission to access location was denied");
+					return;
+				}
 
-			let location = await Location.getCurrentPositionAsync({});
-			setLocation(location);
+				let location = await Location.getCurrentPositionAsync({});
+				setLocation(location);
+			}, 500);
 		})();
 	}, []);
 
@@ -191,7 +193,11 @@ export default function NearbyScreen({ navigation }) {
 
 						{loading === false ? (
 							<View className="flex-1 w-full">
-								{errorMsg && <Text>{errorMsg}</Text>}
+								{errorMsg && (
+									<View className="h-full flex-col justify-center">
+										<Text>{errorMsg}</Text>
+									</View>
+								)}
 								{location && (
 									<MapView
 										className="h-full w-full bg-slate-200"
