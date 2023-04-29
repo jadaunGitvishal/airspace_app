@@ -21,9 +21,11 @@ import {
 	MaterialCommunityIcons,
 	FontAwesome,
 } from "@expo/vector-icons";
+import { selectUser, useSelector } from "../features/userSlice.js";
 
 const Dashboard = ({ navigation }) => {
 	const theme = useTheme();
+	const { user, loading } = useSelector(selectUser);
 	const [dashboardData, setDashboardData] = useState({});
 	const [userData, setUserData] = useState({});
 
@@ -116,7 +118,12 @@ const Dashboard = ({ navigation }) => {
 
 	return (
 		<Background>
-			<View className="h-full w-full flex-1 relative p- flex-col items-center justify-between">
+			<View
+				className="h-full w-full flex-1 relative p- flex-col items-center justify-between"
+				style={{
+					backgroundColor: theme.colors.surface,
+				}}
+			>
 				{/* Navbar */}
 				<View
 					style={{ backgroundColor: theme.colors.main }}
@@ -174,6 +181,7 @@ const Dashboard = ({ navigation }) => {
 						</TouchableOpacity>
 					</View>
 
+					{/* user info */}
 					<View className="w-full flex-row items-center mt-5">
 						<View
 							style={{ backgroundColor: theme.colors.surface }}
@@ -199,13 +207,13 @@ const Dashboard = ({ navigation }) => {
 								}}
 								className="text-xl font-bold pl-2 capitalize"
 							>
-								{userData.name}
+								{user?.user?.name}
 							</Text>
 							<Text
 								style={{ color: theme.colors.surface }}
 								className="text-sm pl-2"
 							>
-								{userData.email}
+								{user?.user?.email}
 							</Text>
 						</View>
 					</View>

@@ -14,7 +14,6 @@ import {
 import { theme } from "../../core/theme";
 import { LinearGradient } from "expo-linear-gradient";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import * as api from "../../api/parkingSpacesReuests";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function ParkingSpaceDetails({ route, navigation }) {
@@ -85,7 +84,7 @@ export default function ParkingSpaceDetails({ route, navigation }) {
 	return (
 		<Background>
 			<View
-				style={{ backgroundColor: theme.colors.secondary }}
+				style={{ backgroundColor: theme.colors.surface }}
 				className="h-full p-0 items-center"
 			>
 				{/* HEADER */}

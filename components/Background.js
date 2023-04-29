@@ -13,8 +13,8 @@ export default function Background({ children }) {
 	useEffect(() => {
 		const loadFonts = async () => {
 			await Font.loadAsync({
-				Roboto: require("../assets/fonts/Roboto/Roboto-Regular.ttf"),
 				Poppins: require("../assets/fonts/Poppins/Poppins-Regular.ttf"),
+				Roboto: require("../assets/fonts/Roboto/Roboto-Regular.ttf"),
 			});
 		};
 
@@ -49,8 +49,8 @@ const styles = StyleSheet.create({
 		padding: 0,
 		width: "100%",
 		alignSelf: "center",
-		// backgroundColor: theme.colors.surface,
-		backgroundColor: theme.colors.background,
+		backgroundColor: theme.colors.surface,
+		// backgroundColor: theme.colors.background,
 		fontFamily: "Poppins",
 	},
 });

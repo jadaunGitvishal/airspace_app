@@ -25,7 +25,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "air.space"
+      "package": "air.space",
+      "remoteDebugging": true
     },
     "web": {
       "favicon": "./assets/favicon.png"

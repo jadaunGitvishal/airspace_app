@@ -19,8 +19,6 @@ import MenuButton from "../../components/Button/MenuButton";
 import { TextInput as PaperInput } from "react-native-paper";
 import Slot from "../../components/Slot/Slot";
 import Button from "../../components/Button/Button";
-import * as api from "../../api/parkingSpacesReuests";
-import ParkingSpaces from "../ParkingSpaces/ParkingSpaces";
 
 const BookingScreen = ({ navigation }) => {
 	const [loading, setLoading] = useState(true); //loading
@@ -142,11 +140,9 @@ const BookingScreen = ({ navigation }) => {
 	return (
 		<Background>
 			<View
-				style={
-					{
-						// backgroundColor: theme.colors.surface
-					}
-				}
+				style={{
+					backgroundColor: theme.colors.surface,
+				}}
 				className="h-full p-0 items-center"
 			>
 				{/* modal */}
@@ -169,14 +165,14 @@ const BookingScreen = ({ navigation }) => {
 						<View
 							style={{
 								backgroundColor: theme.colors.surface,
-								borderRadius: 30,
+								borderRadius: 10,
 								shadowOffset: {
 									width: 0,
 									height: 2,
 								},
 								shadowColor: theme.colors.shadow,
 								shadowRadius: 4,
-								elevation: 5,
+								elevation: 10,
 								width: "90%",
 							}}
 							className="h-3/4 py-3"
@@ -216,7 +212,7 @@ const BookingScreen = ({ navigation }) => {
 													key={_id}
 													activeOpacity={0.7}
 													onPress={() => {
-														setSpace(name);
+														setSpace({ name: name, id: _id });
 														setModalVisible(!modalVisible);
 													}}
 												>
@@ -283,7 +279,7 @@ const BookingScreen = ({ navigation }) => {
 									style={{ color: theme.colors.darker }}
 									className="font-semibold text-base"
 								>
-									{space === null ? "Select Parking Space" : space}
+									{space === null ? "Select Parking Space" : space.name}
 								</Text>
 								{space === null && (
 									<EvilIcons

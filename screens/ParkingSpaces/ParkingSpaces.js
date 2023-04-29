@@ -12,7 +12,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import Background from "../../components/Background";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { theme } from "../../core/theme";
-import * as api from "../../api/parkingSpacesReuests";
 
 const ParkingSpaces = ({ navigation }) => {
 	const [loading, setLoading] = useState(true); //loading
@@ -77,7 +76,12 @@ const ParkingSpaces = ({ navigation }) => {
 
 	return (
 		<Background>
-			<View className="h-full p-0 items-center">
+			<View
+				className="h-full p-0 items-center"
+				style={{
+					backgroundColor: theme.colors.surface,
+				}}
+			>
 				{/* HEADER */}
 				<View
 					style={{

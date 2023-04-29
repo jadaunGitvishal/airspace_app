@@ -18,12 +18,25 @@ import {
 } from "@expo/vector-icons";
 import { theme } from "../core/theme";
 import { LinearGradient } from "expo-linear-gradient";
+import * as api from "../api/userRequests";
+import { logOut, useDispatch } from "../features/userSlice";
 
 const Sidebar = ({ navigation }) => {
+	const dispatch = useDispatch();
+	async function handleLogout(params) {
+		try {
+			const { data } = await api.logoutUser();
+			console.log(data);
+			dispatch(logOut());
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
 	return (
 		<Background>
 			<View
-				style={{ backgroundColor: theme.colors.bg0 }}
+				style={{ backgroundColor: theme.colors.surface }}
 				className="h-full w-full"
 			>
 				{/* HEADER */}
@@ -275,9 +288,9 @@ const Sidebar = ({ navigation }) => {
 
 					{/* logout */}
 					<TouchableOpacity
-						activeOpacity={0.9}
+						activeOpacity={0.8}
 						className="w-full flex-row items-center mb-3 mt-auto"
-						onPress={() => {}}
+						onPress={() => handleLogout()}
 					>
 						<View
 							style={{ backgroundColor: theme.colors.bg1 }}

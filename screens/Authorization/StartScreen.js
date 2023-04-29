@@ -11,15 +11,6 @@ const StartScreen = ({ navigation }) => {
 	return (
 		<Background>
 			<View className="h-full px-10 items-center justify-center">
-				<StatusBar
-					animated={true}
-					backgroundColor={theme.colors.background}
-					barStyle={"dark-content"}
-					showHideTransition={"fade"}
-					// translucent={true}
-					// hidden={true}
-				/>
-
 				<Logo size={140} />
 
 				<Heading>Air Space</Heading>
