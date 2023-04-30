@@ -28,6 +28,8 @@ const LoginScreen = ({ navigation }) => {
 			return;
 		}
 
+		setLoading(true);
+
 		try {
 			const { data } = await api.loginUser({
 				email: email.value,
@@ -45,16 +47,19 @@ const LoginScreen = ({ navigation }) => {
 				console.log("No user found");
 				Alert.alert("Error", "User not found.");
 			}
+
+			setLoading(false);
 		} catch (error) {
 			console.log("=> Error");
 			console.log(error);
 			Alert.alert("Error", error?.response?.data?.message);
+			setLoading(false);
 		}
 	};
 
 	return (
 		<Background>
-			{loading ? (
+			{loading === true ? (
 				<View className="h-full flex-col justify-center">
 					<ActivityIndicator size={45} color={theme.colors.bg0} />
 				</View>
@@ -97,6 +102,7 @@ const LoginScreen = ({ navigation }) => {
 						style={{ backgroundColor: theme.colors.main }}
 						mode="contained"
 						onPress={() => onLoginPressed()}
+						disabled={loading}
 					>
 						Login
 					</Button>

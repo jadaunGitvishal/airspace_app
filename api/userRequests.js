@@ -1,5 +1,5 @@
 import axios from "axios";
-const mainUrl = "http://192.168.211.51:4000/api/v1/user";
+const mainUrl = "http://192.168.18.14:4000/api/v1/user";
 const userUrl = mainUrl;
 
 const config = {
@@ -16,3 +16,7 @@ export const logoutUser = () => axios.get(`${userUrl}/logout`, config);
 
 // Load User
 export const loadUser = () => axios.get(`${userUrl}/load/me`, config);
+
+// Register User
+export const registerUser = (data) =>
+	axios.post(`${userUrl}/new`, data, config);

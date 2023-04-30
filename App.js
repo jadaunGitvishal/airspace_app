@@ -5,7 +5,7 @@ import AppStack from "./core/navigation/AppStack.js";
 import AuthStack from "./core/navigation/AuthStack.js";
 
 import { theme, darkTheme } from "./core/theme";
-import { StatusBar } from "react-native";
+import { ActivityIndicator, StatusBar, View } from "react-native";
 
 import { Provider as ReduxProvider } from "react-redux";
 import { store } from "./app/store.js";
@@ -80,7 +80,17 @@ function MainComponent() {
 			/>
 
 			<NavigationContainer>
-				{user !== null ? <AppStack /> : <AuthStack />}
+				{loading === false ? (
+					user !== null ? (
+						<AppStack />
+					) : (
+						<AuthStack />
+					)
+				) : (
+					<View className="h-full flex-col justify-center">
+						<ActivityIndicator size={45} color={theme.colors.bg0} />
+					</View>
+				)}
 			</NavigationContainer>
 		</>
 	);
