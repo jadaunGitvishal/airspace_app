@@ -13,8 +13,7 @@ import {
 	View,
 } from "react-native";
 import { theme } from "../core/theme";
-import { LinearGradient } from "expo-linear-gradient";
-import { Ionicons, Octicons } from "@expo/vector-icons";
+import { Octicons } from "@expo/vector-icons";
 import * as api from "../api/userRequests";
 
 export default function NotificationsScreen({ navigation }) {

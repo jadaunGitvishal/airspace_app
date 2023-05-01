@@ -38,7 +38,7 @@ const Dashboard = ({ navigation }) => {
 		async function fetchData() {
 			try {
 				const { data } = await api.getUserDashboard();
-				console.log(data);
+				// console.log(data);
 
 				if (data.success === true) {
 					setDashboardData(data.data);

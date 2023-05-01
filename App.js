@@ -18,6 +18,8 @@ import {
 	useSelector,
 } from "./features/userSlice.js";
 import * as api from "./api/userRequests.js";
+import * as Notifications from "expo-notifications";
+import dataUpdateWithNotificationSocket from "./socket/notificationSocket.js";
 
 const App = () => {
 	return (
@@ -37,6 +39,9 @@ function MainComponent() {
 	const dispatch = useDispatch();
 	const { user, loading } = useSelector(selectUser);
 
+	//
+	//
+	// check login status
 	useEffect(() => {
 		async function fetchData() {
 			try {
@@ -62,8 +67,43 @@ function MainComponent() {
 		fetchData();
 	}, []);
 
+	//
+	//
+	// notifications
+	Notifications.setNotificationHandler({
+		handleNotification: async () => ({
+			shouldShowAlert: true,
+			shouldPlaySound: true,
+			shouldSetBadge: true,
+		}),
+	});
 	useEffect(() => {
-		console.log("=> " + JSON.stringify(user) + " | " + loading);
+		async function notify(data) {
+			console.log(data);
+			await Notifications.scheduleNotificationAsync({
+				content: {
+					title: "Expo Notification",
+					body: data?.updateDescription.updatedFields?.text ?? "Gandu",
+					data: { someData: "goes here" },
+				},
+				trigger: {
+					seconds: 1,
+					channelId: "default",
+				},
+			});
+			// get exact data
+		}
+		// notify();
+
+		// socket update
+		dataUpdateWithNotificationSocket(notify);
+	}, [user]);
+
+	//
+	//
+	// print data
+	useEffect(() => {
+		// console.log("=> " + JSON.stringify(user) + " | " + loading);
 	}, [user, loading]);
 
 	return (
