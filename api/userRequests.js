@@ -1,6 +1,7 @@
 import axios from "axios";
-const mainUrl = "http://192.168.18.14:4000/api/v1/user";
-const userUrl = mainUrl;
+const mainUrl = "http://192.168.18.14:4000/api/v1";
+const userUrl = mainUrl + "/user";
+const psUrl = mainUrl + "/ps";
 
 const config = {
 	headers: { "Content-Type": "multipart/form-data" },
@@ -33,3 +34,9 @@ export const getHistory = () => axios.get(`${userUrl}/history`, config);
 // Get Notifications
 export const getNotifications = () =>
 	axios.get(`${userUrl}/notifications`, config);
+
+// Get All Parking Spaces
+export const getAllParkingSpaces = () => axios.get(`${psUrl}/all`);
+
+// Get Parking Details
+export const getParkingSpaceDetails = (id) => axios.get(`${psUrl}/get/${id}`);

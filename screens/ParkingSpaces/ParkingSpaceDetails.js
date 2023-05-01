@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
-import MenuButton from "../../components/Button/MenuButton";
 import Background from "../../components/Background";
 import BackButtonSimple from "../../components/Button/BackButtonSimple";
-import Button from "../../components/Button/Button";
 import {
 	Text,
 	TouchableOpacity,
 	View,
 	ActivityIndicator,
 	Image,
-	StyleSheet,
 } from "react-native";
 import { theme } from "../../core/theme";
-import { LinearGradient } from "expo-linear-gradient";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { ScrollView } from "react-native-gesture-handler";
+import * as api from "../../api/userRequests";
 
 export default function ParkingSpaceDetails({ route, navigation }) {
 	const { spaceId } = route.params;
@@ -22,61 +19,9 @@ export default function ParkingSpaceDetails({ route, navigation }) {
 
 	useEffect(() => {
 		const getData = async () => {
-			// const { data } = await api.fetchParkingDetails(spaceId);
-			// setParkingSpace(data.parkingDetails);
-			setParkingSpace({
-				_id: "6416efe4e2f589a5f347f76c",
-				name: "Iqra Unievrsity Islamabad",
-				phone: "03000000007",
-				email: "iqra_uni@gmail.com",
-				address: "Park Road, Chattha Bakhtawar, Chak Shehzad, Islamabad",
-				city: "Islamabad",
-				coordinates: {
-					longitude: "73.04536630273354",
-					latitude: "33.6641293",
-				},
-				slots: {
-					total: 50,
-					shaded: 50,
-					reservation: 30,
-				},
-				timings: {
-					to: "10:00",
-					from: "07:00",
-				},
-				availability: {
-					mon: true,
-					tue: true,
-					wed: true,
-					thu: true,
-					fri: false,
-					sat: false,
-					sun: false,
-				},
-				img1: {
-					public_id: "airspace-images/muqe5ug8bvpy4txh9gvx",
-					url: "http://res.cloudinary.com/abhecomsite/image/upload/v1679237906/airspace-images/muqe5ug8bvpy4txh9gvx.jpg",
-				},
-				img2: {
-					public_id: "airspace-images/vn2fnkpjcj70a7iuha8z",
-					url: "http://res.cloudinary.com/abhecomsite/image/upload/v1679237908/airspace-images/vn2fnkpjcj70a7iuha8z.jpg",
-				},
-				img3: {
-					public_id: "airspace-images/qzyli8qdgctbjvitsqbc",
-					url: "http://res.cloudinary.com/abhecomsite/image/upload/v1679236854/airspace-images/qzyli8qdgctbjvitsqbc.jpg",
-				},
-				normalPrice: 400,
-				peakPercentage: 20,
-				fillPercentage: 80,
-				admins: [
-					{
-						admin_id: "6430c15a80cc8a53dba54bae",
-						_id: "6430c15a80cc8a53dba54bb0",
-					},
-				],
-				createdAt: "2023-03-19T11:20:04.407Z",
-				updatedAt: "2023-04-08T01:20:26.997Z",
-			});
+			const { data } = await api.getParkingSpaceDetails(spaceId);
+			console.log(data.data);
+			setParkingSpace(data.data);
 		};
 		getData();
 	}, []);
@@ -137,15 +82,15 @@ export default function ParkingSpaceDetails({ route, navigation }) {
 								<View className="flex-row items-center justify-between mb-5">
 									<Image
 										className="w-[30%] aspect-square rounded bg-gray-200"
-										source={{ uri: parkingSpace.img1.url }}
+										source={{ uri: parkingSpace?.img1?.url }}
 									/>
 									<Image
 										className="w-[30%] aspect-square rounded bg-gray-200"
-										source={{ uri: parkingSpace.img2.url }}
+										source={{ uri: parkingSpace?.img2?.url }}
 									/>
 									<Image
 										className="w-[30%] aspect-square rounded bg-gray-200"
-										source={{ uri: parkingSpace.img3.url }}
+										source={{ uri: parkingSpace?.img3?.url }}
 									/>
 								</View>
 
@@ -173,7 +118,7 @@ export default function ParkingSpaceDetails({ route, navigation }) {
 											style={{ color: theme.colors.dark }}
 											className="text-justify mb-4"
 										>
-											{parkingSpace.address}
+											{parkingSpace?.address}
 										</Text>
 
 										<Text
@@ -187,7 +132,7 @@ export default function ParkingSpaceDetails({ route, navigation }) {
 											style={{ color: theme.colors.dark }}
 											className="text-justify mb-4"
 										>
-											{parkingSpace.email}
+											{parkingSpace?.email}
 										</Text>
 
 										<Text
@@ -201,7 +146,7 @@ export default function ParkingSpaceDetails({ route, navigation }) {
 											style={{ color: theme.colors.dark }}
 											className="text-justify mb-4"
 										>
-											{parkingSpace.phone}
+											{parkingSpace?.phone}
 										</Text>
 									</TouchableOpacity>
 								</View>
@@ -233,7 +178,7 @@ export default function ParkingSpaceDetails({ route, navigation }) {
 												}}
 												className="font-medium"
 											>
-												{parkingSpace.slots.total} Parking Slots
+												{parkingSpace?.totalSlots} Parking Slots
 											</Text>
 										</View>
 
@@ -251,7 +196,7 @@ export default function ParkingSpaceDetails({ route, navigation }) {
 												}}
 												className="font-medium"
 											>
-												{parkingSpace.slots.shaded} Shaded
+												{parkingSpace?.shadedSlots} Shaded
 											</Text>
 										</View>
 
@@ -269,7 +214,7 @@ export default function ParkingSpaceDetails({ route, navigation }) {
 												}}
 												className="font-medium"
 											>
-												{parkingSpace.slots.reservation} Reservation Slots
+												{parkingSpace?.paidSlots} Reservation Slots
 											</Text>
 										</View>
 									</TouchableOpacity>
@@ -298,7 +243,7 @@ export default function ParkingSpaceDetails({ route, navigation }) {
 										<View className="flex-row items-center justify-center mt-2">
 											<View
 												style={{
-													backgroundColor: parkingSpace.availability.mon
+													backgroundColor: parkingSpace?.mon
 														? theme.colors.greenBg
 														: theme.colors.dark,
 												}}
@@ -308,7 +253,7 @@ export default function ParkingSpaceDetails({ route, navigation }) {
 											</View>
 											<View
 												style={{
-													backgroundColor: parkingSpace.availability.tue
+													backgroundColor: parkingSpace?.tue
 														? theme.colors.greenBg
 														: theme.colors.dark,
 												}}
@@ -318,7 +263,7 @@ export default function ParkingSpaceDetails({ route, navigation }) {
 											</View>
 											<View
 												style={{
-													backgroundColor: parkingSpace.availability.wed
+													backgroundColor: parkingSpace?.wed
 														? theme.colors.greenBg
 														: theme.colors.dark,
 												}}
@@ -328,7 +273,7 @@ export default function ParkingSpaceDetails({ route, navigation }) {
 											</View>
 											<View
 												style={{
-													backgroundColor: parkingSpace.availability.thu
+													backgroundColor: parkingSpace?.thu
 														? theme.colors.greenBg
 														: theme.colors.dark,
 												}}
@@ -338,7 +283,7 @@ export default function ParkingSpaceDetails({ route, navigation }) {
 											</View>
 											<View
 												style={{
-													backgroundColor: parkingSpace.availability.fri
+													backgroundColor: parkingSpace?.fri
 														? theme.colors.greenBg
 														: theme.colors.dark,
 												}}
@@ -348,7 +293,7 @@ export default function ParkingSpaceDetails({ route, navigation }) {
 											</View>
 											<View
 												style={{
-													backgroundColor: parkingSpace.availability.sat
+													backgroundColor: parkingSpace?.sat
 														? theme.colors.greenBg
 														: theme.colors.dark,
 												}}
@@ -358,7 +303,7 @@ export default function ParkingSpaceDetails({ route, navigation }) {
 											</View>
 											<View
 												style={{
-													backgroundColor: parkingSpace.availability.sun
+													backgroundColor: parkingSpace?.sun
 														? theme.colors.greenBg
 														: theme.colors.dark,
 												}}

@@ -12,6 +12,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import Background from "../../components/Background";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { theme } from "../../core/theme";
+import * as api from "../../api/userRequests";
 
 const ParkingSpaces = ({ navigation }) => {
 	const [loading, setLoading] = useState(true); //loading
@@ -64,11 +65,15 @@ const ParkingSpaces = ({ navigation }) => {
 		updateList();
 	}, [search]);
 
+	// Add click & impression
+	async function addClick(type) {}
+
 	// Get Data
 	useEffect(() => {
 		const getData = async () => {
-			// const { data } = await api.fetchAllParkings();
-			// setParkingSpaces(data.allParkings);
+			const { data } = await api.getAllParkingSpaces();
+			// console.log(data.data);
+			setParkingSpaces(data.data);
 			setLoading(false);
 		};
 		getData();
@@ -131,7 +136,7 @@ const ParkingSpaces = ({ navigation }) => {
 							{/* Cards */}
 							{loading === false ? (
 								parkingSpaces.length > 0 ? (
-									parkingSpaces.map(({ _id, name, city, location }) => (
+									parkingSpaces.map(({ _id, name, city, address }) => (
 										<TouchableOpacity
 											key={_id}
 											activeOpacity={0.9}
@@ -211,7 +216,7 @@ const ParkingSpaces = ({ navigation }) => {
 															/>
 														</View>
 														<Text className="ml-2 pr-10 break-words">
-															{location}
+															{address}
 														</Text>
 													</View>
 												</View>
