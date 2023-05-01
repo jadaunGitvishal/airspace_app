@@ -11,10 +11,12 @@ import {
 	TouchableOpacity,
 	View,
 	ActivityIndicator,
+	Alert,
 } from "react-native";
 import { theme } from "../core/theme";
 import { Ionicons } from "@expo/vector-icons";
 import psMarker from "../assets/parkingMarker.png";
+import * as api from "../api/userRequests";
 
 const GOOGLE_MAPS_APIKEY = "AIzaSyDJ-L92KULtVlHgF8rEfwITLzF_xibHtxc";
 const directionsMode = "driving";
@@ -33,7 +35,7 @@ export default function NearbyScreen({ navigation }) {
 
 	// get current location
 	useEffect(() => {
-		(async () => {
+		async function getLocation() {
 			setTimeout(async () => {
 				let { status } = await Location.requestForegroundPermissionsAsync();
 				if (status !== "granted") {
@@ -41,10 +43,20 @@ export default function NearbyScreen({ navigation }) {
 					return;
 				}
 
-				let location = await Location.getCurrentPositionAsync({});
-				setLocation(location);
+				try {
+					let location = await Location.getCurrentPositionAsync({});
+					setLocation(location);
+				} catch (error) {
+					Alert.alert(
+						"Permission Denied",
+						"Location request failed due to unsatisfied device settings."
+					);
+					navigation.goBack();
+				}
 			}, 500);
-		})();
+		}
+
+		getLocation();
 	}, []);
 
 	// update parking markers & distance
@@ -111,17 +123,20 @@ export default function NearbyScreen({ navigation }) {
 
 	// fetch data
 	useEffect(() => {
-		function fetchData() {
-			setParkings([
-				{
-					name: "Iqra Uni",
-					latlng: { latitude: 33.6641293, longitude: 73.0453663 },
-				},
-				{
-					name: "Cui",
-					latlng: { latitude: 33.6515371, longitude: 73.1558874 },
-				},
-			]);
+		async function fetchData() {
+			try {
+				const { data } = await api.getNearbyPs();
+				// console.log(data);
+
+				if (data.success === true) {
+					setParkings(data.data);
+				} else {
+					console.log("An Error Occured");
+				}
+			} catch (error) {
+				console.log("=> Error");
+				console.log(error);
+			}
 
 			setTimeout(() => {
 				setLoading(false);
@@ -193,7 +208,7 @@ export default function NearbyScreen({ navigation }) {
 
 						{loading === false ? (
 							<View className="flex-1 w-full">
-								{errorMsg && (
+								{errorMsg !== null && (
 									<View className="h-full flex-col justify-center">
 										<Text>{errorMsg}</Text>
 									</View>

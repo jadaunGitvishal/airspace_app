@@ -41,7 +41,7 @@ function MainComponent() {
 		async function fetchData() {
 			try {
 				const { data } = await api.loadUser();
-				console.log(data);
+				// console.log(data);
 
 				if (data) {
 					dispatch(

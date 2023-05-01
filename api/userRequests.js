@@ -20,3 +20,16 @@ export const loadUser = () => axios.get(`${userUrl}/load/me`, config);
 // Register User
 export const registerUser = (data) =>
 	axios.post(`${userUrl}/new`, data, config);
+
+// Get User Dashboard
+export const getUserDashboard = () => axios.get(`${userUrl}/dashboard`, config);
+
+// Get Nearby Ps
+export const getNearbyPs = () => axios.get(`${userUrl}/nearby`, config);
+
+// Get History
+export const getHistory = () => axios.get(`${userUrl}/history`, config);
+
+// Get Notifications
+export const getNotifications = () =>
+	axios.get(`${userUrl}/notifications`, config);

@@ -19,7 +19,7 @@ const LoginScreen = ({ navigation }) => {
 	const [email, setEmail] = useState({ value: "", error: "" });
 	const [password, setPassword] = useState({ value: "", error: "" });
 
-	const onLoginPressed = async () => {
+	const handleLogin = async () => {
 		const emailError = emailValidator(email.value);
 		const passwordError = passwordValidator(password.value);
 		if (emailError || passwordError) {
@@ -101,7 +101,7 @@ const LoginScreen = ({ navigation }) => {
 					<Button
 						style={{ backgroundColor: theme.colors.main }}
 						mode="contained"
-						onPress={() => onLoginPressed()}
+						onPress={() => handleLogin()}
 						disabled={loading}
 					>
 						Login

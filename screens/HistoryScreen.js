@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Background from "../components/Background";
 import BackButtonSimple from "../components/Button/BackButtonSimple";
 import {
+	ActivityIndicator,
 	ScrollView,
 	StatusBar,
 	Text,
@@ -9,10 +10,40 @@ import {
 	View,
 } from "react-native";
 import { theme } from "../core/theme";
-import { LinearGradient } from "expo-linear-gradient";
-import { Ionicons, Octicons } from "@expo/vector-icons";
+import * as api from "../api/userRequests";
 
 export default function HistoryScreen({ navigation }) {
+	const [loading, setLoading] = useState(false);
+	const [history, setHistory] = useState([]);
+
+	// fetch data
+	useEffect(() => {
+		async function fetchData() {
+			setLoading(true);
+			try {
+				const { data } = await api.getHistory();
+				console.log(data);
+
+				if (data.success === true) {
+					setHistory(data.data);
+				} else {
+					console.log("An Error Occured");
+				}
+				setLoading(false);
+			} catch (error) {
+				console.log("=> Error");
+				console.log(error);
+				setLoading(false);
+			}
+
+			setTimeout(() => {
+				setLoading(false);
+			}, 1000);
+		}
+
+		fetchData();
+	}, []);
+
 	return (
 		<Background>
 			<View
@@ -65,59 +96,69 @@ export default function HistoryScreen({ navigation }) {
 						activeOpacity={1}
 						className="h-full w-full p-6 pt-10 items-center"
 					>
-						{[1, 2, 3, 4, 5, 6].map(() => (
-							<TouchableOpacity
-								activeOpacity={0.8}
-								style={{
-									backgroundColor: theme.colors.surface,
-									shadowColor: theme.colors.shadow,
-									elevation: 6,
-									borderRadius: 15,
-								}}
-								className="w-full px-4 py-6 flex-col my-3"
-							>
-								<View className="flex-row justify-between items-center">
+						{loading === true ? (
+							<View className="h-full flex-col justify-center">
+								<ActivityIndicator size={45} color={theme.colors.bg0} />
+							</View>
+						) : (
+							history.map((h, i) => (
+								<TouchableOpacity
+									key={i}
+									activeOpacity={0.8}
+									style={{
+										backgroundColor: theme.colors.surface,
+										shadowColor: theme.colors.shadow,
+										elevation: 6,
+										borderRadius: 15,
+									}}
+									className="w-full px-4 py-6 flex-col my-3"
+								>
+									<View className="flex-row justify-between items-center">
+										<Text
+											style={{ color: theme.colors.darker }}
+											className="font-medium"
+										>
+											{h.date}
+										</Text>
+
+										<Text
+											style={{ color: theme.colors.darker }}
+											className="font-medium"
+										>
+											{h.day}
+										</Text>
+									</View>
+
 									<Text
 										style={{ color: theme.colors.darker }}
-										className="font-medium"
+										className="text-base font-medium uppercase"
 									>
-										25-11-2022
+										{h.psName}
 									</Text>
+
 									<Text
 										style={{ color: theme.colors.darker }}
-										className="font-medium"
+										className="text-base mt-2 uppercase"
 									>
-										Mon
+										- {h.vehicleNo}
 									</Text>
-								</View>
 
-								<Text
-									style={{ color: theme.colors.darker }}
-									className="text-base font-medium uppercase"
-								>
-									COMSATS UNIVERSITY ISLAMABAD
-								</Text>
+									<Text
+										style={{ color: theme.colors.darker }}
+										className="text-base uppercase"
+									>
+										- {h.time}
+									</Text>
 
-								<Text
-									style={{ color: theme.colors.darker }}
-									className="text-base mt-2 uppercase"
-								>
-									- RIR 6798
-								</Text>
-								<Text
-									style={{ color: theme.colors.darker }}
-									className="text-base uppercase"
-								>
-									- 64A
-								</Text>
-								<Text
-									style={{ color: theme.colors.darker }}
-									className="text-base uppercase"
-								>
-									- 08:40AM - 02:30PM
-								</Text>
-							</TouchableOpacity>
-						))}
+									<Text
+										style={{ color: theme.colors.darker }}
+										className="text-base uppercase"
+									>
+										- {h.activityType}
+									</Text>
+								</TouchableOpacity>
+							))
+						)}
 					</TouchableOpacity>
 				</ScrollView>
 			</View>
