@@ -79,6 +79,8 @@ function MainComponent() {
 	});
 	useEffect(() => {
 		async function notify(data) {
+			console.log(user);
+			console.log(data);
 			if (data?.forAll === false && data?.user !== user?.user?._id) {
 				return;
 			}
@@ -97,7 +99,7 @@ function MainComponent() {
 
 		// socket update
 		dataUpdateWithNotificationSocket(notify);
-	}, []);
+	}, [user]);
 
 	//
 	//

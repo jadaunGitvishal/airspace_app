@@ -26,7 +26,7 @@ export default function NotificationsScreen({ navigation }) {
 			setLoading(true);
 			try {
 				const { data } = await api.getNotifications();
-				console.log(data);
+				// console.log(data);
 
 				if (data.success === true) {
 					setNotifications(data.data);

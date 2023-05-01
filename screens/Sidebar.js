@@ -19,10 +19,17 @@ import {
 import { theme } from "../core/theme";
 import { LinearGradient } from "expo-linear-gradient";
 import * as api from "../api/userRequests";
-import { logOut, useDispatch } from "../features/userSlice";
+import {
+	logOut,
+	selectUser,
+	useDispatch,
+	useSelector,
+} from "../features/userSlice";
 
 const Sidebar = ({ navigation }) => {
 	const dispatch = useDispatch();
+	const { user, loading } = useSelector(selectUser);
+
 	async function handleLogout(params) {
 		try {
 			const { data } = await api.logoutUser();
@@ -109,8 +116,8 @@ const Sidebar = ({ navigation }) => {
 									// 	height: null,
 									// 	resizeMode: "contain",
 									// }}
-									className="w-full flex-1 object-contain"
-									source={require("../assets/user.jpeg")}
+									className="w-full flex-1 object-contain bg-gray-400"
+									source={{ uri: user?.user?.image?.url }}
 								/>
 							</View>
 
@@ -121,7 +128,7 @@ const Sidebar = ({ navigation }) => {
 									}}
 									className="text-black text-base uppercase font-semibold"
 								>
-									ABDUL HAMEED
+									{user?.user?.name}
 								</Text>
 								<Text
 									style={{
@@ -129,7 +136,7 @@ const Sidebar = ({ navigation }) => {
 									}}
 									className="text-black text-sm uppercase font-semibold"
 								>
-									0343 2344665
+									{user?.user?.phone}
 								</Text>
 								<Text
 									style={{
@@ -137,7 +144,7 @@ const Sidebar = ({ navigation }) => {
 									}}
 									className="text-black text-xs font-semibold"
 								>
-									abdulhameedkhan@gmail.com
+									{user?.user?.email}
 								</Text>
 							</View>
 						</TouchableOpacity>
