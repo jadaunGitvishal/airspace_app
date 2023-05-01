@@ -19,7 +19,7 @@ import {
 } from "./features/userSlice.js";
 import * as api from "./api/userRequests.js";
 import * as Notifications from "expo-notifications";
-import dataUpdateWithNotificationSocket from "./socket/notificationSocket.js";
+import dataUpdateWithNotificationSocket from "./socket/pushNotificationSocket.js";
 
 const App = () => {
 	return (
@@ -79,32 +79,32 @@ function MainComponent() {
 	});
 	useEffect(() => {
 		async function notify(data) {
-			console.log(data);
+			if (data?.forAll === false && data?.user !== user?.user?._id) {
+				return;
+			}
+
 			await Notifications.scheduleNotificationAsync({
 				content: {
-					title: "Expo Notification",
-					body: data?.updateDescription.updatedFields?.text ?? "Gandu",
-					data: { someData: "goes here" },
+					title: data?.title,
+					body: data?.text,
 				},
 				trigger: {
 					seconds: 1,
 					channelId: "default",
 				},
 			});
-			// get exact data
 		}
-		// notify();
 
 		// socket update
 		dataUpdateWithNotificationSocket(notify);
-	}, [user]);
+	}, []);
 
 	//
 	//
 	// print data
-	useEffect(() => {
-		// console.log("=> " + JSON.stringify(user) + " | " + loading);
-	}, [user, loading]);
+	// useEffect(() => {
+	// console.log("=> " + JSON.stringify(user) + " | " + loading);
+	// }, [user, loading]);
 
 	return (
 		<>
