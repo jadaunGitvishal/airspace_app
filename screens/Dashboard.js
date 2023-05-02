@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import {
 	ActivityIndicator,
+	Alert,
 	Image,
-	Pressable,
 	ScrollView,
-	StatusBar,
 	Text,
 	TouchableOpacity,
 	View,
@@ -13,8 +12,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import Background from "../components/Background";
 import ProfileButton from "../components/Button/ProfileButton";
 import * as Progress from "react-native-progress";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { useTheme } from "react-native-paper";
 import {
 	Ionicons,
@@ -27,6 +24,7 @@ import * as api from "../api/userRequests";
 
 const Dashboard = ({ navigation }) => {
 	const theme = useTheme();
+	const [isLoading, setIsLoading] = useState(false);
 	const { user, loading } = useSelector(selectUser);
 	const [dashboardData, setDashboardData] = useState({});
 
@@ -44,11 +42,17 @@ const Dashboard = ({ navigation }) => {
 					setDashboardData(data.data);
 					calculateTime(data.data.from, data.data.to);
 				} else {
-					console.log("An Error Occured");
+					Alert.alert("Error", "Data not found.");
 				}
+				setIsLoading(false);
 			} catch (error) {
 				console.log("=> Error");
 				console.log(error);
+				Alert.alert(
+					"Error",
+					error?.response?.data?.message ?? "An error occured."
+				);
+				setIsLoading(false);
 			}
 		}
 		fetchData();

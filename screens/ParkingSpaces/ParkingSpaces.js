@@ -7,6 +7,7 @@ import {
 	View,
 	ActivityIndicator,
 	TextInput,
+	Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Background from "../../components/Background";
@@ -16,43 +17,11 @@ import * as api from "../../api/userRequests";
 
 const ParkingSpaces = ({ navigation }) => {
 	const [loading, setLoading] = useState(true); //loading
-	const [allSpaces, setAllSpaces] = useState(true);
-	const [allParkingSpaces, setAllParkingSpaces] = useState([
-		{
-			_id: 123,
-			name: "Comsats University Islamabad",
-			city: "Islamabad",
-			location: "Park Road, Chak Shehzad, Islamabad",
-		},
-		{
-			_id: 3,
-			name: "Hamdard University Islamabad",
-			city: "Islamabad",
-			location: "Park Road, Chak Shehzad, Islamabad",
-		},
-		{
-			_id: 2,
-			name: "Abasym University Islamabad",
-			city: "Islamabad",
-			location: "Park Road, Chak Shehzad, Islamabad",
-		},
-		{
-			_id: 0,
-			name: "Quaid-e-Azam University Islamabad",
-			city: "Islamabad",
-			location: "Murree Road, Islamabad",
-		},
-		{
-			_id: 9,
-			name: "NUST University Islamabad",
-			city: "Islamabad",
-			location: "Sector H11, Islamabad",
-		},
-	]);
+	const [allParkingSpaces, setAllParkingSpaces] = useState([]);
 
 	// Search
 	const [search, setSearch] = useState("");
-	const [parkingSpaces, setParkingSpaces] = useState(allParkingSpaces);
+	const [parkingSpaces, setParkingSpaces] = useState([]);
 	useEffect(() => {
 		function updateList() {
 			var tempList = allParkingSpaces.filter(
@@ -66,18 +35,40 @@ const ParkingSpaces = ({ navigation }) => {
 	}, [search]);
 
 	// Add click & impression
-	async function addClick(type) {}
+	async function addClick(psId, type) {
+		const { data } = await api.createClickAndImpression({
+			parkingSpace: psId,
+			clickType: type,
+		});
+	}
 
 	// Get Data
 	useEffect(() => {
 		const getData = async () => {
-			const { data } = await api.getAllParkingSpaces();
-			// console.log(data.data);
-			setParkingSpaces(data.data);
-			setLoading(false);
+			try {
+				const { data } = await api.getAllParkingSpaces();
+				if (data) {
+					setAllParkingSpaces(data.data);
+					setParkingSpaces(data.data);
+					data.data.forEach((ps) => {
+						addClick(ps._id, "impression");
+					});
+				} else {
+					Alert.alert("Error", "Data not found.");
+				}
+				setLoading(false);
+			} catch (error) {
+				console.log("=> Error");
+				console.log(error);
+				Alert.alert(
+					"Error",
+					error?.response?.data?.message ?? "An error occured."
+				);
+				setLoading(false);
+			}
 		};
 		getData();
-	}, [allSpaces]);
+	}, []);
 
 	return (
 		<Background>
@@ -141,11 +132,12 @@ const ParkingSpaces = ({ navigation }) => {
 											key={_id}
 											activeOpacity={0.9}
 											className="h-40 mb-5 w-full "
-											onPress={() =>
+											onPress={() => {
+												addClick(_id, "click");
 												navigation.navigate("ParkingSpaceDetails", {
 													spaceId: _id,
-												})
-											}
+												});
+											}}
 										>
 											<View
 												style={{

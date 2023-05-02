@@ -6,6 +6,7 @@ import Button from "../components/Button/Button";
 import TextInput from "../components/Input/TextInput";
 import {
 	ActivityIndicator,
+	Alert,
 	ScrollView,
 	StatusBar,
 	Text,
@@ -31,12 +32,16 @@ export default function NotificationsScreen({ navigation }) {
 				if (data.success === true) {
 					setNotifications(data.data);
 				} else {
-					console.log("An Error Occured");
+					Alert.alert("Error", "Data not found.");
 				}
 				setLoading(false);
 			} catch (error) {
 				console.log("=> Error");
 				console.log(error);
+				Alert.alert(
+					"Error",
+					error?.response?.data?.message ?? "An error occured."
+				);
 				setLoading(false);
 			}
 

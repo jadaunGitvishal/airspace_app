@@ -52,7 +52,10 @@ const LoginScreen = ({ navigation }) => {
 		} catch (error) {
 			console.log("=> Error");
 			console.log(error);
-			Alert.alert("Error", error?.response?.data?.message);
+			Alert.alert(
+				"Error",
+				error?.response?.data?.message ?? "An error occured."
+			);
 			setLoading(false);
 		}
 	};

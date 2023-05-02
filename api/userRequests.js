@@ -40,3 +40,18 @@ export const getAllParkingSpaces = () => axios.get(`${psUrl}/all`);
 
 // Get Parking Details
 export const getParkingSpaceDetails = (id) => axios.get(`${psUrl}/get/${id}`);
+
+// Create Click And Impression
+export const createClickAndImpression = (data) =>
+	axios.post(`${userUrl}/click/new`, data, config);
+
+// Get All Vehicles
+export const getAllVehicles = () => axios.get(`${userUrl}/vehicles`, config);
+
+// Delete Vehicle
+export const deleteVehicle = (id) =>
+	axios.delete(`${userUrl}/vehicles/delete/${id}`, config);
+
+// Add Vehicle
+export const addVehicle = (data) =>
+	axios.post(`${userUrl}/vehicles/new`, data, config);

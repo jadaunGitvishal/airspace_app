@@ -1,83 +1,67 @@
 import React, { useState, useEffect } from "react";
-import { Alert } from "react-native";
 import Background from "../../components/Background";
 import BackButtonSimple from "../../components/Button/BackButtonSimple";
 import {
 	ScrollView,
-	StatusBar,
 	Text,
 	TouchableOpacity,
 	View,
+	ActivityIndicator,
+	Alert,
 } from "react-native";
 import { theme } from "../../core/theme";
-import { LinearGradient } from "expo-linear-gradient";
-import {
-	AntDesign,
-	MaterialIcons,
-	Ionicons,
-	MaterialCommunityIcons,
-} from "@expo/vector-icons";
+import { MaterialIcons, Ionicons } from "@expo/vector-icons";
+import * as api from "../../api/userRequests";
 
 export default function VehiclesScreen({ navigation }) {
+	const [loading, setLoading] = useState(false);
 	const [vehiclesData, setVehiclesData] = useState([]);
+	const [reload, setReload] = useState(false);
 
+	// Get Data
 	useEffect(() => {
-		function fetchData() {
-			setVehiclesData([
-				{
-					_id: "6416e56933774718df4a2e08",
-					name: "Toyota Corolla",
-					number: "ABC-123",
-					model: "2019",
-					color: "Blue",
-					owner: "641645dd6c626af96c680258",
-					createdAt: "2023-03-19T10:35:21.740Z",
-					updatedAt: "2023-03-19T10:35:21.740Z",
-				},
-				{
-					_id: "6416e56933774718df4a2e08",
-					name: "Vitz",
-					number: "XYZ-123",
-					model: "2019",
-					color: "Blue",
-					owner: "641645dd6c626af96c680258",
-					createdAt: "2023-03-19T10:35:21.740Z",
-					updatedAt: "2023-03-19T10:35:21.740Z",
-				},
-				{
-					_id: "6416e56933774718df4a2e08",
-					name: "Aqua",
-					number: "EFG-123",
-					model: "2019",
-					color: "Blue",
-					owner: "641645dd6c626af96c680258",
-					createdAt: "2023-03-19T10:35:21.740Z",
-					updatedAt: "2023-03-19T10:35:21.740Z",
-				},
-			]);
+		async function fetchData() {
+			setLoading(true);
+			try {
+				const { data } = await api.getAllVehicles();
+				if (data) {
+					setVehiclesData(data.data);
+				} else {
+					Alert.alert("Error", "Data not found.");
+				}
+				setLoading(false);
+			} catch (error) {
+				console.log("=> Error");
+				console.log(error);
+				Alert.alert(
+					"Error",
+					error?.response?.data?.message ?? "An error occured."
+				);
+				setLoading(false);
+			}
 		}
 
 		fetchData();
-	}, []);
+	}, [reload]);
 
 	// handle delete
-	function handleDelete(id, number) {
-		Alert.alert(
-			"Remove Vehicle",
-			"Are you sure to remove " + number,
-			[
-				{
-					text: "Cancel",
-					onPress: () => console.log("Cancel Pressed"),
-					style: "cancel",
-				},
-				{
-					text: "Remove",
-					onPress: () => console.log("OK Pressed"),
-				},
-			],
-			{ cancelable: false }
-		);
+	async function handleDelete(id) {
+		try {
+			const { data } = await api.deleteVehicle(id);
+			if (data) {
+				setReload(!reload);
+				console.log("Vehicle deleted");
+			} else {
+				Alert.alert("Error", "Data not found.");
+			}
+		} catch (error) {
+			console.log("=> Error");
+			console.log(error);
+			Alert.alert(
+				"Error",
+				error?.response?.data?.message ?? "An error occured."
+			);
+		}
 	}
 
 	return (
@@ -132,82 +116,105 @@ export default function VehiclesScreen({ navigation }) {
 							YOUR VEHICLES
 						</Text>
 
-						{vehiclesData?.map((v, i) => (
-							<View
-								key={i}
-								className="h-32 w-full border border-gray-100 shadow-md rounded-xl mb-4 py-4 px-5 flex-row items-center"
-								style={{
-									shadowColor: theme.colors.shadow,
-									backgroundColor: theme.colors.surface,
-								}}
-							>
-								<View className="flex-1 h-full flex-col">
-									<View className="flex-row items-center">
-										<Text
-											style={{ color: theme.colors.dark }}
-											className="text-sm font-medium"
-										>
-											Name:
-										</Text>
-										<Text
-											style={{ color: theme.colors.dark }}
-											className="text-sm pl-2"
-										>
-											{v.name}
-										</Text>
-									</View>
-
-									<View className="flex-row items-center">
-										<Text
-											style={{ color: theme.colors.dark }}
-											className="text-sm font-medium"
-										>
-											Color:
-										</Text>
-										<Text
-											style={{ color: theme.colors.dark }}
-											className="text-sm pl-2"
-										>
-											{v.color}
-										</Text>
-									</View>
-
-									<View className="flex-row items-center">
-										<Text
-											style={{ color: theme.colors.dark }}
-											className="text-sm font-medium"
-										>
-											Model:
-										</Text>
-										<Text
-											style={{ color: theme.colors.dark }}
-											className="text-sm pl-2"
-										>
-											{v.model}
-										</Text>
-									</View>
-
-									<Text
-										style={{ color: theme.colors.darker }}
-										className="text-xl mt-auto"
-									>
-										{v.number}
-									</Text>
-								</View>
-
-								<TouchableOpacity
-									activeOpacity={0.7}
-									onPress={() => handleDelete(v._id, v.number)}
-									className="bg-red-400 rounded-md p-2"
-								>
-									<MaterialIcons
-										name="delete-outline"
-										size={23}
-										color={theme.colors.surface}
-									/>
-								</TouchableOpacity>
+						{loading === true ? (
+							<View className="h-full flex-col justify-center">
+								<ActivityIndicator size={45} color={theme.colors.bg0} />
 							</View>
-						))}
+						) : (
+							vehiclesData?.map((v, i) => (
+								<View
+									key={i}
+									className="h-32 w-full border border-gray-100 shadow-md rounded-xl mb-4 py-4 px-5 flex-row items-center"
+									style={{
+										shadowColor: theme.colors.shadow,
+										backgroundColor: theme.colors.surface,
+									}}
+								>
+									<View className="flex-1 h-full flex-col">
+										<View className="flex-row items-center">
+											<Text
+												style={{ color: theme.colors.dark }}
+												className="text-sm font-medium"
+											>
+												Name:
+											</Text>
+											<Text
+												style={{ color: theme.colors.dark }}
+												className="text-sm pl-2"
+											>
+												{v.name}
+											</Text>
+										</View>
+
+										<View className="flex-row items-center">
+											<Text
+												style={{ color: theme.colors.dark }}
+												className="text-sm font-medium"
+											>
+												Color:
+											</Text>
+											<Text
+												style={{ color: theme.colors.dark }}
+												className="text-sm pl-2"
+											>
+												{v.color}
+											</Text>
+										</View>
+
+										<View className="flex-row items-center">
+											<Text
+												style={{ color: theme.colors.dark }}
+												className="text-sm font-medium"
+											>
+												Model:
+											</Text>
+											<Text
+												style={{ color: theme.colors.dark }}
+												className="text-sm pl-2"
+											>
+												{v.model}
+											</Text>
+										</View>
+
+										<Text
+											style={{ color: theme.colors.darker }}
+											className="text-xl mt-auto"
+										>
+											{v.number}
+										</Text>
+									</View>
+
+									<TouchableOpacity
+										activeOpacity={0.7}
+										onPress={() =>
+											Alert.alert(
+												"Remove Vehicle",
+												"Are you sure to remove " + v.number,
+												[
+													{
+														text: "Cancel",
+														onPress: () => console.log("Cancel Pressed"),
+														style: "cancel",
+													},
+													{
+														text: "Remove",
+														onPress: () => handleDelete(v._id),
+													},
+												],
+												{ cancelable: false }
+											)
+										}
+										className="bg-red-400 rounded-md p-2"
+									>
+										<MaterialIcons
+											name="delete-outline"
+											size={23}
+											color={theme.colors.surface}
+										/>
+									</TouchableOpacity>
+								</View>
+							))
+						)}
 					</TouchableOpacity>
 				</ScrollView>
 

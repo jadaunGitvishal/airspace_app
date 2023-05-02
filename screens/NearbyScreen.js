@@ -126,16 +126,21 @@ export default function NearbyScreen({ navigation }) {
 		async function fetchData() {
 			try {
 				const { data } = await api.getNearbyPs();
-				// console.log(data);
 
 				if (data.success === true) {
 					setParkings(data.data);
 				} else {
-					console.log("An Error Occured");
+					Alert.alert("Error", "Data not found.");
 				}
+				setLoading(false);
 			} catch (error) {
 				console.log("=> Error");
 				console.log(error);
+				Alert.alert(
+					"Error",
+					error?.response?.data?.message ?? "An error occured."
+				);
+				setLoading(false);
 			}
 
 			setTimeout(() => {

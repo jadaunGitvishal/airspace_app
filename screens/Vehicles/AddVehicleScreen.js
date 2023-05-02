@@ -1,23 +1,12 @@
 import React, { useState } from "react";
 import Background from "../../components/Background";
 import BackButtonSimple from "../../components/Button/BackButtonSimple";
-import {
-	ScrollView,
-	StatusBar,
-	Text,
-	TouchableOpacity,
-	View,
-} from "react-native";
+import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { theme } from "../../core/theme";
-import { LinearGradient } from "expo-linear-gradient";
-import {
-	AntDesign,
-	MaterialIcons,
-	Ionicons,
-	MaterialCommunityIcons,
-} from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import Button from "../../components/Button/Button";
 import TextInput from "../../components/Input/TextInput";
+import * as api from "../../api/userRequests";
 
 export default function AddVehicleScreen({ navigation }) {
 	const [name, setName] = useState({ value: "", error: "" });
@@ -25,7 +14,7 @@ export default function AddVehicleScreen({ navigation }) {
 	const [color, setColor] = useState({ value: "", error: "" });
 	const [number, setNumber] = useState({ value: "", error: "" });
 
-	const handleRegister = () => {
+	const handleRegister = async () => {
 		const nameError = checkErrors(name);
 		const modelError = checkErrors(model);
 		const colorError = checkErrors(color);
@@ -38,7 +27,30 @@ export default function AddVehicleScreen({ navigation }) {
 			return;
 		}
 
-		alert("Registered");
+		try {
+			const { data } = await api.addVehicle({
+				number: number.value.toUpperCase(),
+				name: name.value,
+				model: model.value,
+				color: color.value,
+			});
+			if (data) {
+				Alert.alert(
+					"Vehicle Registered",
+					"A new vehicle is registered with your account."
+				);
+				navigation.goBack();
+			} else {
+				Alert.alert("Error", "Data not found.");
+			}
+		} catch (error) {
+			console.log("=> Error");
+			console.log(error);
+			Alert.alert(
+				"Error",
+				error?.response?.data?.message ?? "An error occured."
+			);
+		}
 	};
 
 	const checkErrors = (inp) => {

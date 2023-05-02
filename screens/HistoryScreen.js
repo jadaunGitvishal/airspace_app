@@ -3,6 +3,7 @@ import Background from "../components/Background";
 import BackButtonSimple from "../components/Button/BackButtonSimple";
 import {
 	ActivityIndicator,
+	Alert,
 	ScrollView,
 	StatusBar,
 	Text,
@@ -27,12 +28,16 @@ export default function HistoryScreen({ navigation }) {
 				if (data.success === true) {
 					setHistory(data.data);
 				} else {
-					console.log("An Error Occured");
+					Alert.alert("Error", "Data not found.");
 				}
 				setLoading(false);
 			} catch (error) {
 				console.log("=> Error");
 				console.log(error);
+				Alert.alert(
+					"Error",
+					error?.response?.data?.message ?? "An error occured."
+				);
 				setLoading(false);
 			}
 

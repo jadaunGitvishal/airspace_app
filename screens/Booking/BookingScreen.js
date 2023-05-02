@@ -1,24 +1,18 @@
 import React, { useEffect, useState } from "react";
 import {
-	Image,
-	Pressable,
 	ScrollView,
-	StatusBar,
 	Text,
 	TouchableOpacity,
 	View,
 	Modal,
-	StyleSheet,
 	ActivityIndicator,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import Background from "../../components/Background";
 import { Ionicons, EvilIcons } from "@expo/vector-icons";
 import { theme } from "../../core/theme";
-import MenuButton from "../../components/Button/MenuButton";
-import { TextInput as PaperInput } from "react-native-paper";
 import Slot from "../../components/Slot/Slot";
 import Button from "../../components/Button/Button";
+import * as api from "../../api/userRequests";
 
 const BookingScreen = ({ navigation }) => {
 	const [loading, setLoading] = useState(true); //loading
@@ -27,38 +21,7 @@ const BookingScreen = ({ navigation }) => {
 	// slot and ps
 	const [slot, setSlot] = useState(null);
 	const [space, setSpace] = useState(null);
-	const [parkingSpaces, setParkingSpaces] = useState([
-		{
-			_id: 123,
-			name: "Comsats University Islamabad",
-			city: "Islamabad",
-			location: "Park Road, Chak Shehzad, Islamabad",
-		},
-		{
-			_id: 3,
-			name: "Hamdard University Islamabad",
-			city: "Islamabad",
-			location: "Park Road, Chak Shehzad, Islamabad",
-		},
-		{
-			_id: 2,
-			name: "Abasym University Islamabad",
-			city: "Islamabad",
-			location: "Park Road, Chak Shehzad, Islamabad",
-		},
-		{
-			_id: 0,
-			name: "Quaid-e-Azam University Islamabad",
-			city: "Islamabad",
-			location: "Murree Road, Islamabad",
-		},
-		{
-			_id: 9,
-			name: "NUST University Islamabad",
-			city: "Islamabad",
-			location: "Sector H11, Islamabad",
-		},
-	]);
+	const [parkingSpaces, setParkingSpaces] = useState([]);
 	const [slotsList, setSlotsList] = useState([
 		{
 			reserved: true,
@@ -117,8 +80,8 @@ const BookingScreen = ({ navigation }) => {
 	// Get Data
 	useEffect(() => {
 		const getData = async () => {
-			// const { data } = await api.fetchAllParkings();
-			// setParkingSpaces(data.allParkings);
+			const { data } = await api.getAllParkingSpaces();
+			setParkingSpaces(data.data);
 			setLoading(false);
 		};
 		getData();
