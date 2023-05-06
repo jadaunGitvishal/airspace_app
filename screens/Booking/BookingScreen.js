@@ -22,69 +22,47 @@ const BookingScreen = ({ navigation }) => {
 	const [slot, setSlot] = useState(null);
 	const [space, setSpace] = useState(null);
 	const [parkingSpaces, setParkingSpaces] = useState([]);
-	const [slotsList, setSlotsList] = useState([
-		{
-			reserved: true,
-			name: "1",
-		},
-		{
-			reserved: false,
-			name: "2",
-		},
-		{
-			reserved: false,
-			name: "3",
-		},
-		{
-			reserved: true,
-			name: "4",
-		},
-		{
-			reserved: false,
-			name: "5",
-		},
-		{
-			reserved: true,
-			name: "6",
-		},
-		{
-			reserved: true,
-			name: "7",
-		},
-		{
-			reserved: false,
-			name: "8",
-		},
-		{
-			reserved: false,
-			name: "8",
-		},
-		{
-			reserved: true,
-			name: "10",
-		},
-		{
-			reserved: false,
-			name: "11",
-		},
-		{
-			reserved: true,
-			name: "12",
-		},
-		{
-			reserved: false,
-			name: "13",
-		},
-	]);
+	const [slotsList, setSlotsList] = useState([]);
+
+	function handleSlots(slots) {
+		const groupedSlots = slots.reduce((acc, slot) => {
+			const { block, ...rest } = slot;
+			const existingBlock = acc.find((item) => item.block === block);
+			if (existingBlock) {
+				existingBlock.slots.push(rest);
+			} else {
+				acc.push({ block, slots: [rest] });
+			}
+			return acc;
+		}, []);
+
+		setSlotsList(groupedSlots);
+	}
 
 	// Get Data
 	useEffect(() => {
-		const getData = async () => {
-			const { data } = await api.getAllParkingSpaces();
-			setParkingSpaces(data.data);
-			setLoading(false);
-		};
-		getData();
+		async function fetchData() {
+			try {
+				setLoading(true);
+				const { data } = await api.getAllParkingSpaces();
+
+				if (data.success === true) {
+					setParkingSpaces(data.data);
+				} else {
+					Alert.alert("Error", "Data not found.");
+				}
+				setLoading(false);
+			} catch (error) {
+				console.log("=> Error");
+				console.log(error);
+				Alert.alert(
+					"Error",
+					error?.response?.data?.message ?? "An error occured."
+				);
+				setLoading(false);
+			}
+		}
+		fetchData();
 	}, []);
 
 	// continue
@@ -170,12 +148,13 @@ const BookingScreen = ({ navigation }) => {
 								<TouchableOpacity activeOpacity={1} className="h-full">
 									{loading === false ? (
 										parkingSpaces.length > 0 ? (
-											parkingSpaces.map(({ name, _id }) => (
+											parkingSpaces.map(({ name, _id, slotsArr }) => (
 												<TouchableOpacity
 													key={_id}
 													activeOpacity={0.7}
 													onPress={() => {
 														setSpace({ name: name, id: _id });
+														handleSlots(slotsArr);
 														setModalVisible(!modalVisible);
 													}}
 												>
@@ -264,29 +243,51 @@ const BookingScreen = ({ navigation }) => {
 							className="w-full flex-1 px-8"
 						>
 							<TouchableOpacity activeOpacity={1}>
-								<Text className="text-base font-semibold mt-4 mb-4 text-gray-500 border-b border-gray-300">
+								<Text className="text-base font-semibold mt-4 mb-2 text-gray-500 border-b border-gray-300">
 									SELECT A SLOT
 								</Text>
-								<View className="w-full flex-row flex-wrap items-center p-2">
+								<View className="w-full flex flex-col p-2">
 									{/* Cards */}
-									{slotsList.map(({ reserved, name }, index) => (
-										<TouchableOpacity
-											key={index}
-											activeOpacity={0.9}
-											className="m-2"
-											onPress={() => {
-												if (reserved === false) {
-													setSlot(name);
-												}
-											}}
-										>
-											<Slot
-												reserved={reserved}
-												name={name}
-												active={slot === name}
-											/>
-										</TouchableOpacity>
-									))}
+									{slotsList.length > 0 ? (
+										slotsList.map(({ block, slots }, index) => (
+											<View key={index}>
+												<Text className="text-lg text-darker font-medium border-b border-gray-300 p-1 mb-1">
+													{block}
+												</Text>
+
+												<View className="w-full flex-row flex-wrap items-center mb-2">
+													{slots.length > 0 ? (
+														slots.map(({ status, slotNo }) => (
+															<TouchableOpacity
+																key={slotNo + 2000}
+																activeOpacity={0.9}
+																className="m-2"
+																onPress={() => {
+																	if (status === "free") {
+																		setSlot(slotNo);
+																	}
+																}}
+															>
+																<Slot
+																	reserved={status !== "free"}
+																	name={slotNo}
+																	active={slot === slotNo}
+																/>
+															</TouchableOpacity>
+														))
+													) : (
+														<Text className="my-auto text-center font-medium text-dark text-lg">
+															Empty block
+														</Text>
+													)}
+												</View>
+											</View>
+										))
+									) : (
+										<Text className="my-auto text-center font-medium text-dark text-xl pt-10">
+											Empty parking space
+										</Text>
+									)}
 								</View>
 							</TouchableOpacity>
 						</ScrollView>

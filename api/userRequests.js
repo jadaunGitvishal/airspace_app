@@ -36,10 +36,11 @@ export const getNotifications = () =>
 	axios.get(`${userUrl}/notifications`, config);
 
 // Get All Parking Spaces
-export const getAllParkingSpaces = () => axios.get(`${psUrl}/all`);
+export const getAllParkingSpaces = () => axios.get(`${psUrl}/all`, config);
 
 // Get Parking Details
-export const getParkingSpaceDetails = (id) => axios.get(`${psUrl}/get/${id}`);
+export const getParkingSpaceDetails = (id) =>
+	axios.get(`${psUrl}/get/${id}`, config);
 
 // Create Click And Impression
 export const createClickAndImpression = (data) =>
