@@ -15,38 +15,30 @@ import Button from "../../components/Button/Button";
 import TextInput from "../../components/Input/TextInput";
 import * as api from "../../api/userRequests";
 
-export default function AddVehicleScreen({ navigation }) {
+export default function AddQueryScreen({ navigation }) {
 	const [loading, setLoading] = useState(false);
-	const [name, setName] = useState({ value: "", error: "" });
-	const [model, setModel] = useState({ value: "", error: "" });
-	const [color, setColor] = useState({ value: "", error: "" });
-	const [number, setNumber] = useState({ value: "", error: "" });
+	const [subject, setSubject] = useState({ value: "", error: "" });
+	const [message, setMessage] = useState({ value: "", error: "" });
 
 	const handleRegister = async () => {
-		const nameError = checkErrors(name);
-		const modelError = checkErrors(model);
-		const colorError = checkErrors(color);
-		const numberError = checkErrors(number);
-		if (nameError || modelError || colorError || numberError) {
-			setName({ ...name, error: nameError });
-			setModel({ ...model, error: modelError });
-			setColor({ ...color, error: colorError });
-			setNumber({ ...color, error: numberError });
+		const subjectError = checkErrors(subject);
+		const messageError = checkErrors(message);
+		if (subjectError || messageError) {
+			setSubject({ ...subject, error: subjectError });
+			setMessage({ ...message, error: messageError });
 			return;
 		}
 
 		try {
 			setLoading(true);
-			const { data } = await api.addVehicle({
-				number: number.value.toUpperCase(),
-				name: name.value,
-				model: model.value,
-				color: color.value,
+			const { data } = await api.addQuery({
+				subject: subject.value,
+				message: message.value,
 			});
 			if (data) {
 				Alert.alert(
-					"Vehicle Registered",
-					"A new vehicle is registered with your account."
+					"Query Registered",
+					"A new query is registered with your account."
 				);
 				navigation.goBack();
 			} else {
@@ -101,10 +93,10 @@ export default function AddVehicleScreen({ navigation }) {
 							style={{ color: theme.colors.surface }}
 							className=" text-lg font-semibold"
 						>
-							ADD VEHICLES
+							ADD QUERY
 						</Text>
 						<Ionicons
-							name="car-sport-outline"
+							name="chatbox-ellipses-outline"
 							size={20}
 							color={theme.colors.surface}
 						/>
@@ -131,50 +123,29 @@ export default function AddVehicleScreen({ navigation }) {
 							className="h-full w-full p-6 pt-10 items-center"
 						>
 							<Text className="text-base font-semibold w-full text-left border-b pb-2 pl-2 mb-5 border-gray-300 uppercase">
-								ADD VEHICLE
+								ADD QUERY
 							</Text>
 
 							<TextInput
-								label="Number"
+								label="Subject"
 								returnKeyType="done"
-								value={number.value}
-								onChangeText={(text) => setNumber({ value: text, error: null })}
-								error={number.error}
-								errorText={number.error}
+								value={subject.value}
+								onChangeText={(text) =>
+									setSubject({ value: text, error: null })
+								}
+								error={subject.error}
+								errorText={subject.error}
 								containerStyle={{ marginVertical: 5 }}
 								inputStyle={{ height: 50 }}
 							/>
 
 							<TextInput
-								label="Name"
+								label="Message"
 								returnKeyType="done"
-								value={name.value}
-								onChangeText={(text) => setName({ value: text, error: "" })}
-								error={name.error}
-								errorText={name.error}
-								containerStyle={{ marginVertical: 5 }}
-								inputStyle={{ height: 50 }}
-							/>
-
-							<TextInput
-								label="Model"
-								returnKeyType="done"
-								value={model.value}
-								onChangeText={(text) => setModel({ value: text, error: "" })}
-								error={model.error}
-								errorText={model.error}
-								containerStyle={{ marginVertical: 5 }}
-								inputStyle={{ height: 50 }}
-								keyboardType="number-pad"
-							/>
-
-							<TextInput
-								label="Color"
-								returnKeyType="done"
-								value={color.value}
-								onChangeText={(text) => setColor({ value: text, error: null })}
-								error={color.error}
-								errorText={color.error}
+								value={message.value}
+								onChangeText={(text) => setMessage({ value: text, error: "" })}
+								error={message.error}
+								errorText={message.error}
 								containerStyle={{ marginVertical: 5 }}
 								inputStyle={{ height: 50 }}
 							/>
@@ -186,7 +157,7 @@ export default function AddVehicleScreen({ navigation }) {
 										handleRegister();
 									}}
 								>
-									Register
+									Add
 								</Button>
 							</View>
 						</TouchableOpacity>

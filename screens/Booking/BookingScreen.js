@@ -17,7 +17,7 @@ import { useIsFocused } from "@react-navigation/native";
 
 const BookingScreen = ({ navigation }) => {
 	const isFocused = useIsFocused();
-	const [hasBooking, setHasBooking] = useState(true); //hasBooking
+	const [hasBooking, setHasBooking] = useState(false); //hasBooking
 	const [loading, setLoading] = useState(true); //loading
 	const [modalVisible, setModalVisible] = useState(false);
 
@@ -44,7 +44,7 @@ const BookingScreen = ({ navigation }) => {
 		setSlotsList(groupedSlots);
 	}
 
-	// Get Data
+	// Get data
 	useEffect(() => {
 		async function fetchData() {
 			try {

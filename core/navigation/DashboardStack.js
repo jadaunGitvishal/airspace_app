@@ -10,7 +10,8 @@ import HistoryScreen from "../../screens/HistoryScreen";
 import VehiclesScreen from "../../screens/Vehicles/VehiclesScreen";
 import AddVehicleScreen from "../../screens/Vehicles/AddVehicleScreen";
 import NearbyScreen from "../../screens/NearbyScreen";
-import PaymentsScreen from "../../screens/PaymentsScreen";
+import QueryScreen from "../../screens/Query/QueryScreen";
+import AddQueryScreen from "../../screens/Query/AddQueryScreen.js";
 
 export default function DashboardStack() {
 	const Stack = createStackNavigator();
@@ -213,8 +214,29 @@ export default function DashboardStack() {
 			/>
 
 			<Stack.Screen
-				name="Payments"
-				component={PaymentsScreen}
+				name="Query"
+				component={QueryScreen}
+				options={{
+					cardStyleInterpolator: ({ current, layouts }) => {
+						return {
+							cardStyle: {
+								transform: [
+									{
+										translateX: current.progress.interpolate({
+											inputRange: [0, 1],
+											outputRange: [layouts.screen.width, 0],
+										}),
+									},
+								],
+							},
+						};
+					},
+				}}
+			/>
+
+			<Stack.Screen
+				name="AddQuery"
+				component={AddQueryScreen}
 				options={{
 					cardStyleInterpolator: ({ current, layouts }) => {
 						return {

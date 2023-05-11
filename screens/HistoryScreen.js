@@ -115,6 +115,8 @@ export default function HistoryScreen({ navigation }) {
 										shadowColor: theme.colors.shadow,
 										elevation: 6,
 										borderRadius: 15,
+										borderWidth: 1,
+										borderColor: theme.colors.bg,
 									}}
 									className="w-full px-4 py-6 flex-col my-3"
 								>

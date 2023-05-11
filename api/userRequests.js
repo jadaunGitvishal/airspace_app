@@ -72,3 +72,10 @@ export const addBooking = (data) =>
 // Check Reservation Status
 export const checkReservationStatus = () =>
 	axios.get(`${userUrl}/booking/check`, config);
+
+// Get All Queries
+export const getAllQueries = () => axios.get(`${userUrl}/queries`, config);
+
+// Add Query
+export const addQuery = (data) =>
+	axios.post(`${userUrl}/Query/new`, data, config);

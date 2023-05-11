@@ -12,8 +12,10 @@ import {
 import { theme } from "../../core/theme";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import * as api from "../../api/userRequests";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function VehiclesScreen({ navigation }) {
+	const isFocused = useIsFocused();
 	const [loading, setLoading] = useState(false);
 	const [vehiclesData, setVehiclesData] = useState([]);
 	const [reload, setReload] = useState(false);
@@ -25,7 +27,7 @@ export default function VehiclesScreen({ navigation }) {
 			try {
 				const { data } = await api.getAllVehicles();
 				if (data) {
-					setVehiclesData(data.data);
+					setVehiclesData(data.data.reverse());
 				} else {
 					Alert.alert("Error", "Data not found.");
 				}
@@ -42,7 +44,7 @@ export default function VehiclesScreen({ navigation }) {
 		}
 
 		fetchData();
-	}, [reload]);
+	}, [reload, isFocused]);
 
 	// handle delete
 	async function handleDelete(id) {

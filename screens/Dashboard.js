@@ -631,10 +631,10 @@ const Dashboard = ({ navigation }) => {
 										</Text>
 									</TouchableOpacity>
 
-									{/* payments */}
+									{/* queries */}
 									<TouchableOpacity
 										activeOpacity={0.7}
-										onPress={() => navigation.navigate("Payments")}
+										onPress={() => navigation.navigate("Query")}
 										className="border rounded-md h-32 w-[30%] flex-col items-center justify-center mx-4"
 										style={{
 											shadowColor: theme.colors.shadow,
@@ -642,7 +642,7 @@ const Dashboard = ({ navigation }) => {
 										}}
 									>
 										<Ionicons
-											name="md-card"
+											name="chatbox-ellipses"
 											size={25}
 											color={theme.colors.green}
 										/>
@@ -650,7 +650,7 @@ const Dashboard = ({ navigation }) => {
 											style={{ color: theme.colors.green }}
 											className="font-semibold mt-2"
 										>
-											Payments
+											Queries
 										</Text>
 									</TouchableOpacity>
 
