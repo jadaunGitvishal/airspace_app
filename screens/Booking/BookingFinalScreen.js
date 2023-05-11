@@ -11,31 +11,73 @@ import {
 	TextInput,
 	ScrollView,
 } from "react-native";
+import { theme } from "../../core/theme";
 import {
-	StripeProvider,
 	CardField,
 	useStripe,
+	StripeProvider,
 } from "@stripe/stripe-react-native";
-import { theme } from "../../core/theme";
-import { Ionicons, EvilIcons } from "@expo/vector-icons";
-import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
+import { useSelector, selectUser } from "../../features/userSlice";
+import * as api from "../../api/userRequests";
 
 export default function BookingFinalScreen({ route, navigation }) {
-	const { space, slot, days, pkg, startDate, endDate, price, vehicle } =
+	const { space, slot, block, days, pkg, startDate, endDate, price, vehicle } =
 		route.params;
+	const [processing, setProcessing] = useState(false);
 
 	// Set Key
 	const [publishableKey, setPublishableKey] = useState("");
-	const fetchPublishableKey = async () => {
-		// const key = await fetchKey(); // fetch key from your server here
-		const key =
-			"pk_test_51LaSQhEAemI4LDmuIe5cl3b69a2f17XKvQ9S2GXGFLMnIitI4Fu58m0YcbiOMzS3M6OF1SlaltCCDPG3UI2Hov1h00wu5B46Yx";
-		setPublishableKey(key);
-	};
-
 	useEffect(() => {
+		const fetchPublishableKey = async () => {
+			const key =
+				"pk_test_51LaSQhEAemI4LDmuIe5cl3b69a2f17XKvQ9S2GXGFLMnIitI4Fu58m0YcbiOMzS3M6OF1SlaltCCDPG3UI2Hov1h00wu5B46Yx";
+			setPublishableKey(key);
+		};
+
 		fetchPublishableKey();
 	}, []);
+
+	// booking
+	async function handleBooking() {
+		setProcessing(2);
+
+		try {
+			const bookingInfo = {
+				ps: space.id,
+				slot: slot,
+				days: days,
+				package: pkg.id,
+				from: startDate,
+				to: endDate,
+				price: price,
+				vehicleId: vehicle.id,
+				vehicleNo: vehicle.number,
+			};
+			const { data } = await api.addBooking(bookingInfo);
+
+			if (data?.success === true) {
+				Alert.alert(
+					"Slot reserved",
+					`Successfully reserved your slot in ${space.name}\nBlock: ${block}\nSlot: ${slot}`
+				);
+				navigation.goBack();
+				navigation.goBack();
+				// console.log(data);
+			} else {
+				Alert.alert("Error", "Something went wrong.");
+				// console.log(data);
+			}
+			setProcessing(false);
+		} catch (error) {
+			console.log("=> Error");
+			console.log(error);
+			Alert.alert(
+				"Error",
+				error?.response?.data?.message ?? "An error occured."
+			);
+			setProcessing(false);
+		}
+	}
 
 	return (
 		<Background>
@@ -80,8 +122,23 @@ export default function BookingFinalScreen({ route, navigation }) {
 						style={{
 							backgroundColor: theme.colors.surface,
 						}}
-						className="flex-col w-full"
+						className="flex-col w-full relative"
 					>
+						{/* loader */}
+						{processing !== false && (
+							<View
+								style={{ backgroundColor: theme.colors.surface }}
+								className="absolute top-0 left-0 z-40 h-full w-full flex-col justify-center items-center"
+							>
+								<ActivityIndicator size={45} color={theme.colors.bg0} />
+								<Text>
+									{processing === 1
+										? "processing payments..."
+										: "processing booking..."}
+								</Text>
+							</View>
+						)}
+
 						{/* Booking Informaion */}
 						<View
 							style={{
@@ -170,12 +227,11 @@ export default function BookingFinalScreen({ route, navigation }) {
 								}}
 								className="font-semibold uppercase text-base"
 							>
-								- {vehicle}
+								- {vehicle.number}
 							</Text>
 						</View>
 
 						{/* Payment Data */}
-
 						{price && (
 							<View
 								style={{
@@ -196,12 +252,12 @@ export default function BookingFinalScreen({ route, navigation }) {
 									Card Information
 								</Text>
 
-								<StripeProvider
-									publishableKey={publishableKey}
-									// merchantIdentifier="merchant.identifier" // required for Apple Pay
-									// urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
-								>
-									<PaymentScreen price={price} />
+								<StripeProvider publishableKey={publishableKey}>
+									<PaymentScreen
+										price={price}
+										handleBooking={handleBooking}
+										setProcessing={setProcessing}
+									/>
 								</StripeProvider>
 							</View>
 						)}
@@ -212,90 +268,73 @@ export default function BookingFinalScreen({ route, navigation }) {
 	);
 }
 
-// 4782 7800 1959 8575
-// 02/28
-// CVV 629
-
-function PaymentScreen({ price }) {
+function PaymentScreen({ price, handleBooking, setProcessing }) {
+	const { user } = useSelector(selectUser);
+	const [cardDetails, setCardDetails] = useState(null);
 	const { confirmPayment } = useStripe();
 
-	const [name, setName] = useState("abh");
-	const [email, setEmail] = useState("abhasbdo@gmail.com");
-	const [cardDetails, setCardDetails] = useState(null);
-	const [error, setError] = useState("");
-	const [processing, setProcessing] = useState(false);
-	const [paymentResult, setPaymentResult] = useState(null);
-
-	const handleCardDetails = (details) => {
-		setCardDetails(details);
-	};
-
-	const handleSubmit = async () => {
-		setProcessing(true);
-		setError(null);
-
-		try {
-			const { paymentIntent, error } = await confirmPayment({
-				paymentMethod: {
-					card: cardDetails,
-					billing_details: {
-						name,
-						email,
-					},
+	// Payment
+	async function handleSubmit() {
+		const { data } = await api.createPaymentIntent({ amount: price });
+		const billingDetails = {
+			email: user?.user?.email,
+			phone: user?.user?.phone,
+			address: {
+				city: user?.user?.city,
+				country: "PK",
+				line1: user?.user?.address,
+			},
+		};
+		const { error, paymentIntent } = await confirmPayment(
+			data?.data, //clientSecret
+			{
+				paymentMethodType: "Card",
+				paymentMethodData: {
+					billingDetails,
 				},
-			});
-
-			if (error) {
-				setError(`Payment failed: ${error.message}`);
-			} else if (paymentIntent.status === "succeeded") {
-				setPaymentResult(`Payment successful, ID: ${paymentIntent.id}`);
-			} else {
-				setError(`Payment failed: ${paymentIntent.status}`);
 			}
-		} catch (e) {
-			console.log(e);
-			setError(`Payment failed: ${e.message}`);
-		} finally {
-			setProcessing(false);
-		}
-	};
+		);
 
-	return processing ? (
-		<ActivityIndicator />
-	) : (
-		<>
+		if (error) {
+			Alert.alert("Payment error", error.message);
+			console.log(
+				`Error code: ${error.code}` + "Payment confirmation error",
+				error.message
+			);
+			setProcessing(false);
+		} else if (paymentIntent) {
+			console.log("Success from promise", paymentIntent);
+			handleBooking();
+		}
+	}
+
+	return (
+		<View className="w-full">
 			<CardField
+				style={{ height: 70, marginVertical: 20 }}
+				cardStyle={{ backgroundColor: theme.colors.bg, borderRadius: 15 }}
 				postalCodeEnabled={false}
 				placeholders={{
-					number: "1212 1212 1212 1212",
+					number: "4242 4242 4242 4242",
+					cvc: "CVC",
+					expiration: "MM|YY",
 				}}
-				cardStyle={{
-					backgroundColor: "#FFFFFF",
-					textColor: "#000000",
-				}}
-				style={{
-					width: "100%",
-					height: 50,
-					marginVertical: 20,
-				}}
-				onCardChange={handleCardDetails}
-				onFocus={(focusedField) => {
-					console.log("focusField", focusedField);
+				onCardChange={(cardDetails) => {
+					// console.log("cardDetails", cardDetails);
+					setCardDetails(cardDetails);
 				}}
 			/>
 
-			<View className="w-2/3 mx-auto ">
-				<Button
-					mode="contained"
-					onPress={() => handleSubmit()}
-					disabled={cardDetails?.complete !== true}
-				>
-					Confirm Booking
-				</Button>
-			</View>
-
-			<View>{error}</View>
-			<View>{paymentResult}</View>
-		</>
+			<Button
+				mode="contained"
+				onPress={() => {
+					setProcessing(1);
+					handleSubmit();
+				}}
+				disabled={cardDetails?.complete !== true}
+			>
+				Confirm Booking
+			</Button>
+		</View>
 	);
 }

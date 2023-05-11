@@ -213,7 +213,7 @@ const Sidebar = ({ navigation }) => {
 					</TouchableOpacity>
 
 					{/* vehicles */}
-					<TouchableOpacity
+					{/* <TouchableOpacity
 						activeOpacity={0.9}
 						className="w-full flex-row items-center my-3"
 						onPress={() => navigation.navigate("Vehicles")}
@@ -237,7 +237,7 @@ const Sidebar = ({ navigation }) => {
 						<View className="ml-auto">
 							<AntDesign name="right" size={20} color={theme.colors.dark} />
 						</View>
-					</TouchableOpacity>
+					</TouchableOpacity> */}
 
 					{/* password */}
 					<TouchableOpacity

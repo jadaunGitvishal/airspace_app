@@ -31,12 +31,11 @@ const Dashboard = ({ navigation }) => {
 	const [time, setTime] = useState("00:00:00");
 	const [progress, setProgress] = useState(0);
 
+	// fetch data
 	useEffect(() => {
-		// fetch data
 		async function fetchData() {
 			try {
 				const { data } = await api.getUserDashboard();
-				console.log(data);
 
 				if (data.success === true) {
 					setDashboardData(data.data);

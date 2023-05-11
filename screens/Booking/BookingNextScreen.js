@@ -14,9 +14,10 @@ import {
 import { theme } from "../../core/theme";
 import { Ionicons, EvilIcons } from "@expo/vector-icons";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
+import * as api from "../../api/userRequests";
 
 export default function BookingNextScreen({ route, navigation }) {
-	const { space, slot } = route.params;
+	const { space, slot, block } = route.params;
 	const [loading, setLoading] = useState(true); //loading
 
 	const [modalVisible, setModalVisible] = useState(false);
@@ -44,77 +45,38 @@ export default function BookingNextScreen({ route, navigation }) {
 
 	// Get Data
 	useEffect(() => {
-		const getData = async () => {
-			// const { data } = await api.fetchAllParkings();
-			setAllPkgs([
-				{
-					_id: 1,
-					name: "3 Days Package",
-					description: "This is my package description__.",
-					days: "3",
-					price: "1200",
-				},
-				{
-					_id: 2,
-					name: "6 Days Package",
-					description: "This is my package description__.",
-					days: "6",
-					price: "2400",
-				},
-				{
-					_id: 3,
-					name: "4 Days Package",
-					description: "This is my package description__.",
-					days: "4",
-					price: "1600",
-				},
-				{
-					_id: 4,
-					name: "12 Days Package",
-					description: "This is my package description__.",
-					days: "12",
-					price: "4000",
-				},
-			]);
-			setAllVehicles([
-				{
-					_id: "6416e56933774718df4a2e08",
-					name: "Toyota Corolla",
-					number: "ABC-123",
-					model: "2019",
-					color: "Blue",
-					owner: "641645dd6c626af96c680258",
-					createdAt: "2023-03-19T10:35:21.740Z",
-					updatedAt: "2023-03-19T10:35:21.740Z",
-				},
-				{
-					_id: "6416e56933774718df4a2e08",
-					name: "Vitz",
-					number: "XYZ-123",
-					model: "2019",
-					color: "Blue",
-					owner: "641645dd6c626af96c680258",
-					createdAt: "2023-03-19T10:35:21.740Z",
-					updatedAt: "2023-03-19T10:35:21.740Z",
-				},
-				{
-					_id: "6416e56933774718df4a2e08",
-					name: "Aqua",
-					number: "EFG-123",
-					model: "2019",
-					color: "Blue",
-					owner: "641645dd6c626af96c680258",
-					createdAt: "2023-03-19T10:35:21.740Z",
-					updatedAt: "2023-03-19T10:35:21.740Z",
-				},
-			]);
-			setNormalRate(100);
-			setPeakPct(20);
-			setFillPct(80);
-			setFilledPct(90);
-			setLoading(false);
-		};
-		getData();
+		async function fetchData() {
+			try {
+				const pkg = await api.getAllPackages();
+				const vhcl = await api.getAllVehicles();
+				const ps = await api.getParkingSpaceDetails(space.id);
+
+				setAllPkgs(pkg?.data?.data);
+				setAllVehicles(vhcl?.data?.data);
+				setNormalRate(ps?.data?.data?.normalPrice);
+				setPeakPct(ps?.data?.data?.peakPercentage);
+				setFillPct(ps?.data?.data?.fillPercentage);
+
+				let count = 0;
+				let slotsArr = ps?.data?.data?.allSlots;
+				for (const slot of slotsArr) {
+					if (new Date(slot.to) >= now) {
+						count++;
+					}
+				}
+				setFilledPct((count / slotsArr.length) * 100);
+				setLoading(false);
+			} catch (error) {
+				console.log("=> Error");
+				console.log(error);
+				Alert.alert(
+					"Error",
+					error?.response?.data?.message ?? "An error occured."
+				);
+				setLoading(false);
+			}
+		}
+		fetchData();
 	}, []);
 
 	const showStartDatePicker = () => {
@@ -567,6 +529,23 @@ export default function BookingNextScreen({ route, navigation }) {
 										</Text>
 									</TouchableOpacity>
 								</View>
+								<View className="flex-row mt-2">
+									<TouchableOpacity
+										activeOpacity={0.8}
+										className="w-full mx-auto my-auto flex-row items-center justify-between rounded-full px-6"
+									>
+										<Text
+											style={{ color: theme.colors.darker }}
+											className="font-medium"
+										>
+											{pkg.id === 0 &&
+												filledPct >= fillPct &&
+												"*Peak rates applied as " +
+													filledPct.toFixed(0) +
+													"% parking is occupied"}
+										</Text>
+									</TouchableOpacity>
+								</View>
 
 								{/*vehicle selection*/}
 								<Text
@@ -579,17 +558,17 @@ export default function BookingNextScreen({ route, navigation }) {
 									Vehicle
 								</Text>
 								<View className="flex-row items-center justify-between">
-									{allVehicles?.map(({ number }) => (
+									{allVehicles?.map(({ number, _id }) => (
 										<TouchableOpacity
 											key={number}
 											activeOpacity={0.8}
 											style={{
 												backgroundColor:
-													vehicle === number
+													vehicle?.number === number
 														? theme.colors.bg1
 														: theme.colors.bg,
 											}}
-											onPress={() => setVehicle(number)}
+											onPress={() => setVehicle({ number: number, id: _id })}
 											className="w-fit mx-auto my-auto flex-row items-center justify-between rounded-full px-6 py-3"
 										>
 											<Text
@@ -601,8 +580,6 @@ export default function BookingNextScreen({ route, navigation }) {
 										</TouchableOpacity>
 									))}
 								</View>
-								{/* SELECT VEHICLE */}
-								{/* FORMAT BOOKING TABLE */}
 							</>
 						)}
 					</View>
@@ -638,6 +615,7 @@ export default function BookingNextScreen({ route, navigation }) {
 									navigation.navigate("BookingFinalScreen", {
 										space: space,
 										slot: slot,
+										block: block,
 										startDate: startDate,
 										endDate: endDate,
 										days: totalDays,

@@ -13,16 +13,21 @@ import { theme } from "../../core/theme";
 import Slot from "../../components/Slot/Slot";
 import Button from "../../components/Button/Button";
 import * as api from "../../api/userRequests";
+import { useIsFocused } from "@react-navigation/native";
 
 const BookingScreen = ({ navigation }) => {
+	const isFocused = useIsFocused();
+	const [hasBooking, setHasBooking] = useState(true); //hasBooking
 	const [loading, setLoading] = useState(true); //loading
 	const [modalVisible, setModalVisible] = useState(false);
 
 	// slot and ps
 	const [slot, setSlot] = useState(null);
+	const [blk, setBlk] = useState(null);
 	const [space, setSpace] = useState(null);
 	const [parkingSpaces, setParkingSpaces] = useState([]);
 	const [slotsList, setSlotsList] = useState([]);
+	const [now, setNow] = useState("");
 
 	function handleSlots(slots) {
 		const groupedSlots = slots.reduce((acc, slot) => {
@@ -44,10 +49,23 @@ const BookingScreen = ({ navigation }) => {
 		async function fetchData() {
 			try {
 				setLoading(true);
+				const status = await api.checkReservationStatus();
+
+				if (status?.data?.data?.length > 0) {
+					setHasBooking(true);
+					setLoading(false);
+					return;
+				}
+
 				const { data } = await api.getAllParkingSpaces();
 
 				if (data.success === true) {
 					setParkingSpaces(data.data);
+
+					const currentDate = new Date();
+					setNow(currentDate);
+					setSlot(null);
+					setSpace(null);
 				} else {
 					Alert.alert("Error", "Data not found.");
 				}
@@ -63,7 +81,7 @@ const BookingScreen = ({ navigation }) => {
 			}
 		}
 		fetchData();
-	}, []);
+	}, [isFocused]);
 
 	// continue
 	const handleContinue = () => {
@@ -75,6 +93,7 @@ const BookingScreen = ({ navigation }) => {
 		navigation.navigate("BookingNext", {
 			space: space,
 			slot: slot,
+			block: blk,
 		});
 	};
 
@@ -214,14 +233,22 @@ const BookingScreen = ({ navigation }) => {
 								style={{
 									backgroundColor: theme.colors.surface,
 								}}
-								onPress={() => setModalVisible(true)}
+								onPress={() => {
+									if (!hasBooking) {
+										setModalVisible(true);
+									}
+								}}
 								className="w-full mx-auto my-auto flex-row items-center justify-between rounded-full px-6 py-3"
 							>
 								<Text
 									style={{ color: theme.colors.darker }}
 									className="font-semibold text-base"
 								>
-									{space === null ? "Select Parking Space" : space.name}
+									{hasBooking
+										? "Already have a booking"
+										: space === null
+										? "Select Parking Space"
+										: space.name}
 								</Text>
 								{space === null && (
 									<EvilIcons
@@ -257,24 +284,38 @@ const BookingScreen = ({ navigation }) => {
 
 												<View className="w-full flex-row flex-wrap items-center mb-2">
 													{slots.length > 0 ? (
-														slots.map(({ status, slotNo }) => (
-															<TouchableOpacity
-																key={slotNo + 2000}
-																activeOpacity={0.9}
-																className="m-2"
-																onPress={() => {
-																	if (status === "free") {
-																		setSlot(slotNo);
-																	}
-																}}
-															>
-																<Slot
-																	reserved={status !== "free"}
-																	name={slotNo}
-																	active={slot === slotNo}
-																/>
-															</TouchableOpacity>
-														))
+														slots.map(({ slotNo, from, to }) => {
+															var status = "";
+															if (to === null && from === null) {
+																status = "free";
+															}
+															if (new Date(to) >= now) {
+																status = "occupied";
+															}
+															if (new Date(to) < now) {
+																status = "free";
+															}
+
+															return (
+																<TouchableOpacity
+																	key={slotNo + 2000}
+																	activeOpacity={0.9}
+																	className="m-2"
+																	onPress={() => {
+																		if (status === "free") {
+																			setSlot(slotNo);
+																			setBlk(block);
+																		}
+																	}}
+																>
+																	<Slot
+																		reserved={status === "occupied"}
+																		name={slotNo}
+																		active={slot === slotNo}
+																	/>
+																</TouchableOpacity>
+															);
+														})
 													) : (
 														<Text className="my-auto text-center font-medium text-dark text-lg">
 															Empty block
@@ -309,7 +350,9 @@ const BookingScreen = ({ navigation }) => {
 					</>
 				) : (
 					<Text className="my-auto font-medium text-dark text-xl">
-						Select a parking space
+						{hasBooking === true
+							? "Already have a booking"
+							: "Select a parking space"}
 					</Text>
 				)}
 			</View>

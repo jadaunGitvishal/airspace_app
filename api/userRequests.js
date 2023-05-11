@@ -2,6 +2,7 @@ import axios from "axios";
 const mainUrl = "http://192.168.18.14:4000/api/v1";
 const userUrl = mainUrl + "/user";
 const psUrl = mainUrl + "/ps";
+const pkgUrl = mainUrl + "/package";
 
 const config = {
 	headers: { "Content-Type": "multipart/form-data" },
@@ -56,3 +57,18 @@ export const deleteVehicle = (id) =>
 // Add Vehicle
 export const addVehicle = (data) =>
 	axios.post(`${userUrl}/vehicles/new`, data, config);
+
+// Get All Packages
+export const getAllPackages = () => axios.get(`${pkgUrl}/user/all`, config);
+
+// Create Payment Intent
+export const createPaymentIntent = (data) =>
+	axios.post(`${userUrl}/payment/new`, data, config);
+
+// Add Booking
+export const addBooking = (data) =>
+	axios.post(`${userUrl}/booking/new`, data, config);
+
+// Check Reservation Status
+export const checkReservationStatus = () =>
+	axios.get(`${userUrl}/booking/check`, config);
