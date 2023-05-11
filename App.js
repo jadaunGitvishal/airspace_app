@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Provider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
 import AppStack from "./core/navigation/AppStack.js";
@@ -20,13 +20,13 @@ import {
 import * as api from "./api/userRequests.js";
 import * as Notifications from "expo-notifications";
 import dataUpdateWithNotificationSocket from "./socket/pushNotificationSocket.js";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { selectApp, setMode } from "./features/appSlice.js";
 
 const App = () => {
 	return (
 		<ReduxProvider store={store}>
-			<Provider theme={theme}>
-				<MainComponent />
-			</Provider>
+			<MainComponent />
 		</ReduxProvider>
 	);
 };
@@ -38,9 +38,86 @@ export default App;
 function MainComponent() {
 	const dispatch = useDispatch();
 	const { user, loading } = useSelector(selectUser);
+	const { dark, notif } = useSelector(selectApp);
 
-	//
-	//
+	const [darkMode, setDarkMode] = useState(null);
+	const [notification, setNotification] = useState(null);
+
+	// get mode
+	useEffect(() => {
+		const getMode = async () => {
+			try {
+				const value = await AsyncStorage.getItem("darkMode");
+
+				if (value === null) {
+					setDarkMode(false);
+				} else {
+					setDarkMode(JSON.parse(value));
+				}
+			} catch (error) {
+				console.log("Error retrieving dark mode:", error);
+			}
+		};
+
+		getMode();
+	}, [dark]);
+
+	// get notification
+	useEffect(() => {
+		const getNotif = async () => {
+			try {
+				const value = await AsyncStorage.getItem("notif");
+				// console.log("notif is", value);
+
+				if (value === null) {
+					setNotification(false);
+				} else {
+					setNotification(JSON.parse(value));
+				}
+			} catch (error) {
+				console.log("Error retrieving notif:", error);
+			}
+		};
+
+		getNotif();
+	}, [notif]);
+
+	// notifications
+	Notifications.setNotificationHandler({
+		handleNotification: async () => ({
+			shouldShowAlert: true,
+			shouldPlaySound: true,
+			shouldSetBadge: true,
+		}),
+	});
+	useEffect(() => {
+		async function notify(data) {
+			console.log(user);
+			console.log(data);
+			if (data?.forAll === false && data?.user !== user?.user?._id) {
+				return;
+			}
+
+			if (notification === false) {
+				return;
+			}
+
+			await Notifications.scheduleNotificationAsync({
+				content: {
+					title: data?.title,
+					body: data?.text,
+				},
+				trigger: {
+					seconds: 1,
+					channelId: "default",
+				},
+			});
+		}
+
+		// socket update
+		dataUpdateWithNotificationSocket(notify);
+	}, [user]);
+
 	// check login status
 	useEffect(() => {
 		async function fetchData() {
@@ -67,49 +144,10 @@ function MainComponent() {
 		fetchData();
 	}, []);
 
-	//
-	//
-	// notifications
-	Notifications.setNotificationHandler({
-		handleNotification: async () => ({
-			shouldShowAlert: true,
-			shouldPlaySound: true,
-			shouldSetBadge: true,
-		}),
-	});
-	useEffect(() => {
-		async function notify(data) {
-			console.log(user);
-			console.log(data);
-			if (data?.forAll === false && data?.user !== user?.user?._id) {
-				return;
-			}
-
-			await Notifications.scheduleNotificationAsync({
-				content: {
-					title: data?.title,
-					body: data?.text,
-				},
-				trigger: {
-					seconds: 1,
-					channelId: "default",
-				},
-			});
-		}
-
-		// socket update
-		dataUpdateWithNotificationSocket(notify);
-	}, [user]);
-
-	//
-	//
-	// print data
-	// useEffect(() => {
-	// console.log("=> " + JSON.stringify(user) + " | " + loading);
-	// }, [user, loading]);
-
 	return (
-		<>
+		<Provider
+			theme={darkMode !== null && (darkMode === true ? darkTheme : theme)}
+		>
 			<StatusBar
 				animated={true}
 				backgroundColor={
@@ -134,6 +172,6 @@ function MainComponent() {
 					</View>
 				)}
 			</NavigationContainer>
-		</>
+		</Provider>
 	);
 }
