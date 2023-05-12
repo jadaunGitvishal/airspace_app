@@ -19,6 +19,17 @@ export const logoutUser = () => axios.get(`${userUrl}/logout`, config);
 // Load User
 export const loadUser = () => axios.get(`${userUrl}/load/me`, config);
 
+// Forget Password
+export const forgetPassword = (data) =>
+	axios.post(`${userUrl}/forgot`, data, config);
+
+// Check Otp
+export const checkOtp = (data) => axios.post(`${userUrl}/otp`, data, config);
+
+// Reset Password
+export const resetPassword = (data) =>
+	axios.post(`${userUrl}/reset`, data, config);
+
 // Register User
 export const registerUser = (data) =>
 	axios.post(`${userUrl}/new`, data, config);

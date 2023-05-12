@@ -19,7 +19,6 @@ export default function QueryScreen({ navigation }) {
 			setLoading(true);
 			try {
 				const { data } = await api.getAllQueries();
-				console.log(data);
 
 				if (data.success === true) {
 					setQuery(data.data.reverse());

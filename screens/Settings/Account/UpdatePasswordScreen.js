@@ -184,6 +184,7 @@ export default function UpdatePasswordScreen({ navigation }) {
 								inputStyle={{ height: 50 }}
 								secureTextEntry
 							/>
+
 							<View className="w-2/4 ml-auto mt-5">
 								<Button
 									mode="contained"

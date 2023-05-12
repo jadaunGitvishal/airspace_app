@@ -5,20 +5,83 @@ import Logo from "../../components/Logo";
 import Heading from "../../components/Text/Heading";
 import TextInput from "../../components/Input/TextInput";
 import Button from "../../components/Button/Button";
-import { emailValidator } from "../../helpers/emailValidator";
-import { View } from "react-native";
+import { ActivityIndicator, Alert, View } from "react-native";
 import { theme } from "../../core/theme";
+import * as api from "../../api/userRequests.js";
+import { logIn, useDispatch } from "../../features/userSlice.js";
 
-const ResetPasswordScreen = ({ navigation }) => {
-	const [email, setEmail] = useState({ value: "", error: "" });
+const ResetPasswordScreen = ({ navigation, route }) => {
+	const { otp } = route.params;
+	const dispatch = useDispatch();
+	const [loading, setLoading] = useState(false);
+	const [newPassword, setNewPassword] = useState({ value: "", error: "" });
+	const [confirmPassword, setConfirmPassword] = useState({
+		value: "",
+		error: "",
+	});
 
-	const sendResetPasswordEmail = () => {
-		const emailError = emailValidator(email.value);
-		if (emailError) {
-			setEmail({ ...email, error: emailError });
+	// handle reset
+	const handleReset = async () => {
+		const newError = checkErrors(newPassword);
+		const confirmError = checkErrors(confirmPassword);
+		if (newError || confirmError) {
+			setNewPassword({ ...newPassword, error: newError });
+			setConfirmPassword({ ...confirmPassword, error: confirmError });
 			return;
 		}
-		navigation.navigate("LoginScreen");
+
+		if (newPassword.value !== confirmPassword.value) {
+			setNewPassword({ ...newPassword, error: "* passwords don't match" });
+			setConfirmPassword({
+				...confirmPassword,
+				error: "* passwords don't match",
+			});
+			return;
+		}
+
+		try {
+			setLoading(true);
+			const { data } = await api.resetPassword({
+				otp: otp,
+				password: newPassword.value,
+				confirmPassword: confirmPassword.value,
+			});
+
+			if (data) {
+				Alert.alert("Password Reset", "Your password reset was successful.");
+				dispatch(
+					logIn({
+						user: data.user,
+					})
+				);
+			} else {
+				console.log("No user found");
+				Alert.alert("Error", "User not found.");
+			}
+
+			setLoading(false);
+		} catch (error) {
+			console.log("=> Error");
+			console.log(error);
+			Alert.alert(
+				"Error",
+				error?.response?.data?.message ?? "An error occured."
+			);
+			setLoading(false);
+		}
+	};
+
+	// check errors
+	const checkErrors = (inp) => {
+		if (inp.value === "") {
+			return "*this field cannot be empty";
+		}
+
+		if (inp.value.length < 8) {
+			return "*password length must be 8 characters";
+		}
+
+		return "";
 	};
 
 	return (
@@ -27,27 +90,50 @@ const ResetPasswordScreen = ({ navigation }) => {
 				<BackButton goBack={navigation.goBack} />
 				<Logo size={140} />
 
-				<Heading>Restore Password</Heading>
-				<TextInput
-					label="E-mail address"
-					returnKeyType="done"
-					value={email.value}
-					onChangeText={(text) => setEmail({ value: text, error: "" })}
-					error={email.error}
-					errorText={email.error}
-					autoCapitalize="none"
-					autoCompleteType="email"
-					textContentType="emailAddress"
-					keyboardType="email-address"
-					description="You will receive email with password reset link."
-				/>
-				<Button
-					mode="contained"
-					onPress={sendResetPasswordEmail}
-					style={{ marginTop: 16, backgroundColor: theme.colors.main }}
-				>
-					Send Instructions
-				</Button>
+				<Heading>Reset Password</Heading>
+
+				{loading === true ? (
+					<View className="h-[211px] flex-col justify-center">
+						<ActivityIndicator size={45} color={theme.colors.bg0} />
+					</View>
+				) : (
+					<>
+						<TextInput
+							label="New Password"
+							returnKeyType="done"
+							value={newPassword.value}
+							onChangeText={(text) =>
+								setNewPassword({ value: text, error: "" })
+							}
+							error={newPassword.error}
+							errorText={newPassword.error}
+							containerStyle={{ marginVertical: 5 }}
+							inputStyle={{ height: 50 }}
+							secureTextEntry
+						/>
+						<TextInput
+							label="Confirm Password"
+							returnKeyType="done"
+							value={confirmPassword.value}
+							onChangeText={(text) =>
+								setConfirmPassword({ value: text, error: null })
+							}
+							error={confirmPassword.error}
+							errorText={confirmPassword.error}
+							containerStyle={{ marginVertical: 5 }}
+							inputStyle={{ height: 50 }}
+							secureTextEntry
+						/>
+
+						<Button
+							mode="contained"
+							onPress={handleReset}
+							style={{ marginTop: 16, backgroundColor: theme.colors.main }}
+						>
+							RESET PASSWORD
+						</Button>
+					</>
+				)}
 			</View>
 		</Background>
 	);
