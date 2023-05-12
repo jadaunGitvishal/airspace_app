@@ -27,6 +27,10 @@ export const registerUser = (data) =>
 export const updateProfile = (data) =>
 	axios.put(`${userUrl}/me/update`, data, config);
 
+// Update Image
+export const updateImage = (data) =>
+	axios.put(`${userUrl}/me/image/update`, data, config);
+
 // Update Password
 export const updatePassword = (data) =>
 	axios.put(`${userUrl}/password/update`, data, config);
