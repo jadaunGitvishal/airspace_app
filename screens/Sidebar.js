@@ -239,18 +239,18 @@ const Sidebar = ({ navigation }) => {
 						</View>
 					</TouchableOpacity> */}
 
-					{/* password */}
+					{/* query */}
 					<TouchableOpacity
 						activeOpacity={0.9}
 						className="w-full flex-row items-center my-3"
-						onPress={() => navigation.navigate("UpdatePassword")}
+						onPress={() => navigation.navigate("Query")}
 					>
 						<View
 							style={{ backgroundColor: theme.colors.bg1 }}
 							className="rounded-full p-2"
 						>
-							<MaterialCommunityIcons
-								name="form-textbox-password"
+							<Ionicons
+								name="chatbox-ellipses-outline"
 								size={25}
 								color={theme.colors.main}
 							/>
@@ -259,7 +259,7 @@ const Sidebar = ({ navigation }) => {
 							style={{ color: theme.colors.dark }}
 							className="text-left font-bold text-base ml-3 uppercase"
 						>
-							PASSWORD
+							QUERY
 						</Text>
 						<View className="ml-auto">
 							<AntDesign name="right" size={20} color={theme.colors.dark} />

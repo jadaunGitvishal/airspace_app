@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Background from "../../components/Background";
-import BackButtonSimple from "../../components/Button/BackButtonSimple";
+import Background from "../../../components/Background";
+import BackButtonSimple from "../../../components/Button/BackButtonSimple";
 import {
 	ScrollView,
 	StatusBar,
@@ -8,7 +8,7 @@ import {
 	TouchableOpacity,
 	View,
 } from "react-native";
-import { theme } from "../../core/theme";
+import { theme } from "../../../core/theme";
 import { LinearGradient } from "expo-linear-gradient";
 import {
 	AntDesign,
@@ -16,10 +16,10 @@ import {
 	Ionicons,
 	MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import Button from "../../components/Button/Button";
-import TextInput from "../../components/Input/TextInput";
+import Button from "../../../components/Button/Button";
+import TextInput from "../../../components/Input/TextInput";
 
-export default function UpdatePasswordScreen({ navigation }) {
+export default function PersonalSettingsScreen({ navigation }) {
 	const [oldPassword, setOldPassword] = useState({ value: "", error: "" });
 	const [newPassword, setNewPassword] = useState({ value: "", error: "" });
 	const [confirmPassword, setConfirmPassword] = useState({

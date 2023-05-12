@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Background from "../../components/Background";
-import BackButtonSimple from "../../components/Button/BackButtonSimple";
+import Background from "../../../components/Background";
+import BackButtonSimple from "../../../components/Button/BackButtonSimple";
 import {
 	ScrollView,
 	StatusBar,
@@ -8,7 +8,7 @@ import {
 	TouchableOpacity,
 	View,
 } from "react-native";
-import { theme } from "../../core/theme";
+import { theme } from "../../../core/theme";
 import { LinearGradient } from "expo-linear-gradient";
 import {
 	AntDesign,
@@ -75,10 +75,11 @@ export default function AccountSettingsScreen({ navigation }) {
 							ACCOUNT SETTINGS
 						</Text>
 
-						{/* username */}
+						{/* personal */}
 						<TouchableOpacity
 							activeOpacity={0.9}
 							className="w-full flex-row items-center my-3"
+							onPress={() => navigation.navigate("UpdatePersonal")}
 						>
 							<View
 								style={{ backgroundColor: theme.colors.bg1 }}
@@ -91,53 +92,31 @@ export default function AccountSettingsScreen({ navigation }) {
 								/>
 							</View>
 							<Text className="text-left text-gray-500 font-bold text-base ml-3 uppercase">
-								USERNAME
+								PERSONAL
 							</Text>
 							<View className="ml-auto">
 								<AntDesign name="right" size={20} color={theme.colors.dark} />
 							</View>
 						</TouchableOpacity>
 
-						{/* email */}
+						{/* photo */}
 						<TouchableOpacity
 							activeOpacity={0.9}
 							className="w-full flex-row items-center my-3"
+							onPress={() => navigation.navigate("UpdatePhoto")}
 						>
 							<View
 								style={{ backgroundColor: theme.colors.bg1 }}
 								className="rounded-full p-2"
 							>
-								<MaterialIcons
-									name="alternate-email"
+								<Ionicons
+									name="image-outline"
 									size={25}
 									color={theme.colors.main}
 								/>
 							</View>
 							<Text className="text-left text-gray-500 font-bold text-base ml-3 uppercase">
-								EMAIL
-							</Text>
-							<View className="ml-auto">
-								<AntDesign name="right" size={20} color={theme.colors.dark} />
-							</View>
-						</TouchableOpacity>
-
-						{/* phone */}
-						<TouchableOpacity
-							activeOpacity={0.9}
-							className="w-full flex-row items-center my-3"
-						>
-							<View
-								style={{ backgroundColor: theme.colors.bg1 }}
-								className="rounded-full p-2"
-							>
-								<MaterialIcons
-									name="phone"
-									size={25}
-									color={theme.colors.main}
-								/>
-							</View>
-							<Text className="text-left text-gray-500 font-bold text-base ml-3 uppercase">
-								PHONE NO.
+								PHOTO
 							</Text>
 							<View className="ml-auto">
 								<AntDesign name="right" size={20} color={theme.colors.dark} />
@@ -148,6 +127,7 @@ export default function AccountSettingsScreen({ navigation }) {
 						<TouchableOpacity
 							activeOpacity={0.9}
 							className="w-full flex-row items-center my-3"
+							onPress={() => navigation.navigate("UpdatePassword")}
 						>
 							<View
 								style={{ backgroundColor: theme.colors.bg1 }}
