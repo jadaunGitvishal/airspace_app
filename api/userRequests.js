@@ -23,6 +23,14 @@ export const loadUser = () => axios.get(`${userUrl}/load/me`, config);
 export const registerUser = (data) =>
 	axios.post(`${userUrl}/new`, data, config);
 
+// Update Profile
+export const updateProfile = (data) =>
+	axios.put(`${userUrl}/me/update`, data, config);
+
+// Update Password
+export const updatePassword = (data) =>
+	axios.put(`${userUrl}/password/update`, data, config);
+
 // Get User Dashboard
 export const getUserDashboard = () => axios.get(`${userUrl}/dashboard`, config);
 

@@ -144,6 +144,17 @@ function MainComponent() {
 		fetchData();
 	}, []);
 
+	// useEffect(() => {
+	// 	console.log(
+	// 		"-----------------------------------------------------------------------"
+	// 	);
+	// 	console.log(loading);
+	// 	console.log(user?.user);
+	// 	console.log(
+	// 		"-----------------------------------------------------------------------"
+	// 	);
+	// }, [user, loading]);
+
 	return (
 		<Provider
 			theme={darkMode !== null && (darkMode === true ? darkTheme : theme)}

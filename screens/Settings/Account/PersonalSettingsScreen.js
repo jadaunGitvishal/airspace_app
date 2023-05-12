@@ -1,66 +1,95 @@
-import React, { useState } from "react";
-import Background from "../../../components/Background";
-import BackButtonSimple from "../../../components/Button/BackButtonSimple";
+import React, { useEffect, useState } from "react";
 import {
-	ScrollView,
-	StatusBar,
-	Text,
-	TouchableOpacity,
 	View,
+	StyleSheet,
+	TouchableOpacity,
+	ScrollView,
+	ActivityIndicator,
+	Alert,
+	Text,
 } from "react-native";
-import { theme } from "../../../core/theme";
-import { LinearGradient } from "expo-linear-gradient";
-import {
-	AntDesign,
-	MaterialIcons,
-	Ionicons,
-	MaterialCommunityIcons,
-} from "@expo/vector-icons";
+import BackButtonSimple from "../../../components/Button/BackButtonSimple";
+import Background from "../../../components/Background";
 import Button from "../../../components/Button/Button";
 import TextInput from "../../../components/Input/TextInput";
+import { Ionicons } from "@expo/vector-icons";
+import { nameValidator } from "../../../helpers/nameValidator";
+import { theme } from "../../../core/theme";
+import * as api from "../../../api/userRequests";
+import {
+	logIn,
+	selectUser,
+	useDispatch,
+	useSelector,
+} from "../../../features/userSlice";
 
-export default function PersonalSettingsScreen({ navigation }) {
-	const [oldPassword, setOldPassword] = useState({ value: "", error: "" });
-	const [newPassword, setNewPassword] = useState({ value: "", error: "" });
-	const [confirmPassword, setConfirmPassword] = useState({
-		value: "",
-		error: "",
-	});
+const PersonalSettingsScreen = ({ navigation }) => {
+	const dispatch = useDispatch();
+	const { user, loading } = useSelector(selectUser);
+	const [isLoading, setIsLoading] = useState(false);
 
-	const handleUpdate = () => {
-		const oldError = checkErrors(oldPassword);
-		const newError = checkErrors(newPassword);
-		const confirmError = checkErrors(confirmPassword);
-		if (oldError || newError || confirmError) {
-			setOldPassword({ ...oldPassword, error: oldError });
-			setNewPassword({ ...newPassword, error: newError });
-			setConfirmPassword({ ...confirmPassword, error: confirmError });
+	const [name, setName] = useState({ value: "", error: "" });
+	const [phone, setPhone] = useState({ value: "", error: "" });
+	const [city, setCity] = useState({ value: "", error: "" });
+	const [address, setAddress] = useState({ value: "", error: "" });
+
+	// handle update
+	const handleUpdate = async () => {
+		const nameError = nameValidator(name.value);
+		const phoneError = nameValidator(phone.value);
+		const cityError = nameValidator(city.value);
+		const addressError = nameValidator(address.value);
+		if (nameError || phoneError || cityError || addressError) {
+			setName({ ...name, error: nameError });
+			setPhone({ ...phone, error: phoneError });
+			setCity({ ...city, error: cityError });
+			setAddress({ ...address, error: addressError });
 			return;
 		}
 
-		if (newPassword !== confirmPassword) {
-			setNewPassword({ ...newPassword, error: "* passwords don't match" });
-			setConfirmPassword({
-				...confirmPassword,
-				error: "* passwords don't match",
+		try {
+			setIsLoading(true);
+			const { data } = await api.updateProfile({
+				name: name.value,
+				phone: phone.value,
+				city: city.value,
+				address: address.value,
 			});
-			return;
-		}
 
-		alert("Submitted");
+			if (data) {
+				dispatch(
+					logIn({
+						user: data?.data,
+					})
+				);
+				Alert.alert("Profile Updated", "Your profile is updated.");
+				navigation.goBack();
+			} else {
+				Alert.alert("Error", "Data not found.");
+			}
+			setIsLoading(false);
+		} catch (error) {
+			console.log("=> Error");
+			console.log(error);
+			Alert.alert(
+				"Error",
+				error?.response?.data?.message ?? "An error occured."
+			);
+			setIsLoading(false);
+		}
 	};
 
-	const checkErrors = (inp) => {
-		if (inp.value === "") {
-			return "*this field cannot be empty";
+	// get profile
+	useEffect(() => {
+		function setValues() {
+			setName({ value: user?.user?.name, error: "" });
+			setPhone({ value: user?.user?.phone, error: "" });
+			setCity({ value: user?.user?.city, error: "" });
+			setAddress({ value: user?.user?.address, error: "" });
 		}
 
-		if (inp.value.length < 8) {
-			return "*password length must be 8 characters";
-		}
-
-		return "";
-	};
+		setValues();
+	}, [loading]);
 
 	return (
 		<Background>
@@ -91,10 +120,10 @@ export default function PersonalSettingsScreen({ navigation }) {
 							style={{ color: theme.colors.surface }}
 							className=" text-lg font-semibold"
 						>
-							ADD VEHICLES
+							PROFILE
 						</Text>
 						<Ionicons
-							name="finger-print-outline"
+							name="person-outline"
 							size={20}
 							color={theme.colors.surface}
 						/>
@@ -111,66 +140,90 @@ export default function PersonalSettingsScreen({ navigation }) {
 					}}
 					className="w-full"
 				>
-					<TouchableOpacity
-						activeOpacity={1}
-						className="h-full w-full p-6 pt-10 items-center"
-					>
-						<Text className="text-base font-semibold w-full text-left border-b pb-2 pl-2 mb-5 border-gray-300 uppercase">
-							PASSWORDS
-						</Text>
-
-						<TextInput
-							label="Old Password"
-							returnKeyType="done"
-							value={oldPassword.value}
-							onChangeText={(text) =>
-								setOldPassword({ value: text, error: "" })
-							}
-							error={oldPassword.error}
-							errorText={oldPassword.error}
-							containerStyle={{ marginVertical: 5 }}
-							inputStyle={{ height: 50 }}
-							secureTextEntry
-						/>
-						<TextInput
-							label="New Password"
-							returnKeyType="done"
-							value={newPassword.value}
-							onChangeText={(text) =>
-								setNewPassword({ value: text, error: "" })
-							}
-							error={newPassword.error}
-							errorText={newPassword.error}
-							containerStyle={{ marginVertical: 5 }}
-							inputStyle={{ height: 50 }}
-							secureTextEntry
-						/>
-						<TextInput
-							label="Confirm Password"
-							returnKeyType="done"
-							value={confirmPassword.value}
-							onChangeText={(text) =>
-								setConfirmPassword({ value: text, error: null })
-							}
-							error={confirmPassword.error}
-							errorText={confirmPassword.error}
-							containerStyle={{ marginVertical: 5 }}
-							inputStyle={{ height: 50 }}
-							secureTextEntry
-						/>
-						<View className="w-2/4 ml-auto mt-5">
-							<Button
-								mode="contained"
-								onPress={() => {
-									handleUpdate();
-								}}
-							>
-								Update
-							</Button>
+					{isLoading === true ? (
+						<View className="h-full flex-col justify-center my-20">
+							<ActivityIndicator size={45} color={theme.colors.bg0} />
 						</View>
-					</TouchableOpacity>
+					) : (
+						<TouchableOpacity
+							activeOpacity={1}
+							className="h-full w-full p-6 pt-10 items-center"
+						>
+							<Text className="text-base font-semibold w-full text-left border-b pb-2 pl-2 mb-5 border-gray-300 uppercase">
+								UPDATE PROFILE
+							</Text>
+
+							<TextInput
+								label="Name"
+								returnKeyType="next"
+								value={name.value}
+								onChangeText={(text) => setName({ value: text, error: "" })}
+								error={name.error}
+								errorText={name.error}
+								className="h-10 bg-white"
+							/>
+
+							<TextInput
+								label="Phone"
+								returnKeyType="next"
+								value={phone.value}
+								onChangeText={(text) => setPhone({ value: text, error: "" })}
+								error={phone.error}
+								errorText={phone.error}
+								autoCapitalize="none"
+								keyboardType="number-pad"
+								className="h-10 bg-white"
+							/>
+
+							<TextInput
+								label="City"
+								returnKeyType="next"
+								value={city.value}
+								onChangeText={(text) => setCity({ value: text, error: "" })}
+								error={city.error}
+								errorText={city.error}
+								autoCapitalize="none"
+								className="h-10 bg-white"
+							/>
+
+							<TextInput
+								label="Address"
+								returnKeyType="next"
+								value={address.value}
+								onChangeText={(text) => setAddress({ value: text, error: "" })}
+								error={address.error}
+								errorText={address.error}
+								autoCapitalize="none"
+								className="h-10 bg-white"
+							/>
+
+							<View className="w-2/4 ml-auto mt-5">
+								<Button
+									mode="contained"
+									onPress={() => {
+										handleUpdate();
+									}}
+								>
+									Update
+								</Button>
+							</View>
+						</TouchableOpacity>
+					)}
 				</ScrollView>
 			</View>
 		</Background>
 	);
-}
+};
+
+export default PersonalSettingsScreen;
+
+const styles = StyleSheet.create({
+	row: {
+		flexDirection: "row",
+		marginTop: 4,
+	},
+	link: {
+		fontWeight: "bold",
+		color: theme.colors.main,
+	},
+});

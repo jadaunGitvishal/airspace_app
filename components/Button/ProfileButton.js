@@ -10,7 +10,7 @@ export default function ProfileButton({ size }) {
 			className="bg-primary rounded-full overflow-hidden"
 			style={{ width: size ? size + 0 : 35, height: size ? size + 0 : 35 }}
 		>
-			<Image style={styles.image} source={{ uri: user.user.image.url }} />
+			<Image style={styles.image} source={{ uri: user?.user?.image?.url }} />
 		</View>
 	);
 }

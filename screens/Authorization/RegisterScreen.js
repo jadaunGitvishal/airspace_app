@@ -120,12 +120,12 @@ const RegisterScreen = ({ navigation }) => {
 			setSelectedImage({ ...selectedImage, error: imageError });
 			setName({ ...name, error: nameError });
 			setEmail({ ...email, error: emailError });
-			setPhone({ ...email, error: phoneError });
-			setCNIC({ ...email, error: CNICError });
-			setCity({ ...email, error: cityError });
-			setAddress({ ...email, error: addressError });
+			setPhone({ ...phone, error: phoneError });
+			setCNIC({ ...CNIC, error: CNICError });
+			setCity({ ...city, error: cityError });
+			setAddress({ ...address, error: addressError });
 			setPassword({ ...password, error: passwordError });
-			setConfirmPassword({ ...password, error: confirmPasswordError });
+			setConfirmPassword({ ...confirmPassword, error: confirmPasswordError });
 			return;
 		}
 
