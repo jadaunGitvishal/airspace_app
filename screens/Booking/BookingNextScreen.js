@@ -382,219 +382,214 @@ export default function BookingNextScreen({ route, navigation }) {
 				</View>
 
 				{/* LOWER SECTION */}
-				<TouchableOpacity
-					activeOpacity={1}
-					style={{
-						height: "82%",
-						backgroundColor: theme.colors.surface,
-					}}
-					className="h-full w-full"
+				<ScrollView
+					showsVerticalScrollIndicator={false}
+					className="flex-1 w-full"
 				>
-					<View className="p-4 mx-4 my-2 flex-col">
-						{/* parking info */}
-						<Text
-							style={{
-								color: theme.colors.main,
-								borderColor: theme.colors.main,
-							}}
-							className="font-semibold capitalize text-base border-b pb-0.5 mb-3"
-						>
-							Parking Information
-						</Text>
-						<Text
-							style={{
-								color: theme.colors.dark,
-							}}
-							className="font-semibold capitalize text-base"
-						>
-							- {space.name}
-						</Text>
-						<Text
-							style={{
-								color: theme.colors.dark,
-							}}
-							className="font-semibold capitalize text-base"
-						>
-							- Slot No {slot}
-						</Text>
-
-						{/*package selection*/}
-						<Text
-							style={{
-								color: theme.colors.main,
-								borderColor: theme.colors.main,
-							}}
-							className="font-semibold capitalize text-base border-b pb-0.5 my-3"
-						>
-							Package
-						</Text>
-						<View className="flex-row">
-							<TouchableOpacity
-								activeOpacity={0.8}
+					<TouchableOpacity
+						activeOpacity={1}
+						style={{
+							height: "82%",
+							backgroundColor: theme.colors.surface,
+						}}
+						className="h-full w-full"
+					>
+						<View className="p-4 mx-4 my-2 flex-col">
+							{/* parking info */}
+							<Text
 								style={{
-									backgroundColor: theme.colors.bg1,
+									color: theme.colors.main,
+									borderColor: theme.colors.main,
 								}}
-								onPress={() => setModalVisible(true)}
-								className="w-full mx-auto my-auto flex-row items-center justify-between rounded-full px-6 py-3"
+								className="font-semibold capitalize text-base border-b pb-0.5 mb-3"
 							>
-								<Text
-									style={{ color: theme.colors.darker }}
-									className="font-semibold text-base"
-								>
-									{pkg === null ? "Select Package" : pkg.name}
-								</Text>
-								{pkg === null && (
-									<EvilIcons
-										name="chevron-down"
-										size={24}
-										color={theme.colors.darker}
-									/>
-								)}
-							</TouchableOpacity>
-						</View>
+								Parking Information
+							</Text>
+							<Text
+								style={{
+									color: theme.colors.dark,
+								}}
+								className="font-semibold capitalize text-base"
+							>
+								- {space.name}
+							</Text>
+							<Text
+								style={{
+									color: theme.colors.dark,
+								}}
+								className="font-semibold capitalize text-base"
+							>
+								- Slot No {slot}
+							</Text>
 
-						{pkg !== null && (
-							<>
-								<View className="flex-row mt-2">
-									<TouchableOpacity
-										activeOpacity={0.8}
-										style={{
-											backgroundColor: theme.colors.bg1,
-										}}
-										onPress={() => showStartDatePicker()}
-										className="w-full mx-auto my-auto flex-row items-center justify-between rounded-full px-6 py-3"
-									>
-										<Text
-											style={{ color: theme.colors.darker }}
-											className="font-semibold text-base"
-										>
-											{startDate === null
-												? "Start Date"
-												: "Start Date - " + startDate.toLocaleDateString()}
-										</Text>
-									</TouchableOpacity>
-								</View>
-								<View className="flex-row mt-2">
-									<TouchableOpacity
-										activeOpacity={0.8}
-										style={{
-											backgroundColor: theme.colors.bg1,
-										}}
-										onPress={() => showEndDatePicker()}
-										className="w-full mx-auto my-auto flex-row items-center justify-between rounded-full px-6 py-3"
-									>
-										<Text
-											style={{ color: theme.colors.darker }}
-											className="font-semibold text-base"
-										>
-											{endDate === null
-												? "End Date"
-												: "End Date - " + endDate.toLocaleDateString()}
-										</Text>
-									</TouchableOpacity>
-								</View>
-								<View className="flex-row mt-2">
-									<TouchableOpacity
-										activeOpacity={0.8}
-										style={{
-											backgroundColor: theme.colors.bg1,
-										}}
-										className="w-full mx-auto my-auto flex-row items-center justify-between rounded-full px-6 py-3"
-									>
-										<Text
-											style={{ color: theme.colors.darker }}
-											className="font-semibold text-base"
-										>
-											{endDate === null || startDate === null
-												? "N/A Days"
-												: totalDays + " Days"}
-										</Text>
-									</TouchableOpacity>
-								</View>
-								<View className="flex-row mt-2">
-									<TouchableOpacity
-										activeOpacity={0.8}
-										style={{
-											backgroundColor: theme.colors.bg1,
-										}}
-										className="w-full mx-auto my-auto flex-row items-center justify-between rounded-full px-6 py-3"
-									>
-										<Text
-											style={{ color: theme.colors.darker }}
-											className="font-semibold text-base"
-										>
-											{endDate === null || startDate === null
-												? "N/A Price"
-												: totalPrice + " Rs"}
-										</Text>
-									</TouchableOpacity>
-								</View>
-								<View className="flex-row mt-2">
-									<TouchableOpacity
-										activeOpacity={0.8}
-										className="w-full mx-auto my-auto flex-row items-center justify-between rounded-full px-6"
-									>
-										<Text
-											style={{ color: theme.colors.darker }}
-											className="font-medium"
-										>
-											{pkg.id === 0 &&
-												filledPct >= fillPct &&
-												"*Peak rates applied as " +
-													filledPct.toFixed(0) +
-													"% parking is occupied"}
-										</Text>
-									</TouchableOpacity>
-								</View>
-
-								{/*vehicle selection*/}
-								<Text
+							{/*package selection*/}
+							<Text
+								style={{
+									color: theme.colors.main,
+									borderColor: theme.colors.main,
+								}}
+								className="font-semibold capitalize text-base border-b pb-0.5 my-3"
+							>
+								Package
+							</Text>
+							<View className="flex-row">
+								<TouchableOpacity
+									activeOpacity={0.8}
 									style={{
-										color: theme.colors.main,
-										borderColor: theme.colors.main,
+										backgroundColor: theme.colors.bg1,
 									}}
-									className="font-semibold capitalize text-base border-b pb-0.5 my-3 mt-5"
+									onPress={() => setModalVisible(true)}
+									className="w-full mx-auto my-auto flex-row items-center justify-between rounded-full px-6 py-3"
 								>
-									Vehicle
-								</Text>
-								<View className="flex-row items-center justify-between">
-									{allVehicles?.map(({ number, _id }) => (
+									<Text
+										style={{ color: theme.colors.darker }}
+										className="font-semibold text-base"
+									>
+										{pkg === null ? "Select Package" : pkg.name}
+									</Text>
+									{pkg === null && (
+										<EvilIcons
+											name="chevron-down"
+											size={24}
+											color={theme.colors.darker}
+										/>
+									)}
+								</TouchableOpacity>
+							</View>
+
+							{pkg !== null && (
+								<>
+									<View className="flex-row mt-2">
 										<TouchableOpacity
-											key={number}
 											activeOpacity={0.8}
 											style={{
-												backgroundColor:
-													vehicle?.number === number
-														? theme.colors.bg1
-														: theme.colors.bg,
+												backgroundColor: theme.colors.bg1,
 											}}
-											onPress={() => setVehicle({ number: number, id: _id })}
-											className="w-fit mx-auto my-auto flex-row items-center justify-between rounded-full px-6 py-3"
+											onPress={() => showStartDatePicker()}
+											className="w-full mx-auto my-auto flex-row items-center justify-between rounded-full px-6 py-3"
 										>
 											<Text
 												style={{ color: theme.colors.darker }}
 												className="font-semibold text-base"
 											>
-												{number}
+												{startDate === null
+													? "Start Date"
+													: "Start Date - " + startDate.toLocaleDateString()}
 											</Text>
 										</TouchableOpacity>
-									))}
-								</View>
-							</>
-						)}
-					</View>
+									</View>
+									<View className="flex-row mt-2">
+										<TouchableOpacity
+											activeOpacity={0.8}
+											style={{
+												backgroundColor: theme.colors.bg1,
+											}}
+											onPress={() => showEndDatePicker()}
+											className="w-full mx-auto my-auto flex-row items-center justify-between rounded-full px-6 py-3"
+										>
+											<Text
+												style={{ color: theme.colors.darker }}
+												className="font-semibold text-base"
+											>
+												{endDate === null
+													? "End Date"
+													: "End Date - " + endDate.toLocaleDateString()}
+											</Text>
+										</TouchableOpacity>
+									</View>
+									<View className="flex-row mt-2">
+										<TouchableOpacity
+											activeOpacity={0.8}
+											style={{
+												backgroundColor: theme.colors.bg1,
+											}}
+											className="w-full mx-auto my-auto flex-row items-center justify-between rounded-full px-6 py-3"
+										>
+											<Text
+												style={{ color: theme.colors.darker }}
+												className="font-semibold text-base"
+											>
+												{endDate === null || startDate === null
+													? "N/A Days"
+													: totalDays + " Days"}
+											</Text>
+										</TouchableOpacity>
+									</View>
+									<View className="flex-row mt-2">
+										<TouchableOpacity
+											activeOpacity={0.8}
+											style={{
+												backgroundColor: theme.colors.bg1,
+											}}
+											className="w-full mx-auto my-auto flex-row items-center justify-between rounded-full px-6 py-3"
+										>
+											<Text
+												style={{ color: theme.colors.darker }}
+												className="font-semibold text-base"
+											>
+												{endDate === null || startDate === null
+													? "N/A Price"
+													: totalPrice + " Rs"}
+											</Text>
+										</TouchableOpacity>
+									</View>
+									<View className="flex-row mt-2">
+										<TouchableOpacity
+											activeOpacity={0.8}
+											className="w-full mx-auto my-auto flex-row items-center justify-between rounded-full px-6"
+										>
+											<Text
+												style={{ color: theme.colors.darker }}
+												className="font-medium"
+											>
+												{pkg.id === 0 &&
+													filledPct >= fillPct &&
+													"*Peak rates applied as " +
+														filledPct.toFixed(0) +
+														"% parking is occupied"}
+											</Text>
+										</TouchableOpacity>
+									</View>
 
-					{/* Register Button */}
-					<View
-						className="mt-auto w-full px-4 h-28 items-center justify-center"
-						style={{
-							borderTopLeftRadius: 60,
-							// backgroundColor: theme.colors.main,
-						}}
-					>
-						<Text className="text-white text-base">Confirm Reservation.</Text>
+									{/*vehicle selection*/}
+									<Text
+										style={{
+											color: theme.colors.main,
+											borderColor: theme.colors.main,
+										}}
+										className="font-semibold capitalize text-base border-b pb-0.5 my-3 mt-5"
+									>
+										Vehicle
+									</Text>
+									<View className="flex-row flex-wrap items-center justify-between">
+										{allVehicles?.map(({ number, _id }) => (
+											<TouchableOpacity
+												key={number}
+												activeOpacity={0.8}
+												style={{
+													backgroundColor:
+														vehicle?.number === number
+															? theme.colors.bg1
+															: theme.colors.bg,
+												}}
+												onPress={() => setVehicle({ number: number, id: _id })}
+												className="w-fit mx-auto my-auto mb-1 flex-row items-center justify-between rounded-full px-6 py-3"
+											>
+												<Text
+													style={{ color: theme.colors.darker }}
+													className="font-semibold text-base"
+												>
+													{number}
+												</Text>
+											</TouchableOpacity>
+										))}
+									</View>
+								</>
+							)}
+						</View>
 
-						<View className="w-2/3">
+						{/* Register Button */}
+						<View className="w-2/3 mx-auto mb-5">
 							<Button
 								mode="contained"
 								onPress={() => {
@@ -628,8 +623,8 @@ export default function BookingNextScreen({ route, navigation }) {
 								RESERVE
 							</Button>
 						</View>
-					</View>
-				</TouchableOpacity>
+					</TouchableOpacity>
+				</ScrollView>
 			</View>
 		</Background>
 	);

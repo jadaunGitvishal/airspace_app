@@ -38,8 +38,12 @@ const Dashboard = ({ navigation }) => {
 				const { data } = await api.getUserDashboard();
 
 				if (data.success === true) {
-					setDashboardData(data.data);
-					calculateTime(data.data.from, data.data.to);
+					console.log(data.data);
+
+					setDashboardData(data?.data);
+					if (data?.data?.hasBooking === true) {
+						calculateTime(data?.data?.from, data?.data?.to);
+					}
 				} else {
 					Alert.alert("Error", "Data not found.");
 				}
@@ -105,7 +109,7 @@ const Dashboard = ({ navigation }) => {
 
 	return (
 		<Background>
-			{loading === true ? (
+			{isLoading === true ? (
 				<View className="h-full flex-col justify-center">
 					<ActivityIndicator size={45} color={theme.colors.bg0} />
 				</View>
@@ -375,9 +379,7 @@ const Dashboard = ({ navigation }) => {
 											style={{ color: theme.colors.dark }}
 											className="text-lg ml-2 uppercase"
 										>
-											{/* {dashboardData.block} - */}
-											{/* {dashboardData.slot} */}
-											No data for slot
+											{dashboardData.block} -{dashboardData.slot}
 										</Text>
 									</View>
 								</View>
@@ -417,11 +419,13 @@ const Dashboard = ({ navigation }) => {
 											style={{ color: theme.colors.dark }}
 											className="text-lg ml-2 capitalize"
 										>
-											{dashboardData.package}
+											{dashboardData.package === 0
+												? "Custom"
+												: dashboardData.package}
 										</Text>
 									</View>
 
-									{/* Booking */}
+									{/* date */}
 									<View className="flex-row items-center">
 										{/* booking date */}
 										<View className="flex-row items-center">
@@ -440,7 +444,9 @@ const Dashboard = ({ navigation }) => {
 												style={{ color: theme.colors.dark }}
 												className="text-lg ml-2 capitalize"
 											>
-												{dashboardData.bookingFrom}
+												{new Date(
+													dashboardData.bookingFrom
+												).toLocaleDateString()}
 											</Text>
 										</View>
 
@@ -461,7 +467,7 @@ const Dashboard = ({ navigation }) => {
 												style={{ color: theme.colors.dark }}
 												className="text-lg ml-2 capitalize"
 											>
-												{dashboardData.bookingTo}
+												{new Date(dashboardData.bookingTo).toLocaleDateString()}
 											</Text>
 										</View>
 									</View>
@@ -483,7 +489,7 @@ const Dashboard = ({ navigation }) => {
 											style={{ color: theme.colors.dark }}
 											className="text-lg ml-2"
 										>
-											{dashboardData.daysLeft} days left
+											{dashboardData.days} days left
 										</Text>
 									</View>
 								</View>

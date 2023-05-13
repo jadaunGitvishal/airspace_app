@@ -37,7 +37,7 @@ export default function BookingFinalScreen({ route, navigation }) {
 		fetchPublishableKey();
 	}, []);
 
-	// booking
+	// handle booking
 	async function handleBooking() {
 		setProcessing(2);
 
@@ -45,8 +45,9 @@ export default function BookingFinalScreen({ route, navigation }) {
 			const bookingInfo = {
 				ps: space.id,
 				slot: slot,
+				block: block,
 				days: days,
-				package: pkg.id,
+				package: pkg.id === 0 ? null : pkg.id,
 				from: startDate,
 				to: endDate,
 				price: price,
@@ -56,13 +57,13 @@ export default function BookingFinalScreen({ route, navigation }) {
 			const { data } = await api.addBooking(bookingInfo);
 
 			if (data?.success === true) {
+				// console.log(data);
 				Alert.alert(
 					"Slot reserved",
 					`Successfully reserved your slot in ${space.name}\nBlock: ${block}\nSlot: ${slot}`
 				);
 				navigation.goBack();
 				navigation.goBack();
-				// console.log(data);
 			} else {
 				Alert.alert("Error", "Something went wrong.");
 				// console.log(data);
