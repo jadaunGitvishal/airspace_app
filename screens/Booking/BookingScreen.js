@@ -53,7 +53,10 @@ const BookingScreen = ({ navigation }) => {
 				setLoading(true);
 
 				const status = await api.loadUser();
-				if (status?.data?.user?.status === "suspended") {
+				if (
+					status?.data?.user?.status === "suspended" ||
+					new Date(status?.data?.user?.tempSuspention) >= new Date()
+				) {
 					setHasProblem("Account Suspended");
 					setLoading(false);
 					return;
