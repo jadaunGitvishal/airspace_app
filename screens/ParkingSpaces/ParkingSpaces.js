@@ -12,10 +12,12 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import Background from "../../components/Background";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { theme } from "../../core/theme";
+import { useTheme } from "react-native-paper";
 import * as api from "../../api/userRequests";
+import { dataUpdateWithSocket } from "../../socket/socket";
 
 const ParkingSpaces = ({ navigation }) => {
+	const theme = useTheme();
 	const [loading, setLoading] = useState(true); //loading
 	const [allParkingSpaces, setAllParkingSpaces] = useState([]);
 
@@ -68,6 +70,7 @@ const ParkingSpaces = ({ navigation }) => {
 			}
 		};
 		getData();
+		// dataUpdateWithSocket(getData); // Clicks error
 	}, []);
 
 	return (

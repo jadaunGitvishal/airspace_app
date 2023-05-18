@@ -9,12 +9,14 @@ import {
 	Image,
 	Alert,
 } from "react-native";
-import { theme } from "../../core/theme";
+import { useTheme } from "react-native-paper";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { ScrollView } from "react-native-gesture-handler";
 import * as api from "../../api/userRequests";
+import { dataUpdateWithSocket } from "../../socket/socket";
 
 export default function ParkingSpaceDetails({ route, navigation }) {
+	const theme = useTheme();
 	const { spaceId } = route.params;
 	const [loading, setLoading] = useState(false);
 	const [parkingSpace, setParkingSpace] = useState(null);
@@ -42,6 +44,7 @@ export default function ParkingSpaceDetails({ route, navigation }) {
 			}
 		};
 		getData();
+		// dataUpdateWithSocket(getData); // Clicks error
 	}, []);
 
 	return (

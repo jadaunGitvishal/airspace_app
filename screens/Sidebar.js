@@ -16,8 +16,7 @@ import {
 	MaterialCommunityIcons,
 	SimpleLineIcons,
 } from "@expo/vector-icons";
-import { theme } from "../core/theme";
-import { LinearGradient } from "expo-linear-gradient";
+import { useTheme } from "react-native-paper";
 import * as api from "../api/userRequests";
 import {
 	logOut,
@@ -27,6 +26,7 @@ import {
 } from "../features/userSlice";
 
 const Sidebar = ({ navigation }) => {
+	const theme = useTheme();
 	const dispatch = useDispatch();
 	const { user, loading } = useSelector(selectUser);
 

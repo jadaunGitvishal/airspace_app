@@ -14,7 +14,7 @@ import Button from "../../../components/Button/Button";
 import TextInput from "../../../components/Input/TextInput";
 import { Ionicons } from "@expo/vector-icons";
 import { nameValidator } from "../../../helpers/nameValidator";
-import { theme } from "../../../core/theme";
+import { useTheme } from "react-native-paper";
 import * as api from "../../../api/userRequests";
 import {
 	logIn,
@@ -25,6 +25,7 @@ import {
 
 const PersonalSettingsScreen = ({ navigation }) => {
 	const dispatch = useDispatch();
+	const theme = useTheme();
 	const { user, loading } = useSelector(selectUser);
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -216,14 +217,3 @@ const PersonalSettingsScreen = ({ navigation }) => {
 };
 
 export default PersonalSettingsScreen;
-
-const styles = StyleSheet.create({
-	row: {
-		flexDirection: "row",
-		marginTop: 4,
-	},
-	link: {
-		fontWeight: "bold",
-		color: theme.colors.main,
-	},
-});

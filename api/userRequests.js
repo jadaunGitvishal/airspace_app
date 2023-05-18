@@ -84,6 +84,10 @@ export const addVehicle = (data) =>
 // Get All Packages
 export const getAllPackages = () => axios.get(`${pkgUrl}/user/all`, config);
 
+// Check Reservation Status
+export const checkSlotStatus = (data) =>
+	axios.post(`${psUrl}/slot/check`, data, config);
+
 // Create Payment Intent
 export const createPaymentIntent = (data) =>
 	axios.post(`${userUrl}/payment/new`, data, config);

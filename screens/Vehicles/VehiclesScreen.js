@@ -9,12 +9,14 @@ import {
 	ActivityIndicator,
 	Alert,
 } from "react-native";
-import { theme } from "../../core/theme";
+import { useTheme } from "react-native-paper";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import * as api from "../../api/userRequests";
 import { useIsFocused } from "@react-navigation/native";
+import { dataUpdateWithSocket } from "../../socket/socket";
 
 export default function VehiclesScreen({ navigation }) {
+	const theme = useTheme();
 	const isFocused = useIsFocused();
 	const [loading, setLoading] = useState(false);
 	const [vehiclesData, setVehiclesData] = useState([]);
@@ -44,6 +46,7 @@ export default function VehiclesScreen({ navigation }) {
 		}
 
 		fetchData();
+		dataUpdateWithSocket(fetchData);
 	}, [reload, isFocused]);
 
 	// handle delete

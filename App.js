@@ -19,7 +19,7 @@ import {
 } from "./features/userSlice.js";
 import * as api from "./api/userRequests.js";
 import * as Notifications from "expo-notifications";
-import dataUpdateWithNotificationSocket from "./socket/pushNotificationSocket.js";
+import { dataUpdateWithNotificationSocket } from "./socket/socket.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { selectApp, setMode } from "./features/appSlice.js";
 
@@ -43,7 +43,7 @@ function MainComponent() {
 	const [darkMode, setDarkMode] = useState(null);
 	const [notification, setNotification] = useState(null);
 
-	// get mode
+	// get mode settings
 	useEffect(() => {
 		const getMode = async () => {
 			try {
@@ -62,7 +62,7 @@ function MainComponent() {
 		getMode();
 	}, [dark]);
 
-	// get notification
+	// get notification settings
 	useEffect(() => {
 		const getNotif = async () => {
 			try {

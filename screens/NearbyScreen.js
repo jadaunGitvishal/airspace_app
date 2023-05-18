@@ -13,7 +13,7 @@ import {
 	ActivityIndicator,
 	Alert,
 } from "react-native";
-import { theme } from "../core/theme";
+import { useTheme } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import psMarker from "../assets/parkingMarker.png";
 import * as api from "../api/userRequests";
@@ -22,6 +22,7 @@ const GOOGLE_MAPS_APIKEY = "AIzaSyDJ-L92KULtVlHgF8rEfwITLzF_xibHtxc";
 const directionsMode = "driving";
 
 export default function NearbyScreen({ navigation }) {
+	const theme = useTheme();
 	const [loading, setLoading] = useState(true);
 
 	// An array of parking spots with their coordinates and names

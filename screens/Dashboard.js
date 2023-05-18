@@ -21,9 +21,12 @@ import {
 } from "@expo/vector-icons";
 import { selectUser, useSelector } from "../features/userSlice.js";
 import * as api from "../api/userRequests";
+import { useIsFocused } from "@react-navigation/native";
+import { dataUpdateWithSocket } from "../socket/socket";
 
 const Dashboard = ({ navigation }) => {
 	const theme = useTheme();
+	const isFocused = useIsFocused();
 	const [isLoading, setIsLoading] = useState(false);
 	const { user, loading } = useSelector(selectUser);
 	const [dashboardData, setDashboardData] = useState({});
@@ -37,9 +40,8 @@ const Dashboard = ({ navigation }) => {
 			try {
 				const { data } = await api.getUserDashboard();
 
+				console.log(data.data);
 				if (data.success === true) {
-					console.log(data.data);
-
 					setDashboardData(data?.data);
 					if (data?.data?.hasBooking === true) {
 						calculateTime(data?.data?.from, data?.data?.to);
@@ -58,7 +60,9 @@ const Dashboard = ({ navigation }) => {
 				setIsLoading(false);
 			}
 		}
+
 		fetchData();
+		dataUpdateWithSocket(fetchData);
 
 		// calculate time
 		function calculateTime(startTime, endTime) {
@@ -105,7 +109,7 @@ const Dashboard = ({ navigation }) => {
 				);
 			}, 1000);
 		}
-	}, []);
+	}, [isFocused]);
 
 	return (
 		<Background>

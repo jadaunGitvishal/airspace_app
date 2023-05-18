@@ -10,7 +10,7 @@ import {
 	TouchableOpacity,
 	View,
 } from "react-native";
-import { theme } from "../../../core/theme";
+import { useTheme } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import Button from "../../../components/Button/Button";
 import * as api from "../../../api/userRequests";
@@ -19,6 +19,7 @@ import { nameValidator } from "../../../helpers/nameValidator";
 import { logIn, useDispatch } from "../../../features/userSlice";
 
 export default function UpdateImageScreen({ navigation }) {
+	const theme = useTheme();
 	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(false);
 	const [selectedImage, setSelectedImage] = useState({ value: "", error: "" });

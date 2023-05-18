@@ -6,18 +6,20 @@ import {
 	View,
 	Modal,
 	ActivityIndicator,
+	Alert,
 } from "react-native";
 import Background from "../../components/Background";
 import { Ionicons, EvilIcons } from "@expo/vector-icons";
-import { theme } from "../../core/theme";
+import { useTheme } from "react-native-paper";
 import Slot from "../../components/Slot/Slot";
 import Button from "../../components/Button/Button";
 import * as api from "../../api/userRequests";
 import { useIsFocused } from "@react-navigation/native";
 
 const BookingScreen = ({ navigation }) => {
+	const theme = useTheme();
 	const isFocused = useIsFocused();
-	const [hasBooking, setHasBooking] = useState(false); //hasBooking
+	const [hasProblem, setHasProblem] = useState(false); //booking or suspended
 	const [loading, setLoading] = useState(true); //loading
 	const [modalVisible, setModalVisible] = useState(false);
 
@@ -49,10 +51,17 @@ const BookingScreen = ({ navigation }) => {
 		async function fetchData() {
 			try {
 				setLoading(true);
-				const status = await api.checkReservationStatus();
 
-				if (status?.data?.data?.length > 0) {
-					setHasBooking(true);
+				const status = await api.loadUser();
+				if (status?.data?.user?.status === "suspended") {
+					setHasProblem("Account Suspended");
+					setLoading(false);
+					return;
+				}
+
+				const bookingStatus = await api.checkReservationStatus();
+				if (bookingStatus?.data?.data?.length > 0) {
+					setHasProblem("Already have a booking");
 					setLoading(false);
 					return;
 				}
@@ -234,7 +243,7 @@ const BookingScreen = ({ navigation }) => {
 									backgroundColor: theme.colors.surface,
 								}}
 								onPress={() => {
-									if (!hasBooking) {
+									if (!hasProblem) {
 										setModalVisible(true);
 									}
 								}}
@@ -244,8 +253,8 @@ const BookingScreen = ({ navigation }) => {
 									style={{ color: theme.colors.darker }}
 									className="font-semibold text-base"
 								>
-									{hasBooking
-										? "Already have a booking"
+									{hasProblem
+										? hasProblem
 										: space === null
 										? "Select Parking Space"
 										: space.name}
@@ -350,9 +359,7 @@ const BookingScreen = ({ navigation }) => {
 					</>
 				) : (
 					<Text className="my-auto font-medium text-dark text-xl">
-						{hasBooking === true
-							? "Already have a booking"
-							: "Select a parking space"}
+						{hasProblem !== false ? hasProblem : "Select a parking space"}
 					</Text>
 				)}
 			</View>

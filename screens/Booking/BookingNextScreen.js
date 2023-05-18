@@ -11,12 +11,13 @@ import {
 	ActivityIndicator,
 	Alert,
 } from "react-native";
-import { theme } from "../../core/theme";
+import { useTheme } from "react-native-paper";
 import { Ionicons, EvilIcons } from "@expo/vector-icons";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import * as api from "../../api/userRequests";
 
 export default function BookingNextScreen({ route, navigation }) {
+	const theme = useTheme();
 	const { space, slot, block } = route.params;
 	const [loading, setLoading] = useState(true); //loading
 

@@ -11,8 +11,7 @@ import {
 	TouchableOpacity,
 	View,
 } from "react-native";
-import { theme } from "../../core/theme";
-import { LinearGradient } from "expo-linear-gradient";
+import { useTheme } from "react-native-paper";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { ActivityIndicator, Switch } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -20,6 +19,7 @@ import { useEffect } from "react";
 import { setMode, setNotif, useDispatch } from "../../features/appSlice";
 
 const SettingsScreen = ({ navigation }) => {
+	const theme = useTheme();
 	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(false);
 

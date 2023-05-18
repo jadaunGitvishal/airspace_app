@@ -3,12 +3,14 @@ import Background from "../../components/Background";
 import BackButtonSimple from "../../components/Button/BackButtonSimple";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { theme } from "../../core/theme";
+import { useTheme } from "react-native-paper";
 import * as api from "../../api/userRequests";
 import { ActivityIndicator } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
+import { dataUpdateWithSocket } from "../../socket/socket";
 
 export default function QueryScreen({ navigation }) {
+	const theme = useTheme();
 	const isFocused = useIsFocused();
 	const [loading, setLoading] = useState(false);
 	const [query, setQuery] = useState([]);
@@ -42,6 +44,7 @@ export default function QueryScreen({ navigation }) {
 		}
 
 		fetchData();
+		dataUpdateWithSocket(fetchData);
 	}, [isFocused]);
 
 	return (

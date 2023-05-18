@@ -8,10 +8,9 @@ import {
 	View,
 	ActivityIndicator,
 	Alert,
-	TextInput,
 	ScrollView,
 } from "react-native";
-import { theme } from "../../core/theme";
+import { useTheme } from "react-native-paper";
 import {
 	CardField,
 	useStripe,
@@ -21,6 +20,7 @@ import { useSelector, selectUser } from "../../features/userSlice";
 import * as api from "../../api/userRequests";
 
 export default function BookingFinalScreen({ route, navigation }) {
+	const theme = useTheme();
 	const { space, slot, block, days, pkg, startDate, endDate, price, vehicle } =
 		route.params;
 	const [processing, setProcessing] = useState(false);
@@ -270,13 +270,14 @@ export default function BookingFinalScreen({ route, navigation }) {
 }
 
 function PaymentScreen({ price, handleBooking, setProcessing }) {
+	const theme = useTheme();
 	const { user } = useSelector(selectUser);
 	const [cardDetails, setCardDetails] = useState(null);
 	const { confirmPayment } = useStripe();
 
 	// Payment
 	async function handleSubmit() {
-		const { data } = await api.createPaymentIntent({ amount: price });
+		const { data } = await api.createPaymentIntent({ amount: price * 100 });
 		const billingDetails = {
 			email: user?.user?.email,
 			phone: user?.user?.phone,

@@ -9,13 +9,14 @@ import {
 	TouchableOpacity,
 	View,
 } from "react-native";
-import { theme } from "../../core/theme";
+import { useTheme } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import Button from "../../components/Button/Button";
 import TextInput from "../../components/Input/TextInput";
 import * as api from "../../api/userRequests";
 
 export default function AddVehicleScreen({ navigation }) {
+	const theme = useTheme();
 	const [loading, setLoading] = useState(false);
 	const [name, setName] = useState({ value: "", error: "" });
 	const [model, setModel] = useState({ value: "", error: "" });

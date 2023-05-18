@@ -1,23 +1,16 @@
 import React, { useState } from "react";
 import Background from "../../../components/Background";
 import BackButtonSimple from "../../../components/Button/BackButtonSimple";
-import {
-	ScrollView,
-	StatusBar,
-	Text,
-	TouchableOpacity,
-	View,
-} from "react-native";
-import { theme } from "../../../core/theme";
-import { LinearGradient } from "expo-linear-gradient";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { useTheme } from "react-native-paper";
 import {
 	AntDesign,
-	MaterialIcons,
 	Ionicons,
 	MaterialCommunityIcons,
 } from "@expo/vector-icons";
 
 export default function AccountSettingsScreen({ navigation }) {
+	const theme = useTheme();
 	return (
 		<Background>
 			<View

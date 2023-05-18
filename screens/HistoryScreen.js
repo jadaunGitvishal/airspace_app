@@ -5,15 +5,16 @@ import {
 	ActivityIndicator,
 	Alert,
 	ScrollView,
-	StatusBar,
 	Text,
 	TouchableOpacity,
 	View,
 } from "react-native";
-import { theme } from "../core/theme";
+import { useTheme } from "react-native-paper";
 import * as api from "../api/userRequests";
+import { dataUpdateWithSocket } from "../socket/socket";
 
 export default function HistoryScreen({ navigation }) {
+	const theme = useTheme();
 	const [loading, setLoading] = useState(false);
 	const [history, setHistory] = useState([]);
 
@@ -47,6 +48,7 @@ export default function HistoryScreen({ navigation }) {
 		}
 
 		fetchData();
+		dataUpdateWithSocket(fetchData);
 	}, []);
 
 	return (
