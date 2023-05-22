@@ -141,7 +141,7 @@ export default function AccountSettingsScreen({ navigation }) {
 						</TouchableOpacity>
 
 						{/* biometric login */}
-						<TouchableOpacity
+						{/* <TouchableOpacity
 							activeOpacity={0.9}
 							className="w-full flex-row items-center my-3"
 						>
@@ -161,7 +161,7 @@ export default function AccountSettingsScreen({ navigation }) {
 							<View className="ml-auto">
 								<AntDesign name="right" size={20} color={theme.colors.dark} />
 							</View>
-						</TouchableOpacity>
+						</TouchableOpacity> */}
 					</TouchableOpacity>
 				</ScrollView>
 			</View>

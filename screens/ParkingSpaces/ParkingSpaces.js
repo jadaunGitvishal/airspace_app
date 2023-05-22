@@ -186,7 +186,12 @@ const ParkingSpaces = ({ navigation }) => {
 															/>
 														</View>
 
-														<Text className="ml-2 text-base">{name}</Text>
+														<Text
+															style={{ color: theme.colors.darkest }}
+															className="ml-2 text-base"
+														>
+															{name}
+														</Text>
 													</View>
 
 													<View className="flex-row items-center w-full mt-2">
@@ -197,7 +202,10 @@ const ParkingSpaces = ({ navigation }) => {
 																color={theme.colors.main}
 															/>
 														</View>
-														<Text className="ml-2 pr-10 break-words">
+														<Text
+															style={{ color: theme.colors.darker }}
+															className="ml-2 pr-10 break-words"
+														>
 															{city}
 														</Text>
 													</View>
@@ -210,7 +218,10 @@ const ParkingSpaces = ({ navigation }) => {
 																color={theme.colors.main}
 															/>
 														</View>
-														<Text className="ml-2 pr-10 break-words">
+														<Text
+															style={{ color: theme.colors.darker }}
+															className="ml-2 pr-10 break-words"
+														>
 															{address}
 														</Text>
 													</View>

@@ -109,7 +109,7 @@ const Dashboard = ({ navigation }) => {
 				);
 			}, 1000);
 		}
-	}, [isFocused]);
+	}, []);
 
 	return (
 		<Background>

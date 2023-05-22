@@ -23,6 +23,7 @@ import { nameValidator } from "../../helpers/nameValidator";
 import * as ImagePicker from "expo-image-picker";
 import * as api from "../../api/userRequests";
 import { useDispatch } from "react-redux";
+import { logIn } from "../../features/userSlice";
 
 const RegisterScreen = ({ navigation }) => {
 	const dispatch = useDispatch();
