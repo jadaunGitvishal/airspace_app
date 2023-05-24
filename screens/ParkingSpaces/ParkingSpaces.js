@@ -130,7 +130,7 @@ const ParkingSpaces = ({ navigation }) => {
 							{/* Cards */}
 							{loading === false ? (
 								parkingSpaces.length > 0 ? (
-									parkingSpaces.map(({ _id, name, city, address }) => (
+									parkingSpaces.map(({ _id, name, city, address, img1 }) => (
 										<TouchableOpacity
 											key={_id}
 											activeOpacity={0.9}
@@ -179,10 +179,10 @@ const ParkingSpaces = ({ navigation }) => {
 													className="py-2 px-6"
 												>
 													<View className="flex-row w-full items-center">
-														<View className="h-10 w-10">
+														<View className="h-10 w-10 rounded-full overflow-hidden bg-gray-300">
 															<Image
 																className="h-full w-full object-cover"
-																source={require("../../assets/CUI_logo.jpg")}
+																source={{ uri: img1?.url }}
 															/>
 														</View>
 
