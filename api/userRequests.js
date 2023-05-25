@@ -1,6 +1,6 @@
 import axios from "axios";
-// const mainUrl = "http://192.168.18.14:4000/api/v1";
-const mainUrl = "http://192.168.1.102:4000/api/v1";
+const mainUrl = "http://192.168.18.14:4000/api/v1";
+// const mainUrl = "http://192.168.1.102:4000/api/v1";
 const userUrl = mainUrl + "/user";
 const psUrl = mainUrl + "/ps";
 const pkgUrl = mainUrl + "/package";
