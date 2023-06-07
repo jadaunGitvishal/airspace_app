@@ -1,5 +1,6 @@
 import io from "socket.io-client";
-const socket = io("http://192.168.18.14:4000", {
+// const socket = io("http://192.168.18.14:4000", {
+const socket = io("http://192.168.1.100:4000", {
 	withCredentials: true,
 });
 
@@ -54,6 +55,7 @@ async function dataUpdateWithNotificationSocket(func) {
 	});
 
 	socket.on("new_notification", async (data) => {
+		console.log("\nNew Notification\n");
 		func(data);
 	});
 

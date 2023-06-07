@@ -41,7 +41,7 @@ function MainComponent() {
 	const { dark, notif } = useSelector(selectApp);
 
 	const [darkMode, setDarkMode] = useState(null);
-	const [notification, setNotification] = useState(null);
+	const [notification, setNotification] = useState(true);
 
 	// get mode settings
 	useEffect(() => {
@@ -92,13 +92,18 @@ function MainComponent() {
 	});
 	useEffect(() => {
 		async function notify(data) {
-			console.log(user);
-			console.log(data);
-			if (data?.forAll === false && data?.user !== user?.user?._id) {
+			if (!user) {
+				console.log("shit");
 				return;
 			}
 
-			if (notification === false) {
+			if (data?.forAll === false && data?.user !== user?.user?._id) {
+				console.log("not");
+				return;
+			}
+
+			if (notification && notification === false) {
+				console.log("Rola");
 				return;
 			}
 
